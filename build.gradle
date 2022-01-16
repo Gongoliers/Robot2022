@@ -71,7 +71,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
-    implementation 'com.github.Gongoliers:Library-of-Gongolierium:6.0.0-beta01'
+    implementation 'com.github.Gongoliers:Library-of-Gongolierium:5.1.0'
 }
 
 // Simulation configuration (e.g. environment variables).
