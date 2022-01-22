@@ -18,6 +18,14 @@ public final class Constants {
         public static final int kLeftDrivePWM = 0;
         public static final int kRightDrivePWM = 1;
 
+        // Voltage Regulation
+        public static final double kSlowVoltage = 5.25;
+        public static final double kNormalVoltage = 10.5; 
+
+        // Power Control
+        public static final double kSecondsToReachFullSpeed = 0.25; 
+        public static final double kTurnThreshold = 0.2;
+        
         // Encoders
         public static final int[] kLeftDriveEncoder = new int[] {0, 0};
         public static final int[] kRightDriveEncoder = new int[] {0, 0};
