@@ -5,11 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,7 +39,23 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+
+    // Driver Joystick Buttons
+    Joystick m_driver_joystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
+    
+    JoystickButton m_turbo = new JoystickButton(m_driver_joystick, 1)
+      .whenPressed(new SetTurboDrivetrain(true), drivetrainSubsystem)
+      .whenReleased(new SetTurboDrivetrain(false), drivetrainSubsystem);
+
+    JoystickButton m_stopAll = new JoystickButton(m_driver_joystick, 11)
+      .whenPressed(new StopAll());
+    JoystickButton m_stopAll2 = new JoystickButton(m_driver_joystick, 12)
+      .whenPressed(new StopAll());
+    
+    JoystickButton m_alignToTarget new JoystickButton(m_driver_joystick, 9);
+
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
