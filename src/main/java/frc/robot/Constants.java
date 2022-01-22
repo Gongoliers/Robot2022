@@ -12,4 +12,37 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants {
+    public static final class DriveConstants {
+        // --> PWM (motors)
+        public static final int kLeftDrivePWM = 0;
+        public static final int kRightDrivePWM = 1;
+
+        // Encoders
+        public static final int[] kLeftDriveEncoder = new int[] {0, 0};
+        public static final int[] kRightDriveEncoder = new int[] {0, 0};
+        public static final boolean kLeftEncoderReversed = false;
+        public static final boolean kRightEncoderReversed = true;
+        public static final int kEncoderCPR = 1024;
+        public static final double kWheelDiameterInches = 6;
+        public static final double kEncoderDistancePerPulse =
+            // Assumes the encoders are directly mounted on the wheel shafts
+            (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
+    }   
+
+  public static final class IntakeConstants {
+  }
+
+  public static final class ShooterConstants {
+  }
+
+  public static final class AutoConstants {
+    public static final double kAutoDriveDistanceInches = 60;
+    public static final double kAutoBackupDistanceInches = 20;
+    public static final double kAutoDriveSpeed = 0.5;
+  }
+
+  public static final class OIConstants {
+    public static final int kDriverControllerPort = 0;
+  }
+}
