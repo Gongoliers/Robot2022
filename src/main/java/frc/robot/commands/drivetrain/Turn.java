@@ -1,7 +1,7 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
  * Turns the robot at a particular speed until stopped/interrupted.
@@ -9,24 +9,26 @@ import frc.robot.Robot;
  */
 public class Turn extends CommandBase {
 
-    public double speed;
+    private DrivetrainSubsystem m_drivetrain;
+    private double m_speed;
 
-    public Turn(double speed) {
+    public Turn(DrivetrainSubsystem drivetrain, double speed) {
 
-        addRequirement(Robot.drivetrain); // FIXME: Robot.drivetrain is not a subsystem
-        this.speed = speed;
+        addRequirements(drivetrain);
+        m_drivetrain = drivetrain;
+        m_speed = speed;
 
     }
 
     // Called just before this Command runs the first time
     @Override
-    public void initalize() {
+    public void initialize() {
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        Robot.drivetrain.arcadeDrive(0, speed);
+        m_drivetrain.arcadeDrive(0, m_speed); // FIXME: Add arcadeDrive to subsystem
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -37,15 +39,8 @@ public class Turn extends CommandBase {
 
     // Called once after isFinished returns true
     @Override
-    public void end() {
-        Robot.drivetrain.stop();
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to tun
-    @Override
-    public void interrupted() {
-        end();
+    public void end(boolean interrupted) {
+        m_drivetrain.stop();
     }
 
 }

@@ -1,19 +1,21 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
  * Drives forward at a specified speed until stopped/interrupted.
  */
 public class Drive extends CommandBase {
 
-    private double speed;
+    private DrivetrainSubsystem m_drivetrain;
+    private double m_speed;
 
-    public Drive(double speed) {
+    public Drive(DrivetrainSubsystem drivetrain, double speed) {
 
-        addRequirement(Robot.drivetrain); // FIXME: Robot.drivetrain is not a Subsystem
-        this.speed = speed;
+        addRequirements(drivetrain);
+        m_drivetrain = drivetrain;
+        m_speed = speed;
 
     }
 
@@ -25,7 +27,7 @@ public class Drive extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        Robot.drivetrain.arcadeDrive(speed, 0); // Drive straight ahead
+        m_drivetrain.arcadeDrive(m_speed, 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -36,15 +38,8 @@ public class Drive extends CommandBase {
 
     // Called once after isFinished returns true
     @Override
-    public void end() {
-        Robot.drivetrain.stop();
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    public void interrupted() {
-        end();
+    public void end(boolean interrupted) {
+        m_drivetrain.stop();
     }
 
 }

@@ -1,23 +1,26 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Robot;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
  * Stops the motors of the drivetrain.
  */
 public class StopDrivetrain extends InstantCommand {
 
-    public StopDrivetrain() {
+    private DrivetrainSubsystem m_drivetrain;
 
-        addRequirement(Robot.drivetrain); // FIXME: Robot.drivetrain is not a subsystem
+    public StopDrivetrain(DrivetrainSubsystem drivetrain) {
+
+        addRequirements(drivetrain);
+        m_drivetrain = drivetrain;
 
     }
 
     // Called once this InstantCommand runs
     @Override
     public void initialize() {
-        Robot.drivetrain.stop();
+        m_drivetrain.stop(); // FIXME: Use the new, correct way to stop the drivetrain
     }
 
 }
