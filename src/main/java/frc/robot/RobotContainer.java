@@ -7,12 +7,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.subsystems.DrivetrainSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+import frc.robot.commands.StopAll;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.commands.drivetrain.SetTurboDrivetrain;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,9 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
-
-  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -44,13 +45,13 @@ public class RobotContainer {
     Joystick m_driver_joystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
     
     JoystickButton m_turbo = new JoystickButton(m_driver_joystick, 1);
-    m_turbo.whenPressed(new SetTurboDrivetrain(true), drivetrainSubsystem);
-    m_turbo.whenReleased(new SetTurboDrivetrain(false), drivetrainSubsystem);
+    m_turbo.whenPressed(new SetTurboDrivetrain(m_drivetrainSubsystem, true));
+    m_turbo.whenReleased(new SetTurboDrivetrain(m_drivetrainSubsystem, false));
 
-    JoystickButton m_stopAll = new JoystickButton(m_driver_joystick, 11)
-      .whenPressed(new StopAll());
-    JoystickButton m_stopAll2 = new JoystickButton(m_driver_joystick, 12)
-      .whenPressed(new StopAll());
+    JoystickButton m_stopAll = new JoystickButton(m_driver_joystick, 11);
+    m_stopAll.whenPressed(new StopAll(m_drivetrainSubsystem));
+    JoystickButton m_stopAll2 = new JoystickButton(m_driver_joystick, 12);
+    m_stopAll2.whenPressed(new StopAll(m_drivetrainSubsystem));
     
     JoystickButton m_alignToTarget = new JoystickButton(m_driver_joystick, 9);
 
@@ -63,6 +64,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return m_autoCommand; // TODO: Define this command somewhere
   }
 }

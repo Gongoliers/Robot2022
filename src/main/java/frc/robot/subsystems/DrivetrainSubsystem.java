@@ -55,7 +55,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_stabilityModule.setTurnThreshold(0.075);
 
         // Voltage Control Module 
-        m_voltageControlModule = new VoltageControlModule(DriveConstants.kFastVoltage);
+        m_voltageControlModule = new VoltageControlModule(DriveConstants.kFastVoltage); // TODO: Define this value in DriveConstants
         //TODO: PATH FOLLOWER MODULE HERE
 
         //TODO: TARGET ALIGNMENT MODULE HERE
