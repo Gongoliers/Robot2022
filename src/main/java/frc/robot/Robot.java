@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import frc.robot.OI; // TODO: for OI, possibly move to elsewhere?
+
 public class Robot extends TimedRobot {
   public static OI oi;
   public static Battery battery;
