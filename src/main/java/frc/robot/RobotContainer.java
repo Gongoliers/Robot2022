@@ -14,8 +14,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.StopAll;
+
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
+
+import frc.robot.commands.autonomous.FullSystemCheck;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,10 +33,13 @@ public class RobotContainer {
   private Joystick m_driverJoystick;
   private JoystickButton m_turbo, m_stopAll, m_stopAll2, m_alignToTarget;
 
+  private Command m_autoCommand;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    m_autoCommand = new FullSystemCheck(m_drivetrainSubsystem);
   }
 
   /**
@@ -74,7 +80,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand; // TODO: Define this command somewhere
+    return m_autoCommand;
   }
+
 }
