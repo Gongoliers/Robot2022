@@ -4,20 +4,11 @@
 
 package frc.robot;
 
-import com.thegongoliers.input.power.Battery;
-import com.thegongoliers.output.interfaces.Drivetrain;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-import frc.robot.OI; // TODO: for OI, possibly move to elsewhere?
-
 public class Robot extends TimedRobot {
-  public static OI oi;
-  public static Battery battery;
-
-  public static Drivetrain drivetrain;
 
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
@@ -92,4 +83,5 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
+
 }

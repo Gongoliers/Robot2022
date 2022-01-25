@@ -55,7 +55,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_stabilityModule.setTurnThreshold(0.075);
 
         // Voltage Control Module 
-        m_voltageControlModule = new VoltageControlModule(DriveConstants.kFastVoltage); // TODO: Define this value in DriveConstants
+        m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
         //TODO: PATH FOLLOWER MODULE HERE
 
         //TODO: TARGET ALIGNMENT MODULE HERE
@@ -63,5 +63,28 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 
     }
-    
+
+    public void arcadeDrive(double forwardSpeed, double turnSpeed) {
+        m_modularDrivetrain.arcade(-forwardSpeed, turnSpeed);
+    }
+
+    public void stop() {
+        m_modularDrivetrain.stop();
+    }
+
+
+    /**
+     * This function will enable or disable turbo mode.
+     * setTurboEnabled(true) = robot travels at turbo speed
+     * setTurboEnabled(false) = robot travels at normal speed
+     */
+    public void setTurboEnabled(boolean turboEnabled) {
+        m_turboEnabled = turboEnabled;
+        if (turboEnabled) {
+            m_voltageControlModule.setMaxVoltage(DriveConstants.kFastVoltage);
+        } else {
+            m_voltageControlModule.setMaxVoltage(DriveConstants.kNormalVoltage);
+        }
+    }
+
 }

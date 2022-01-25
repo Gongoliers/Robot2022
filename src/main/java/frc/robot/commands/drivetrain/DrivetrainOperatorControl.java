@@ -3,17 +3,19 @@ package frc.robot.commands.drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-import frc.robot.Robot; // TODO: for Robot.oi, possibly move oi to RobotContainer?
+import frc.robot.RobotContainer;
 
 /**
  * Allows the driver to control movement using a joystick / controller.
  */
 public class DrivetrainOperatorControl extends CommandBase {
 
+    private RobotContainer m_robot;
     private DrivetrainSubsystem m_drivetrain;
 
-    public DrivetrainOperatorControl(DrivetrainSubsystem drivetrain) {
+    public DrivetrainOperatorControl(RobotContainer robot, DrivetrainSubsystem drivetrain) {
 
+        m_robot = robot;
         addRequirements(drivetrain);
         m_drivetrain = drivetrain;
 
@@ -27,8 +29,8 @@ public class DrivetrainOperatorControl extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        double speed = -Robot.oi.getDriverSpeed();
-        double rotation = Robot.oi.getDriverRotation();
+        double speed = m_robot.getDriverSpeed();
+        double rotation = m_robot.getDriverRotation();
 
         m_drivetrain.arcadeDrive(speed, rotation);
     }

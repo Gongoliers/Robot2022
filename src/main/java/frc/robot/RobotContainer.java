@@ -27,6 +27,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
 
+  private Joystick m_driverJoystick;
+  private JoystickButton m_turbo, m_stopAll, m_stopAll2, m_alignToTarget;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -42,19 +45,27 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // Driver Joystick Buttons
-    Joystick m_driver_joystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
+    m_driverJoystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
     
-    JoystickButton m_turbo = new JoystickButton(m_driver_joystick, 1);
+    m_turbo = new JoystickButton(m_driverJoystick, 1);
     m_turbo.whenPressed(new SetTurboDrivetrain(m_drivetrainSubsystem, true));
     m_turbo.whenReleased(new SetTurboDrivetrain(m_drivetrainSubsystem, false));
 
-    JoystickButton m_stopAll = new JoystickButton(m_driver_joystick, 11);
+    m_stopAll = new JoystickButton(m_driverJoystick, 11);
     m_stopAll.whenPressed(new StopAll(m_drivetrainSubsystem));
-    JoystickButton m_stopAll2 = new JoystickButton(m_driver_joystick, 12);
+    m_stopAll2 = new JoystickButton(m_driverJoystick, 12);
     m_stopAll2.whenPressed(new StopAll(m_drivetrainSubsystem));
     
-    JoystickButton m_alignToTarget = new JoystickButton(m_driver_joystick, 9);
+    m_alignToTarget = new JoystickButton(m_driverJoystick, 9);
 
+  }
+
+  public double getDriverSpeed() {
+     return m_driverJoystick.getY();
+  }
+
+  public double getDriverRotation() {
+     return m_driverJoystick.getZ();
   }
 
   /**

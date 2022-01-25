@@ -19,8 +19,9 @@ public final class Constants {
         public static final int kRightDrivePWM = 1;
 
         // Voltage Regulation
-        public static final double kSlowVoltage = 5.25;
-        public static final double kNormalVoltage = 10.5; 
+        //public static final double kSlowVoltage = 0; // TODO: Replace placeholder value
+        public static final double kNormalVoltage = 5.25;
+        public static final double kFastVoltage = 10.5;
 
         // Power Control
         public static final double kSecondsToReachFullSpeed = 0.25; 
@@ -52,5 +53,6 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final boolean KSingleDriverMode = false;
   }
 }
