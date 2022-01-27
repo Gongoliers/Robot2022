@@ -1,11 +1,15 @@
 package frc.robot.subsystems;
 
+import java.util.List;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import com.thegongoliers.output.drivetrain.ModularDrivetrain;
 import com.thegongoliers.output.drivetrain.PowerEfficiencyModule;
 import com.thegongoliers.output.drivetrain.StabilityModule;
 import com.thegongoliers.output.drivetrain.VoltageControlModule;
+import com.thegongoliers.output.drivetrain.PathFollowerModule;
+import com.thegongoliers.input.odometry.EncoderSensor;
 
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -15,15 +19,20 @@ import frc.robot.NavxGyro;
 import frc.robot.Constants.DriveConstants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-    // Initializing Right Side Motors
-    private final WPI_TalonFX m_rightMotors = new WPI_TalonFX(DriveConstants.kRightDrivePWM);
+    // Initializing Motors
     private final WPI_TalonFX m_leftMotors = new WPI_TalonFX(DriveConstants.kLeftDrivePWM);
+    private final WPI_TalonFX m_rightMotors = new WPI_TalonFX(DriveConstants.kRightDrivePWM);
+
+    // Initializing Encoders
+    private EncoderSensor m_leftEncoder;
+    private EncoderSensor m_rightEncoder;
 
     // Initializing the Modular Drivetrain
     private ModularDrivetrain m_modularDrivetrain;
     private VoltageControlModule m_voltageControlModule;
     private StabilityModule m_stabilityModule;
     private PowerEfficiencyModule m_powerEfficiencyModule;
+    private PathFollowerModule m_pathFollowerModule;
 
     // Turbo
     private boolean m_turboEnabled = false; 
@@ -41,8 +50,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_drivetrain.setMaxOutput(1.0);
         m_drivetrain.setDeadband(0.05);
         
-        // TODO: get encoder value
+        // TODO: setup encoders to use actual encoders
         // Encoders
+        m_leftEncoder = 0;
+        m_rightEncoder = 0;
 
         // NavX Gyro Initialization
         Gyro m_gyro = new NavxGyro(m_navx);
@@ -57,6 +68,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // Voltage Control Module 
         m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
         //TODO: PATH FOLLOWER MODULE HERE
+
+        // Path Follower Module
+        m_pathFollowerModule = new PathFollowerModule(m_gyro, List.of(m_leftEncoder, m_rightEncoder), 0.5, 0.02); // TODO: Tune
 
         //TODO: TARGET ALIGNMENT MODULE HERE
 
