@@ -7,8 +7,8 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.commands.drivetrain.Drive;
 
 /**
- * Tests every component of every subsytem. Run before matches
- * to check the status of the robot;
+ * Tests components of each provided subsytem. Run before matches
+ * to check the status of the robot.
  */
 public class FullSystemCheck extends SequentialCommandGroup {
 

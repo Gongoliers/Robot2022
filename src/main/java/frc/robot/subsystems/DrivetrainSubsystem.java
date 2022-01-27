@@ -87,4 +87,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
     }
 
+    public ModularDrivetrain getModularDrivetrain() {
+        return m_modularDrivetrain;
+    }
+
 }

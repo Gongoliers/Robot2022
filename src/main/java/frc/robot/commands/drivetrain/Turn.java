@@ -3,7 +3,7 @@ package frc.robot.commands.drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-/**
+/*
  * Turns the robot at a particular speed until stopped/interrupted.
  * Turns right if the speed is positive or left if the speed is negative.
  */
