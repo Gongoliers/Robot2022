@@ -11,6 +11,8 @@ import com.thegongoliers.output.drivetrain.StabilityModule;
 import com.thegongoliers.output.drivetrain.VoltageControlModule;
 import com.thegongoliers.output.drivetrain.PathFollowerModule;
 import com.thegongoliers.input.odometry.WPIEncoderSensor;
+import com.thegongoliers.input.odometry.BaseEncoderSensor;
+import com.thegongoliers.input.odometry.DistanceSensor;
 import com.thegongoliers.input.odometry.VelocitySensor;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -26,11 +28,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final WPI_TalonFX m_leftMotors = new WPI_TalonFX(DriveConstants.kLeftDrivePWM);
     private final WPI_TalonFX m_rightMotors = new WPI_TalonFX(DriveConstants.kRightDrivePWM);
 
-    // Initializing Encoders
-    private Encoder m_leftEncoder, m_rightEncoder;
-
     // Initializing EncoderSensors
-    private WPIEncoderSensor m_leftEncoderSensor, m_rightEncoderSensor;
+    private BaseEncoderSensor m_leftEncoderSensor, m_rightEncoderSensor;
 
     // Initializing the Modular Drivetrain
     private ModularDrivetrain m_modularDrivetrain;
@@ -58,12 +57,30 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_leftMotors.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         m_rightMotors.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         
-        // Encoders
-        m_leftEncoder = new Encoder(DriveConstants.kLeftDriveEncoderPorts[0], DriveConstants.kLeftDriveEncoderPorts[1]);
-        m_leftEncoderSensor = new WPIEncoderSensor(m_leftEncoder);
-        m_rightEncoder = new Encoder(DriveConstants.kRightDriveEncoderPorts[0], DriveConstants.kRightDriveEncoderPorts[1]);
-        m_rightEncoderSensor = new WPIEncoderSensor(m_rightEncoder);
+        // Encoder Helpers
+        DistanceSensor m_leftEncoderPosition = new DistanceSensor() {
+            public double getDistance() {
+                return m_leftMotors.getSelectedSensorPosition();
+        }};
+        VelocitySensor m_leftEncodeVelocity = new VelocitySensor() {
+            public double getVelocity() {
+                return m_leftMotors.getSelectedSensorVelocity();
+            }
+        };
 
+        DistanceSensor m_rightEncoderPosition = new DistanceSensor() {
+            public double getDistance() {
+                return m_rightMotors.getSelectedSensorPosition();
+        }};
+        VelocitySensor m_rightEncodeVelocity = new VelocitySensor() {
+            public double getVelocity() {
+                return m_rightMotors.getSelectedSensorVelocity();
+            }
+        };
+
+        // Encoders
+        m_leftEncoderSensor = new BaseEncoderSensor(m_leftEncoderPosition, m_leftEncodeVelocity);
+        m_rightEncoderSensor = new BaseEncoderSensor(m_rightEncoderPosition, m_rightEncodeVelocity);
         // NavX Gyro Initialization
         Gyro m_gyro = new NavxGyro(m_navx);
         
@@ -76,7 +93,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         // Voltage Control Module 
         m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
-        //TODO: PATH FOLLOWER MODULE HERE
 
         // Path Follower Module
         m_pathFollowerModule = new PathFollowerModule(m_gyro, List.of(m_leftEncoderSensor, m_rightEncoderSensor), 0.5, 0.02); // TODO: Tune
