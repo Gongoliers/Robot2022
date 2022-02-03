@@ -9,8 +9,10 @@ import com.thegongoliers.output.drivetrain.PowerEfficiencyModule;
 import com.thegongoliers.output.drivetrain.StabilityModule;
 import com.thegongoliers.output.drivetrain.VoltageControlModule;
 import com.thegongoliers.output.drivetrain.PathFollowerModule;
-import com.thegongoliers.input.odometry.EncoderSensor;
+import com.thegongoliers.input.odometry.WPIEncoderSensor;
+import com.thegongoliers.input.odometry.VelocitySensor;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -24,8 +26,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final WPI_TalonFX m_rightMotors = new WPI_TalonFX(DriveConstants.kRightDrivePWM);
 
     // Initializing Encoders
-    private EncoderSensor m_leftEncoder;
-    private EncoderSensor m_rightEncoder;
+    private Encoder m_leftEncoder, m_rightEncoder;
+
+    // Initializing EncoderSensors
+    private WPIEncoderSensor m_leftEncoderSensor, m_rightEncoderSensor;
 
     // Initializing the Modular Drivetrain
     private ModularDrivetrain m_modularDrivetrain;
@@ -52,8 +56,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
         // TODO: setup encoders to use actual encoders
         // Encoders
-        m_leftEncoder = 0;
-        m_rightEncoder = 0;
+        m_leftEncoder = new Encoder(0, 1); // TODO: Configure RobotContainer to store these values
+        m_leftEncoderSensor = new WPIEncoderSensor(m_leftEncoder);
+        m_rightEncoder = new Encoder(0, 1); // TODO: Configure RobotContainer to store these values
+        m_rightEncoderSensor = new WPIEncoderSensor(m_rightEncoder);
 
         // NavX Gyro Initialization
         Gyro m_gyro = new NavxGyro(m_navx);
@@ -70,7 +76,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         //TODO: PATH FOLLOWER MODULE HERE
 
         // Path Follower Module
-        m_pathFollowerModule = new PathFollowerModule(m_gyro, List.of(m_leftEncoder, m_rightEncoder), 0.5, 0.02); // TODO: Tune
+        m_pathFollowerModule = new PathFollowerModule(m_gyro, List.of(m_leftEncoderSensor, m_rightEncoderSensor), 0.5, 0.02); // TODO: Tune
 
         //TODO: TARGET ALIGNMENT MODULE HERE
 
