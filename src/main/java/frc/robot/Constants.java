@@ -28,8 +28,8 @@ public final class Constants {
         public static final double kTurnThreshold = 0.2;
         
         // Encoders
-        public static final int[] kLeftDriveEncoder = new int[] {0, 0};
-        public static final int[] kRightDriveEncoder = new int[] {0, 0};
+        public static final int[] kLeftDriveEncoderPorts = new int[] {0, 1};
+        public static final int[] kRightDriveEncoderPorts = new int[] {2, 3};
         public static final boolean kLeftEncoderReversed = false;
         public static final boolean kRightEncoderReversed = true;
         public static final int kEncoderCPR = 1024;

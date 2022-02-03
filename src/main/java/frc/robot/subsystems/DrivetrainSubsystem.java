@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.List;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import com.thegongoliers.output.drivetrain.ModularDrivetrain;
@@ -53,12 +54,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_drivetrain.setExpiration(0.1);
         m_drivetrain.setMaxOutput(1.0);
         m_drivetrain.setDeadband(0.05);
+
+        m_leftMotors.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        m_rightMotors.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         
-        // TODO: setup encoders to use actual encoders
         // Encoders
-        m_leftEncoder = new Encoder(0, 1); // TODO: Configure RobotContainer to store these values
+        m_leftEncoder = new Encoder(DriveConstants.kLeftDriveEncoderPorts[0], DriveConstants.kLeftDriveEncoderPorts[1]);
         m_leftEncoderSensor = new WPIEncoderSensor(m_leftEncoder);
-        m_rightEncoder = new Encoder(0, 1); // TODO: Configure RobotContainer to store these values
+        m_rightEncoder = new Encoder(DriveConstants.kRightDriveEncoderPorts[0], DriveConstants.kRightDriveEncoderPorts[1]);
         m_rightEncoderSensor = new WPIEncoderSensor(m_rightEncoder);
 
         // NavX Gyro Initialization
