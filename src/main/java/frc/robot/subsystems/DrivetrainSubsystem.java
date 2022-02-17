@@ -19,14 +19,27 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.NavxGyro;
 import frc.robot.Constants.DriveConstants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-    // Initializing Motors
-    private final WPI_TalonFX m_leftMotors = new WPI_TalonFX(DriveConstants.kLeftDrivePWM);
-    private final WPI_TalonFX m_rightMotors = new WPI_TalonFX(DriveConstants.kRightDrivePWM);
+    // Initializing Motor Controllers
+    
+    //  ---  Left Motors
+    private final WPI_TalonFX m_leftMotor_1 = new WPI_TalonFX(DriveConstants.kLeftDriveCAN1);
+    private final WPI_TalonFX m_leftMotor_2 = new WPI_TalonFX(DriveConstants.kLeftDriveCAN2);
+    private final WPI_TalonFX m_leftMotor_3 = new WPI_TalonFX(DriveConstants.kLeftDriveCAN3);
+
+    //  --- Right Motors
+    private final WPI_TalonFX m_rightMotor_1 = new WPI_TalonFX(DriveConstants.kRightDriveCAN1);
+    private final WPI_TalonFX m_rightMotor_2 = new WPI_TalonFX(DriveConstants.kRightDriveCAN2);
+    private final WPI_TalonFX m_rightMotor_3 = new WPI_TalonFX(DriveConstants.kRightDriveCAN3);
+    
+    // Initializing Motor Controller Group
+    private final MotorControllerGroup m_leftMotors = new MotorControllerGroup(m_leftMotor_1, m_leftMotor_2, m_leftMotor_3);
+    private final MotorControllerGroup m_rightMotors = new MotorControllerGroup(m_rightMotor_1, m_rightMotor_2, m_rightMotor_3);
 
     // Initializing EncoderSensors
     private BaseEncoderSensor m_leftEncoderSensor, m_rightEncoderSensor;
@@ -54,27 +67,34 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_drivetrain.setMaxOutput(1.0);
         m_drivetrain.setDeadband(0.05);
 
-        m_leftMotors.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-        m_rightMotors.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        m_leftMotor_1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        m_leftMotor_2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        m_leftMotor_3.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+
+        m_rightMotor_1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        m_rightMotor_2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        m_rightMotor_3.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         
         // Encoder Helpers
+        // TODO: VERIFY CHANGES
         DistanceSensor m_leftEncoderPosition = new DistanceSensor() {
             public double getDistance() {
-                return m_leftMotors.getSelectedSensorPosition();
+                return (m_leftMotor_1.getSelectedSensorPosition() + m_leftMotor_2.getSelectedSensorPosition() + m_leftMotor_3.getSelectedSensorPosition())/3;
+                
         }};
         VelocitySensor m_leftEncodeVelocity = new VelocitySensor() {
             public double getVelocity() {
-                return m_leftMotors.getSelectedSensorVelocity();
+                return (m_leftMotor_1.getSelectedSensorVelocity() + m_leftMotor_2.getSelectedSensorVelocity() + m_leftMotor_3.getSelectedSensorVelocity())/3;
             }
         };
 
         DistanceSensor m_rightEncoderPosition = new DistanceSensor() {
             public double getDistance() {
-                return m_rightMotors.getSelectedSensorPosition();
+                return (m_rightMotor_1.getSelectedSensorPosition() + m_rightMotor_2.getSelectedSensorPosition() + m_rightMotor_3.getSelectedSensorPosition())/3;
         }};
         VelocitySensor m_rightEncodeVelocity = new VelocitySensor() {
             public double getVelocity() {
-                return m_rightMotors.getSelectedSensorVelocity();
+                return (m_rightMotor_1.getSelectedSensorVelocity() + m_rightMotor_2.getSelectedSensorVelocity() + m_rightMotor_3.getSelectedSensorVelocity())/3;
             }
         };
 

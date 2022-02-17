@@ -14,9 +14,14 @@ package frc.robot;
  */
 public final class Constants {
     public static final class DriveConstants {
-        // --> PWM (motors)
-        public static final int kLeftDrivePWM = 0;
-        public static final int kRightDrivePWM = 1;
+        // --> CAN IDs (motors)
+        public static final int kLeftDriveCAN1 = 0;
+        public static final int kLeftDriveCAN2 = 0;
+        public static final int kLeftDriveCAN3 = 0;
+
+        public static final int kRightDriveCAN1 = 1;
+        public static final int kRightDriveCAN2 = 1;
+        public static final int kRightDriveCAN3 = 1;
 
         // Voltage Regulation
         //public static final double kSlowVoltage = 0; // TODO: Replace placeholder value
