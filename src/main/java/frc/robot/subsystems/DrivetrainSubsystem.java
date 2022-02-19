@@ -7,9 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import com.thegongoliers.output.drivetrain.ModularDrivetrain;
 import com.thegongoliers.output.drivetrain.PowerEfficiencyModule;
-import com.thegongoliers.output.drivetrain.StabilityModule;
 import com.thegongoliers.output.drivetrain.VoltageControlModule;
-import com.thegongoliers.output.drivetrain.PathFollowerModule;
 import com.thegongoliers.input.odometry.WPIEncoderSensor;
 import com.thegongoliers.input.odometry.BaseEncoderSensor;
 import com.thegongoliers.input.odometry.DistanceSensor;
@@ -47,9 +45,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // Initializing the Modular Drivetrain
     private ModularDrivetrain m_modularDrivetrain;
     private VoltageControlModule m_voltageControlModule;
-    private StabilityModule m_stabilityModule;
     private PowerEfficiencyModule m_powerEfficiencyModule;
-    private PathFollowerModule m_pathFollowerModule;
 
     // Turbo
     private boolean m_turboEnabled = false; 
@@ -101,26 +97,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // Encoders
         m_leftEncoderSensor = new BaseEncoderSensor(m_leftEncoderPosition, m_leftEncodeVelocity);
         m_rightEncoderSensor = new BaseEncoderSensor(m_rightEncoderPosition, m_rightEncodeVelocity);
-        // NavX Gyro Initialization
-        Gyro m_gyro = new NavxGyro(m_navx);
         
         // Modular Drivetrain
         m_modularDrivetrain = ModularDrivetrain.from(m_drivetrain);
         
-        // Stability Module
-        m_stabilityModule = new StabilityModule(m_gyro, 0.05, 0.25);
-        m_stabilityModule.setTurnThreshold(0.075);
-
         // Voltage Control Module 
         m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
 
-        // Path Follower Module
-        m_pathFollowerModule = new PathFollowerModule(m_gyro, List.of(m_leftEncoderSensor, m_rightEncoderSensor), 0.5, 0.02); // TODO: Tune
-
-        //TODO: TARGET ALIGNMENT MODULE HERE
+        // Power Effeciency Module
+        m_powerEfficiencyModule = new PowerEfficiencyModule(DriveConstants.kSecondsToReachFullSpeed, DriveConstants.kTurnThreshold);
 
 
-
+        m_modularDrivetrain.setModules(m_voltageControlModule, m_powerEfficiencyModule);
     }
 
     public void arcadeDrive(double forwardSpeed, double turnSpeed) {
