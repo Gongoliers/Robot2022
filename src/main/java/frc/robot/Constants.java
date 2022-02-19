@@ -16,15 +16,14 @@ public final class Constants {
     public static final class DriveConstants {
         // --> CAN IDs (motors)
         public static final int kLeftDriveCAN1 = 0;
-        public static final int kLeftDriveCAN2 = 0;
-        public static final int kLeftDriveCAN3 = 0;
+        public static final int kLeftDriveCAN2 = 1;
+        public static final int kLeftDriveCAN3 = 2;
 
-        public static final int kRightDriveCAN1 = 1;
-        public static final int kRightDriveCAN2 = 1;
-        public static final int kRightDriveCAN3 = 1;
+        public static final int kRightDriveCAN1 = 3;
+        public static final int kRightDriveCAN2 = 4;
+        public static final int kRightDriveCAN3 = 5;
 
         // Voltage Regulation
-        //public static final double kSlowVoltage = 0; // TODO: Replace placeholder value
         public static final double kNormalVoltage = 5.25;
         public static final double kFastVoltage = 10.5;
 
@@ -33,10 +32,6 @@ public final class Constants {
         public static final double kTurnThreshold = 0.2;
         
         // Encoders
-        public static final int[] kLeftDriveEncoderPorts = new int[] {0, 1};
-        public static final int[] kRightDriveEncoderPorts = new int[] {2, 3};
-        public static final boolean kLeftEncoderReversed = false;
-        public static final boolean kRightEncoderReversed = true;
         public static final int kEncoderCPR = 1024;
         public static final double kWheelDiameterInches = 6;
         public static final double kEncoderDistancePerPulse =
