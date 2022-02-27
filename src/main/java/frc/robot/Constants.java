@@ -15,28 +15,26 @@ package frc.robot;
 public final class Constants {
     public static final class DriveConstants {
         // --> CAN IDs (motors)
-        public static final int kLeftDriveCAN1 = 0;
-        public static final int kLeftDriveCAN2 = 1;
-        public static final int kLeftDriveCAN3 = 2;
+        public static final int kLeftDriveCAN1 = 1;
+        public static final int kLeftDriveCAN2 = 2;
+        public static final int kLeftDriveCAN3 = 3;
 
-        public static final int kRightDriveCAN1 = 3;
-        public static final int kRightDriveCAN2 = 4;
-        public static final int kRightDriveCAN3 = 5;
+        public static final int kRightDriveCAN1 = 4;
+        public static final int kRightDriveCAN2 = 5;
+        public static final int kRightDriveCAN3 = 6;
 
         // Voltage Regulation
         public static final double kNormalVoltage = 5.25;
-        public static final double kFastVoltage = 10.5;
+        public static final double kFastVoltage = 12;
 
         // Power Control
         public static final double kSecondsToReachFullSpeed = 0.25; 
         public static final double kTurnThreshold = 0.2;
         
         // Encoders
-        public static final int kEncoderCPR = 1024;
-        public static final double kWheelDiameterInches = 6;
-        public static final double kEncoderDistancePerPulse =
-            // Assumes the encoders are directly mounted on the wheel shafts
-            (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
+        public static final double kWheelDiameterInches = 4;
+        // This was calculated by recording the ticks for one rotation
+        public static final double kEncoderDistancePerPulse = (kWheelDiameterInches * Math.PI) / 17923.0;
     }   
 
   public static final class IntakeConstants {

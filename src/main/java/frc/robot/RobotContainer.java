@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.StopAll;
 
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
 
 import frc.robot.commands.autonomous.FullSystemCheck;
@@ -64,6 +65,8 @@ public class RobotContainer {
     
     m_alignToTarget = new JoystickButton(m_driverJoystick, 9);
 
+    // Default commands
+    m_drivetrainSubsystem.setDefaultCommand(new DrivetrainOperatorControl(this, m_drivetrainSubsystem));
   }
 
   public double getDriverSpeed() {

@@ -9,6 +9,7 @@ import com.thegongoliers.output.drivetrain.ModularDrivetrain;
 import com.thegongoliers.output.drivetrain.PowerEfficiencyModule;
 import com.thegongoliers.output.drivetrain.VoltageControlModule;
 import com.thegongoliers.input.odometry.WPIEncoderSensor;
+import com.thegongoliers.math.GMath;
 import com.thegongoliers.input.odometry.BaseEncoderSensor;
 import com.thegongoliers.input.odometry.DistanceSensor;
 import com.thegongoliers.input.odometry.VelocitySensor;
@@ -18,7 +19,9 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.NavxGyro;
 import frc.robot.Constants.DriveConstants;
 
@@ -55,6 +58,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public AHRS m_navx = new AHRS(SerialPort.Port.kMXP);
     
     public DrivetrainSubsystem() {
+
+        m_rightMotors.setInverted(true);
         
         // Assembling the Drivetrain
         final DifferentialDrive m_drivetrain = new DifferentialDrive(m_leftMotors, m_rightMotors);
@@ -75,22 +80,27 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // TODO: VERIFY CHANGES
         DistanceSensor m_leftEncoderPosition = new DistanceSensor() {
             public double getDistance() {
-                return (m_leftMotor_1.getSelectedSensorPosition() + m_leftMotor_2.getSelectedSensorPosition() + m_leftMotor_3.getSelectedSensorPosition())/3;
+                var ticks = (m_leftMotor_1.getSelectedSensorPosition() + m_leftMotor_2.getSelectedSensorPosition() + m_leftMotor_3.getSelectedSensorPosition())/3;
+                return ticks * Constants.DriveConstants.kEncoderDistancePerPulse;
                 
         }};
         VelocitySensor m_leftEncodeVelocity = new VelocitySensor() {
             public double getVelocity() {
-                return (m_leftMotor_1.getSelectedSensorVelocity() + m_leftMotor_2.getSelectedSensorVelocity() + m_leftMotor_3.getSelectedSensorVelocity())/3;
+                var ticks = (m_leftMotor_1.getSelectedSensorVelocity() + m_leftMotor_2.getSelectedSensorVelocity() + m_leftMotor_3.getSelectedSensorVelocity())/3;
+                return ticks * Constants.DriveConstants.kEncoderDistancePerPulse;
             }
         };
 
         DistanceSensor m_rightEncoderPosition = new DistanceSensor() {
             public double getDistance() {
-                return (m_rightMotor_1.getSelectedSensorPosition() + m_rightMotor_2.getSelectedSensorPosition() + m_rightMotor_3.getSelectedSensorPosition())/3;
-        }};
+                var ticks = (m_rightMotor_1.getSelectedSensorPosition() + m_rightMotor_2.getSelectedSensorPosition() + m_rightMotor_3.getSelectedSensorPosition())/3;
+                return -ticks * Constants.DriveConstants.kEncoderDistancePerPulse;
+            }
+        };
         VelocitySensor m_rightEncodeVelocity = new VelocitySensor() {
             public double getVelocity() {
-                return (m_rightMotor_1.getSelectedSensorVelocity() + m_rightMotor_2.getSelectedSensorVelocity() + m_rightMotor_3.getSelectedSensorVelocity())/3;
+                var ticks = (m_rightMotor_1.getSelectedSensorVelocity() + m_rightMotor_2.getSelectedSensorVelocity() + m_rightMotor_3.getSelectedSensorVelocity())/3;
+                return -ticks * Constants.DriveConstants.kEncoderDistancePerPulse;
             }
         };
 
@@ -102,7 +112,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_modularDrivetrain = ModularDrivetrain.from(m_drivetrain);
         
         // Voltage Control Module 
-        m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
+        m_voltageControlModule = new VoltageControlModule(DriveConstants.kFastVoltage);
 
         // Power Effeciency Module
         m_powerEfficiencyModule = new PowerEfficiencyModule(DriveConstants.kSecondsToReachFullSpeed, DriveConstants.kTurnThreshold);
@@ -112,11 +122,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void arcadeDrive(double forwardSpeed, double turnSpeed) {
-        m_modularDrivetrain.arcade(-forwardSpeed, turnSpeed);
+        // TODO: Extract turn deadband constant
+        var turn = GMath.deadband(turnSpeed, 0.2);
+        m_modularDrivetrain.arcade(-forwardSpeed, turn);
     }
 
     public void stop() {
         m_modularDrivetrain.stop();
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Left distance (in)", m_leftEncoderSensor.getDistance());
+        SmartDashboard.putNumber("Right distance (in)", m_rightEncoderSensor.getDistance());
+        SmartDashboard.putNumber("Left speed (in)", m_leftEncoderSensor.getVelocity());
+        SmartDashboard.putNumber("Right speed (in)", m_rightEncoderSensor.getVelocity());
     }
 
 
