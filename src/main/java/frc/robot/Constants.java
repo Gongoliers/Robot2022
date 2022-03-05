@@ -53,4 +53,14 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final boolean KSingleDriverMode = false;
   }
+
+  public static final class EndgameConstants {
+    public static final int kLeftMotorCAN = 7; // LEFT OF BATTERY (WHEN STANDING BEHIND BATTERY)
+    public static final int kRightMotorCAN = 8; // RIGHT OF BATTERY (WHEN STANDING BEHIND BATTERY)
+    public static final int kSolenoidCAN = 9; // CAN PORT OF SOLENOID
+    public static final int kEncoderDistancePerPulse = 0; // TODO: CONFIGURE THIS
+    public static final int kCappedDistance = 1; // TODO: Configure this | this controls the amount the distance the motor should travel when raising / lowering the endgame system
+    public static final double kRaiseMotorSpeed = 0.2;
+    public static final double kLowerMotorSpeed = -0.2;
+  }
 }

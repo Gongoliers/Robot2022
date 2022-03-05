@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.NavxGyro;
 import frc.robot.Constants.DriveConstants;
 
@@ -81,26 +80,26 @@ public class DrivetrainSubsystem extends SubsystemBase {
         DistanceSensor m_leftEncoderPosition = new DistanceSensor() {
             public double getDistance() {
                 var ticks = (m_leftMotor_1.getSelectedSensorPosition() + m_leftMotor_2.getSelectedSensorPosition() + m_leftMotor_3.getSelectedSensorPosition())/3;
-                return ticks * Constants.DriveConstants.kEncoderDistancePerPulse;
+                return ticks * DriveConstants.kEncoderDistancePerPulse;
                 
         }};
         VelocitySensor m_leftEncodeVelocity = new VelocitySensor() {
             public double getVelocity() {
                 var ticks = (m_leftMotor_1.getSelectedSensorVelocity() + m_leftMotor_2.getSelectedSensorVelocity() + m_leftMotor_3.getSelectedSensorVelocity())/3;
-                return ticks * Constants.DriveConstants.kEncoderDistancePerPulse;
+                return ticks * DriveConstants.kEncoderDistancePerPulse;
             }
         };
 
         DistanceSensor m_rightEncoderPosition = new DistanceSensor() {
             public double getDistance() {
                 var ticks = (m_rightMotor_1.getSelectedSensorPosition() + m_rightMotor_2.getSelectedSensorPosition() + m_rightMotor_3.getSelectedSensorPosition())/3;
-                return -ticks * Constants.DriveConstants.kEncoderDistancePerPulse;
+                return -ticks * DriveConstants.kEncoderDistancePerPulse;
             }
         };
         VelocitySensor m_rightEncodeVelocity = new VelocitySensor() {
             public double getVelocity() {
                 var ticks = (m_rightMotor_1.getSelectedSensorVelocity() + m_rightMotor_2.getSelectedSensorVelocity() + m_rightMotor_3.getSelectedSensorVelocity())/3;
-                return -ticks * Constants.DriveConstants.kEncoderDistancePerPulse;
+                return -ticks * DriveConstants.kEncoderDistancePerPulse;
             }
         };
 
