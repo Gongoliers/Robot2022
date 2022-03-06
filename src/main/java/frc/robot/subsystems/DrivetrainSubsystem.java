@@ -1,20 +1,15 @@
 package frc.robot.subsystems;
 
-import java.util.List;
-
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import com.thegongoliers.output.drivetrain.ModularDrivetrain;
 import com.thegongoliers.output.drivetrain.PowerEfficiencyModule;
 import com.thegongoliers.output.drivetrain.VoltageControlModule;
-import com.thegongoliers.input.odometry.WPIEncoderSensor;
 import com.thegongoliers.math.GMath;
-import com.thegongoliers.input.odometry.BaseEncoderSensor;
-import com.thegongoliers.input.odometry.DistanceSensor;
-import com.thegongoliers.input.odometry.VelocitySensor;
+import com.thegongoliers.input.odometry.AverageEncoderSensor;
+import com.thegongoliers.input.odometry.EncoderSensor;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -23,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.NavxGyro;
+import frc.robot.PhoenixMotorControllerEncoder;
 import frc.robot.Constants.DriveConstants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -43,7 +39,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final MotorControllerGroup m_rightMotors = new MotorControllerGroup(m_rightMotor_1, m_rightMotor_2, m_rightMotor_3);
 
     // Initializing EncoderSensors
-    private BaseEncoderSensor m_leftEncoderSensor, m_rightEncoderSensor;
+    private EncoderSensor m_leftEncoderSensor, m_rightEncoderSensor;
 
     // Initializing the Modular Drivetrain
     private ModularDrivetrain m_modularDrivetrain;
@@ -67,46 +63,22 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_drivetrain.setExpiration(0.1);
         m_drivetrain.setMaxOutput(1.0);
         m_drivetrain.setDeadband(0.05);
-
-        m_leftMotor_1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-        m_leftMotor_2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-        m_leftMotor_3.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-
-        m_rightMotor_1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-        m_rightMotor_2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-        m_rightMotor_3.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         
-        // Encoder Helpers
-        // TODO: VERIFY CHANGES
-        DistanceSensor m_leftEncoderPosition = new DistanceSensor() {
-            public double getDistance() {
-                var ticks = (m_leftMotor_1.getSelectedSensorPosition() + m_leftMotor_2.getSelectedSensorPosition() + m_leftMotor_3.getSelectedSensorPosition())/3;
-                return ticks * Constants.DriveConstants.kEncoderDistancePerPulse;
-                
-        }};
-        VelocitySensor m_leftEncodeVelocity = new VelocitySensor() {
-            public double getVelocity() {
-                var ticks = (m_leftMotor_1.getSelectedSensorVelocity() + m_leftMotor_2.getSelectedSensorVelocity() + m_leftMotor_3.getSelectedSensorVelocity())/3;
-                return ticks * Constants.DriveConstants.kEncoderDistancePerPulse;
-            }
-        };
-
-        DistanceSensor m_rightEncoderPosition = new DistanceSensor() {
-            public double getDistance() {
-                var ticks = (m_rightMotor_1.getSelectedSensorPosition() + m_rightMotor_2.getSelectedSensorPosition() + m_rightMotor_3.getSelectedSensorPosition())/3;
-                return -ticks * Constants.DriveConstants.kEncoderDistancePerPulse;
-            }
-        };
-        VelocitySensor m_rightEncodeVelocity = new VelocitySensor() {
-            public double getVelocity() {
-                var ticks = (m_rightMotor_1.getSelectedSensorVelocity() + m_rightMotor_2.getSelectedSensorVelocity() + m_rightMotor_3.getSelectedSensorVelocity())/3;
-                return -ticks * Constants.DriveConstants.kEncoderDistancePerPulse;
-            }
-        };
-
         // Encoders
-        m_leftEncoderSensor = new BaseEncoderSensor(m_leftEncoderPosition, m_leftEncodeVelocity);
-        m_rightEncoderSensor = new BaseEncoderSensor(m_rightEncoderPosition, m_rightEncodeVelocity);
+        var leftAverageEncoder = new AverageEncoderSensor(
+            new PhoenixMotorControllerEncoder(m_leftMotor_1, FeedbackDevice.IntegratedSensor),
+            new PhoenixMotorControllerEncoder(m_leftMotor_2, FeedbackDevice.IntegratedSensor),
+            new PhoenixMotorControllerEncoder(m_leftMotor_3, FeedbackDevice.IntegratedSensor)
+        );
+
+        var rightAverageEncoder = new AverageEncoderSensor(
+            new PhoenixMotorControllerEncoder(m_rightMotor_1, FeedbackDevice.IntegratedSensor),
+            new PhoenixMotorControllerEncoder(m_rightMotor_2, FeedbackDevice.IntegratedSensor),
+            new PhoenixMotorControllerEncoder(m_rightMotor_3, FeedbackDevice.IntegratedSensor)
+        );
+
+        m_leftEncoderSensor = leftAverageEncoder.scaledBy(Constants.DriveConstants.kEncoderDistancePerPulse);
+        m_rightEncoderSensor = rightAverageEncoder.scaledBy(Constants.DriveConstants.kEncoderDistancePerPulse).inverted();
         
         // Modular Drivetrain
         m_modularDrivetrain = ModularDrivetrain.from(m_drivetrain);
