@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.NavxGyro;
-import frc.robot.TalonFXEncoder;
+import frc.robot.IntegratedTalonFXEncoder;
 import frc.robot.Constants.DriveConstants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -65,15 +65,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
         // Encoders
         var leftAverageEncoder = new AverageEncoderSensor(
-            new TalonFXEncoder(m_leftMotor_1),
-            new TalonFXEncoder(m_leftMotor_2),
-            new TalonFXEncoder(m_leftMotor_3)
+            new IntegratedTalonFXEncoder(m_leftMotor_1),
+            new IntegratedTalonFXEncoder(m_leftMotor_2),
+            new IntegratedTalonFXEncoder(m_leftMotor_3)
         );
 
         var rightAverageEncoder = new AverageEncoderSensor(
-            new TalonFXEncoder(m_rightMotor_1),
-            new TalonFXEncoder(m_rightMotor_2),
-            new TalonFXEncoder(m_rightMotor_3)
+            new IntegratedTalonFXEncoder(m_rightMotor_1),
+            new IntegratedTalonFXEncoder(m_rightMotor_2),
+            new IntegratedTalonFXEncoder(m_rightMotor_3)
         );
 
         m_leftEncoderSensor = leftAverageEncoder.scaledBy(Constants.DriveConstants.kEncoderDistancePerPulse);

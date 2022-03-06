@@ -7,11 +7,11 @@ import com.thegongoliers.input.odometry.BaseEncoderSensor;
 /**
  * Allows for the conversion of the TalonFX Encoder Value to an Encoder 
  */
-public class TalonFXEncoder extends BaseEncoderSensor {
+public class IntegratedTalonFXEncoder extends BaseEncoderSensor {
 
     private WPI_TalonFX mTalonFX;
 
-    public TalonFXEncoder(WPI_TalonFX talonFX) {
+    public IntegratedTalonFXEncoder(WPI_TalonFX talonFX) {
         super(talonFX::getSelectedSensorPosition, talonFX::getSelectedSensorVelocity);
         mTalonFX = talonFX;
         useIntegratedSensor();
