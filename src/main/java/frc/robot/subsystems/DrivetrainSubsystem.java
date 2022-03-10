@@ -98,7 +98,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // Path follower module
         var pathFollowerModule = new PathFollowerModule(m_gyro,
                 List.of(m_leftEncoderSensor, m_rightEncoderSensor), 0.5, 0.02);
-        pathFollowerModule.setForwardTolerance(6); // 6 inches
+        pathFollowerModule.setForwardTolerance(0.5); // 0.5 feet
         pathFollowerModule.setTurnTolerance(1); // 1 degree
 
         // Target alignment
@@ -120,10 +120,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Left distance (in)", m_leftEncoderSensor.getDistance());
-        SmartDashboard.putNumber("Right distance (in)", m_rightEncoderSensor.getDistance());
-        SmartDashboard.putNumber("Left speed (in)", m_leftEncoderSensor.getVelocity());
-        SmartDashboard.putNumber("Right speed (in)", m_rightEncoderSensor.getVelocity());
+        SmartDashboard.putNumber("Left distance (ft)", m_leftEncoderSensor.getDistance());
+        SmartDashboard.putNumber("Right distance (ft)", m_rightEncoderSensor.getDistance());
+        SmartDashboard.putNumber("Left speed (ft)", m_leftEncoderSensor.getVelocity());
+        SmartDashboard.putNumber("Right speed (ft)", m_rightEncoderSensor.getVelocity());
     }
 
 
