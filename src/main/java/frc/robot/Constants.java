@@ -59,7 +59,7 @@ public final class Constants {
     public static final PID kDistancePID = new PID(0.1, 0.0, 0.0);
     public static final PID kVelocityPID = new PID(0.1, 0.0, 0.0);
 
-    public static final double kDesiredFlywheelSpeed = 0.8;
+    public static final double kFeederMotorSpeed = 0.8;
 
   }
 
