@@ -43,6 +43,9 @@ public class EndgameSubsystem extends SubsystemBase {
          */
         m_leftEncoder = new PhoenixMotorControllerEncoder(m_leftMotor, FeedbackDevice.CTRE_MagEncoder_Relative);
         m_rightEncoder = new PhoenixMotorControllerEncoder(m_rightMotor, FeedbackDevice.CTRE_MagEncoder_Relative);
+
+        m_leftEncoder.reset();
+        m_rightEncoder.reset();
         // TODO: verify all encoders
 
 
