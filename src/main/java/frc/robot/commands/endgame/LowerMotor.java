@@ -28,7 +28,7 @@ public class LowerMotor extends CommandBase{
     @Override
     public boolean isFinished() {
         BaseEncoderSensor m_encoder = m_endgame.getEncoders();
-        /** TODO: Does this BaseEncoderSensor update every time this function is caled?
+        /** TODO: Does this BaseEncoderSensor update every time this function is called?
          *      If not, change .getEncoders to .getEncoderDistance, have it return a variable
          *      and the variable will be updated in the Subsystem's perioidic
          */

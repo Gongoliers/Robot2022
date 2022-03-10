@@ -20,6 +20,7 @@ public class StopEndgame extends CommandBase {
     @Override
     public void execute() {
         m_endgame.stop();
+        new EngageSafetyLock(m_endgame); // TODO: Does this code work?
     }
 
     // Make this return true when this Command no longer needs to run execute()

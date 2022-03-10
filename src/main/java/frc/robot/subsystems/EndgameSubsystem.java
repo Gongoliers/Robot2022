@@ -51,6 +51,7 @@ public class EndgameSubsystem extends SubsystemBase {
         };
         m_encoderSensor = new BaseEncoderSensor(m_DistanceSensor, m_VelocitySensor);
         m_encoderSensor.reset();
+        // TODO: Use PheonixMotorController from frc.robot after this branch is merged
 
         // Ensure that Solenoid is Unpowered
         m_unlockArms.set(false);
@@ -63,6 +64,7 @@ public class EndgameSubsystem extends SubsystemBase {
          *      1. Change getMotors to getLeftMotor & getRightMotor
          *      2. Change getMotors to setMotors and set from there
          */
+
     }
     public void powerPneumatics(Boolean power) {
         m_unlockArms.set(power);
