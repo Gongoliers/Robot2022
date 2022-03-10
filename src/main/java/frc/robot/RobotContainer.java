@@ -14,10 +14,12 @@ import frc.robot.commands.StopAll;
 
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.EndgameSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
-
+import frc.robot.commands.autonomous.EnableTargetingAlignToTarget;
 import frc.robot.commands.autonomous.FullSystemCheck;
 
 /**
@@ -28,9 +30,11 @@ import frc.robot.commands.autonomous.FullSystemCheck;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final VisionSubsystem vision = new VisionSubsystem();
+  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem(vision);
   private final EndgameSubsystem m_endgameSubsystem = new EndgameSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
 
   private Joystick m_driverJoystick;
   private JoystickButton m_turbo, m_stopAll, m_stopAll2, m_alignToTarget;
@@ -65,6 +69,9 @@ public class RobotContainer {
     m_stopAll2.whenPressed(new StopAll(m_drivetrainSubsystem, m_endgameSubsystem, m_shooterSubsystem));
     
     m_alignToTarget = new JoystickButton(m_driverJoystick, 9);
+    var alignToTargetCommand = new EnableTargetingAlignToTarget(m_drivetrainSubsystem, vision);
+    m_alignToTarget.whenPressed(alignToTargetCommand);
+    m_alignToTarget.whenReleased(alignToTargetCommand);
 
     // Default commands
     m_drivetrainSubsystem.setDefaultCommand(new DrivetrainOperatorControl(this, m_drivetrainSubsystem));
