@@ -41,6 +41,15 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void deploy() {
         //TODO: placeholder
+        /**I think pistons would be used here so I'm adding some commented out code that could be used
+         * 
+         * m_position.set(true);
+         *
+         * ADD THIS CODE TO public class extends
+         * private final Solenoid m_position = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN);
+         * 
+         * it would be too costly on a pneumatic level to have on = retracted, so we will probably have true = extended
+         */
     }
 
     public void retract() {

@@ -25,7 +25,7 @@ public class StopIntake extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
