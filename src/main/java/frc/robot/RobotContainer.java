@@ -64,9 +64,9 @@ public class RobotContainer {
     m_turbo.whenReleased(new SetTurboDrivetrain(m_drivetrainSubsystem, false));
 
     m_stopAll = new JoystickButton(m_driverJoystick, 11);
-    m_stopAll.whenPressed(new StopAll(m_drivetrainSubsystem, m_endgameSubsystem));
+    m_stopAll.whenPressed(new StopAll(m_drivetrainSubsystem, m_endgameSubsystem, m_shooterSubsystem));
     m_stopAll2 = new JoystickButton(m_driverJoystick, 12);
-    m_stopAll2.whenPressed(new StopAll(m_drivetrainSubsystem, m_endgameSubsystem));
+    m_stopAll2.whenPressed(new StopAll(m_drivetrainSubsystem, m_endgameSubsystem, m_shooterSubsystem));
     
     m_alignToTarget = new JoystickButton(m_driverJoystick, 9);
     var alignToTargetCommand = new EnableTargetingAlignToTarget(m_drivetrainSubsystem, vision);

@@ -20,7 +20,7 @@ public class StopShooter extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        m_shooter.stopAll();
+        m_shooter.stop();
     }
 
     @Override

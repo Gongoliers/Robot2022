@@ -1,104 +1,91 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.thegongoliers.input.odometry.EncoderSensor;
-import com.thegongoliers.output.actuators.GSpeedController;
-
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.PhoenixMotorControllerEncoder;
 import frc.robot.Constants.ShooterConstants;
+
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-    // Initializing the motors
-    private WPI_TalonSRX m_feederMotor;
-    private WPI_TalonSRX m_shooterMotor;
+	private final WPI_TalonSRX m_feederMotor;
+	private final WPI_TalonSRX m_outtakeMotor;
 
-    // Creating a speed controller
-    // private GSpeedController m_shooterController;
-    
-    // Initializing the Encoder
-    private EncoderSensor m_shooterEncoder; 
+	private double m_feederTargetSpeed;
+	private double m_feederSpeed;
 
-    public ShooterSubsystem() {
-        m_feederMotor = new WPI_TalonSRX(ShooterConstants.kFeederMotorPWM);
+	private double m_outtakeTargetSpeed;
+	private double m_outtakeSpeed;
 
-        m_shooterMotor = new WPI_TalonSRX(ShooterConstants.kShooterMotorPWM);
-        m_shooterEncoder = new PhoenixMotorControllerEncoder(m_shooterMotor, FeedbackDevice.CTRE_MagEncoder_Relative);
+	private final int m_spinCountThreshold;
+	private int m_spinCount;
 
-    }
-    
-    private void rampUpTime(double speed, double time, WPI_TalonSRX motor) {
-        double timeStep = 0.001;
-        double currentTime = timeStep;
-        double speedStep = speed/time;
-        while (currentTime != time) {
-            motor.set(speedStep*currentTime);
-            currentTime += timeStep;
-            // TODO: CHECK THIS SLEEP (sketchy)
-            try {
-                Thread.sleep((long) (timeStep * 1000));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    private void rampUpIntervals(double speed, double intervals, WPI_TalonSRX motor) {
-        int current_interval = 0;
-        double step = speed/intervals;
-        while (current_interval != intervals) {
-            motor.set(step*current_interval);
-            while (m_shooterEncoder.getVelocity() <= step*current_interval) {}
-            current_interval += 1;
-        }
-    }
-    
-    @Override
-    public void periodic() {}
+	public ShooterSubsystem() {
+		m_feederMotor = new WPI_TalonSRX(ShooterConstants.kFeederMotorCANId);
+		m_outtakeMotor = new WPI_TalonSRX(ShooterConstants.kOuttakeMotorCANId);
+		m_feederTargetSpeed = getFeederTargetSpeed();
+		m_outtakeTargetSpeed = getOuttakeTargetSpeed();
 
-    public void stopShooter() {
-        m_shooterMotor.stopMotor();
-    }
+		// Converts seconds to spin calls (50 spin calls = 1 second)
+		m_spinCountThreshold = ShooterConstants.kRampUpSeconds * (1000 / 20);
+		m_spinCount = 0;
+	}
 
-    public void stopFeeder() {
-        m_feederMotor.stopMotor();
-    }
+	@Override
+	public void periodic() {
+	}
 
-    public void stopAll() {
-        stopShooter();
-        stopFeeder();
-    }
+	public void spin() {
+		m_updateSpeeds();
+		m_spinCount++;
+		m_feederMotor.set(m_feederSpeed);
+		m_outtakeMotor.set(m_outtakeSpeed);
+	}
 
-    public void shootHigh() {
-        // TODO: DECIDE & TUNE
-        double speed = 0.5;
-        rampUpIntervals(speed, 10, m_shooterMotor);
-        // rampUpTime(0.5, 0.1)
-        feed(speed);
-    }
+	public void stop() {
+		stopFeederMotor();
+		stopOuttakeMotor();
+	}
 
-    public void shootLow() {
-        // TODO: DECIDE & TUNE
-        double speed = 0.5;
-        // rampUpIntervals(0.5, 10, m_shooterMotor);
-        rampUpTime(speed, 0.1, m_shooterMotor);
-        feed(speed);
-    }
-    
-    /**
-     * So far, this is the only function I have written a description for, but for a good reason
-     * @param flywheel_speed This is NOT the feeder speed, this is the TARGET SPEED for the flywheel
-     */
-    public void feed(double flywheel_speed) {
-        while (!isFlyWheelReady(flywheel_speed));
-        m_feederMotor.set(ShooterConstants.kFeederMotorSpeed);
-    }
+	public void stopFeederMotor() {
+		m_feederMotor.set(0);
+	}
 
+	public void stopOuttakeMotor() {
+		m_outtakeMotor.set(0);
+	}
 
-    public boolean isFlyWheelReady(double speed) {
-        return m_shooterEncoder.getVelocity() >= speed;
-    }
+	public double getFeederCurrentSpeed() {
+		return m_feederSpeed;
+	}
+
+	public double getOuttakeCurrentSpeed() {
+		return m_outtakeSpeed;
+	}
+
+	public double getFeederTargetSpeed() {
+		// TODO: Grab this value from SmartDashboard instead
+		return ShooterConstants.kFeederMotorTargetSpeed;
+	}
+
+	public double getOuttakeTargetSpeed() {
+		// TODO: Grab this value from SmartDashboard instead
+		return ShooterConstants.kOuttakeMotorTargetSpeed;
+	}
+
+	public void startRampUp() {
+		m_spinCount = 0;
+	}
+
+	private void m_updateSpeeds() {
+		if (m_spinCount < m_spinCountThreshold) {
+			// Linearly scales the speed based on the time until spin count
+			double rampFactor = m_spinCount / m_spinCountThreshold;
+			m_feederSpeed = m_feederTargetSpeed * rampFactor;
+			m_outtakeSpeed = m_outtakeTargetSpeed * rampFactor;
+		} else {
+			m_feederSpeed = m_feederTargetSpeed;
+			m_outtakeSpeed = m_outtakeTargetSpeed;
+		}
+	}
 
 }
