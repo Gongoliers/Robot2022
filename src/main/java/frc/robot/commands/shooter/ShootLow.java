@@ -3,10 +3,10 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class StopShooter extends CommandBase {
+public class ShootLow extends CommandBase {
     private ShooterSubsystem m_shooter;
 
-    public StopShooter(ShooterSubsystem shooter) {
+    public ShootLow(ShooterSubsystem shooter) {
         addRequirements(shooter);
         m_shooter = shooter; 
 
@@ -20,7 +20,7 @@ public class StopShooter extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        m_shooter.stopAll();
+        m_shooter.shootLow();
     }
 
     @Override
