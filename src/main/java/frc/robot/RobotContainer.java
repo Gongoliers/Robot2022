@@ -23,6 +23,8 @@ import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
 import frc.robot.commands.autonomous.EnableTargetingAlignToTarget;
 import frc.robot.commands.autonomous.FullSystemCheck;
+import frc.robot.commands.autonomous.LeaveTarmac;
+import frc.robot.commands.autonomous.LeaveTarmacAndShoot;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -78,8 +80,10 @@ public class RobotContainer {
     m_drivetrainSubsystem.setDefaultCommand(new DrivetrainOperatorControl(this, m_drivetrainSubsystem));
 
     // Auto chooser
-    m_autoChooser.setDefaultOption("DO NOTHING", stopAllCommand);
-    m_autoChooser.addOption("SYSTEM CHECK", new FullSystemCheck(m_drivetrainSubsystem));
+    m_autoChooser.setDefaultOption("Do Nothing", stopAllCommand);
+    m_autoChooser.addOption("System Check", new FullSystemCheck(m_drivetrainSubsystem));
+    m_autoChooser.addOption("Leave Tarmac", new LeaveTarmac(m_drivetrainSubsystem));
+    m_autoChooser.addOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrainSubsystem, m_shooterSubsystem));
 
     SmartDashboard.putData("Auto mode", m_autoChooser);
   }
