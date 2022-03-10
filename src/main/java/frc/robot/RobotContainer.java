@@ -8,14 +8,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.StopAll;
 
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.EndgameSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
 
@@ -30,6 +29,8 @@ import frc.robot.commands.autonomous.FullSystemCheck;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final EndgameSubsystem m_endgameSubsystem = new EndgameSubsystem();
+  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
 
   private Joystick m_driverJoystick;
   private JoystickButton m_turbo, m_stopAll, m_stopAll2, m_alignToTarget;
@@ -59,9 +60,9 @@ public class RobotContainer {
     m_turbo.whenReleased(new SetTurboDrivetrain(m_drivetrainSubsystem, false));
 
     m_stopAll = new JoystickButton(m_driverJoystick, 11);
-    m_stopAll.whenPressed(new StopAll(m_drivetrainSubsystem));
+    m_stopAll.whenPressed(new StopAll(m_drivetrainSubsystem, m_endgameSubsystem, m_shooterSubsystem));
     m_stopAll2 = new JoystickButton(m_driverJoystick, 12);
-    m_stopAll2.whenPressed(new StopAll(m_drivetrainSubsystem));
+    m_stopAll2.whenPressed(new StopAll(m_drivetrainSubsystem, m_endgameSubsystem, m_shooterSubsystem));
     
     m_alignToTarget = new JoystickButton(m_driverJoystick, 9);
 
