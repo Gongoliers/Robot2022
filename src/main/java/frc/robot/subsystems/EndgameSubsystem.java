@@ -2,14 +2,14 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.thegongoliers.input.odometry.BaseEncoderSensor;
-import com.thegongoliers.input.odometry.DistanceSensor;
-import com.thegongoliers.input.odometry.VelocitySensor;
+import com.thegongoliers.input.odometry.AverageEncoderSensor;
+import com.thegongoliers.input.odometry.EncoderSensor;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.PhoenixMotorControllerEncoder;
 import frc.robot.Constants.EndgameConstants;
 
 public class EndgameSubsystem extends SubsystemBase {
@@ -26,7 +26,12 @@ public class EndgameSubsystem extends SubsystemBase {
     private final Solenoid m_unlockArms = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidCAN);
     
     // Initializing EncoderSensor
-    private BaseEncoderSensor m_encoderSensor;
+    private EncoderSensor m_leftEncoder;
+    private EncoderSensor m_rightEncoder;
+    private AverageEncoderSensor m_encoderSensor;
+
+    // Reckless Mode
+    private Boolean error_thrown = false;
     
     public EndgameSubsystem() {
         /** Configuring Encoder Values
@@ -37,21 +42,12 @@ public class EndgameSubsystem extends SubsystemBase {
          * See __ for documentation regarding FeedbackDevice Constants:
          * https://store.ctr-electronics.com/content/api/cpp/html/namespacectre_1_1phoenix_1_1motorcontrol.html#a76df6b51b79bdd3710ddcd6ef43050e7
          */
-        // TODO: CONFIGURE THIS TO MATCH SELECTED MOTOR
-        m_leftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        DistanceSensor m_DistanceSensor = new DistanceSensor() {
-            public double getDistance() {
-                return m_leftMotor.getSelectedSensorPosition() * EndgameConstants.kEncoderDistancePerPulse;
-            }
-        };
-        VelocitySensor m_VelocitySensor = new VelocitySensor() {
-            public double getVelocity() {
-                return m_leftMotor.getSelectedSensorVelocity() * EndgameConstants.kEncoderDistancePerPulse;
-            }
-        };
-        m_encoderSensor = new BaseEncoderSensor(m_DistanceSensor, m_VelocitySensor);
-        m_encoderSensor.reset();
-        // TODO: Use PheonixMotorController from frc.robot after this branch is merged
+        m_leftEncoder = new PhoenixMotorControllerEncoder(m_leftMotor, FeedbackDevice.CTRE_MagEncoder_Relative);
+        m_rightEncoder = new PhoenixMotorControllerEncoder(m_rightMotor, FeedbackDevice.CTRE_MagEncoder_Relative);
+
+        m_encoderSensor = new AverageEncoderSensor(m_leftEncoder, m_rightEncoder);
+        // TODO: verify all encoders
+
 
         // Ensure that Solenoid is Unpowered
         m_unlockArms.set(false);
@@ -74,8 +70,8 @@ public class EndgameSubsystem extends SubsystemBase {
         return m_motors;
     }
 
-    public BaseEncoderSensor getEncoders() {
-        return m_encoderSensor;
+    public AverageEncoderSensor getEncoders() {
+        return new AverageEncoderSensor(m_leftEncoder, m_rightEncoder);
     }
 
     public void stop() {
@@ -85,6 +81,15 @@ public class EndgameSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        /**
+         * This ensures that the two arms are at (about) the same height when extending / retracting
+         * If an error is resulted, the code will stop the motors, HOWEVER, if the driver tries to 
+         * operate the endgame subsystem again, no error will occur. (DOUBLE SAFETY CHECK)
+         */
+        if ((m_leftEncoder.getDistance() + 2 > m_rightEncoder.getDistance()) && !error_thrown) {
+            m_motors.stopMotor();
+            error_thrown = true;
+        }
         /** 
          * This is a safety check. We will implement a check within the command, 
          *  but this acts as a catch all => ensures that the Endgame does not over
