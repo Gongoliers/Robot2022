@@ -34,7 +34,7 @@ public final class Constants {
         public static final double kTurnThreshold = 0.2;
         
         // Encoders
-        public static final double kWheelDiameterInches = 4;
+        public static final double kWheelDiameterInches = 4 / 12.0;
         // This was calculated by recording the ticks for one rotation
         public static final double kEncoderDistancePerPulse = (kWheelDiameterInches * Math.PI) / 17923.0;
     }   
