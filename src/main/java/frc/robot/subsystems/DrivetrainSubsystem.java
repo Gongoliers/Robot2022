@@ -1,10 +1,15 @@
 package frc.robot.subsystems;
 
+import java.util.List;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
+import com.kylecorry.pid.PID;
 import com.thegongoliers.output.drivetrain.ModularDrivetrain;
+import com.thegongoliers.output.drivetrain.PathFollowerModule;
 import com.thegongoliers.output.drivetrain.PowerEfficiencyModule;
+import com.thegongoliers.output.drivetrain.TargetAlignmentModule;
 import com.thegongoliers.output.drivetrain.VoltageControlModule;
 import com.thegongoliers.math.GMath;
 import com.thegongoliers.input.odometry.AverageEncoderSensor;
@@ -52,8 +57,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     
     // Initiating NAVX
     public AHRS m_navx = new AHRS(SerialPort.Port.kMXP);
+    private Gyro m_gyro = new NavxGyro(m_navx);
     
-    public DrivetrainSubsystem() {
+    public DrivetrainSubsystem(VisionSubsystem vision) {
 
         m_rightMotors.setInverted(true);
         
@@ -89,8 +95,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // Power Effeciency Module
         m_powerEfficiencyModule = new PowerEfficiencyModule(DriveConstants.kSecondsToReachFullSpeed, DriveConstants.kTurnThreshold);
 
+        // Path follower module
+        var pathFollowerModule = new PathFollowerModule(m_gyro,
+                List.of(m_leftEncoderSensor, m_rightEncoderSensor), 0.5, 0.02);
+        pathFollowerModule.setForwardTolerance(6); // 6 inches
+        pathFollowerModule.setTurnTolerance(1); // 1 degree
 
-        m_modularDrivetrain.setModules(m_voltageControlModule, m_powerEfficiencyModule);
+        // Target alignment
+        var targetAlignmentModule = new TargetAlignmentModule(vision.getTargetingCamera(),
+             new PID(0.12, 0.05, 0.005), new PID(0, 0, 0), false);
+
+        m_modularDrivetrain.setModules(pathFollowerModule, targetAlignmentModule, m_voltageControlModule, m_powerEfficiencyModule);
     }
 
     public void arcadeDrive(double forwardSpeed, double turnSpeed) {
