@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.kylecorry.pid.PID;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -41,6 +43,22 @@ public final class Constants {
   }
 
   public static final class ShooterConstants {
+    // TODO: FIX THESE VALUES
+    public static final int kFeederMotorPWM = 2; 
+    public static final int kShooterMotorPWM = 3;
+    public static final int kShooterEncoderA = 4; 
+    public static final int kShooterEncoderB = 5;
+    // TODO: Tune this when the design of the shooter is finalized
+    public static final double kLowShooterSpeed = 0.35;
+    public static final double kHighShooterSpeed = 0.95;
+    public static final double kMaxVoltage = 12.5;
+
+    // TODO: Tune this to shoot? learn more about this
+    public static final PID kDistancePID = new PID(0.1, 0.0, 0.0);
+    public static final PID kVelocityPID = new PID(0.1, 0.0, 0.0);
+
+    public static final double kDesiredFlywheelSpeed = 0.8;
+
   }
 
   public static final class AutoConstants {
