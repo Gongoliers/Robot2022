@@ -28,7 +28,6 @@ public class EndgameSubsystem extends SubsystemBase {
     // Initializing EncoderSensor
     private EncoderSensor m_leftEncoder;
     private EncoderSensor m_rightEncoder;
-    private AverageEncoderSensor m_encoderSensor;
 
     // Reckless Mode
     private Boolean error_thrown = false;
@@ -44,8 +43,6 @@ public class EndgameSubsystem extends SubsystemBase {
          */
         m_leftEncoder = new PhoenixMotorControllerEncoder(m_leftMotor, FeedbackDevice.CTRE_MagEncoder_Relative);
         m_rightEncoder = new PhoenixMotorControllerEncoder(m_rightMotor, FeedbackDevice.CTRE_MagEncoder_Relative);
-
-        m_encoderSensor = new AverageEncoderSensor(m_leftEncoder, m_rightEncoder);
         // TODO: verify all encoders
 
 
@@ -95,11 +92,18 @@ public class EndgameSubsystem extends SubsystemBase {
          *  but this acts as a catch all => ensures that the Endgame does not over
          *  retract
         */
-        if (m_encoderSensor.getDistance() > (EndgameConstants.kCappedDistance + 1)) {
+        if (m_leftEncoder.getDistance() > (EndgameConstants.kCappedDistance + 1)) {
             // TODO: Ensure that this aligns with the direction that the sensor
             // returns --> i.e. make sure positive velocity = retracting
-            if (m_encoderSensor.getVelocity() > 0) {
-                m_motors.stopMotor();
+            if (m_leftEncoder.getVelocity() > 0) {
+                m_leftMotor.stopMotor();
+            }
+        }
+        if (m_rightEncoder.getDistance() > (EndgameConstants.kCappedDistance + 1)) {
+            // TODO: Ensure that this aligns with the direction that the sensor
+            // returns --> i.e. make sure positive velocity = retracting
+            if (m_rightEncoder.getVelocity() > 0) {
+                m_rightMotor.stopMotor();
             }
         }
     }
