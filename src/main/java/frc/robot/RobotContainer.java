@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -21,6 +23,8 @@ import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
 import frc.robot.commands.autonomous.EnableTargetingAlignToTarget;
 import frc.robot.commands.autonomous.FullSystemCheck;
+import frc.robot.commands.autonomous.LeaveTarmac;
+import frc.robot.commands.autonomous.LeaveTarmacAndShoot;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -35,17 +39,15 @@ public class RobotContainer {
   private final EndgameSubsystem m_endgameSubsystem = new EndgameSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
   private Joystick m_driverJoystick;
   private JoystickButton m_turbo, m_stopAll, m_stopAll2, m_alignToTarget;
-
-  private Command m_autoCommand;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    m_autoCommand = new FullSystemCheck(m_drivetrainSubsystem);
   }
 
   /**
@@ -63,10 +65,11 @@ public class RobotContainer {
     m_turbo.whenPressed(new SetTurboDrivetrain(m_drivetrainSubsystem, true));
     m_turbo.whenReleased(new SetTurboDrivetrain(m_drivetrainSubsystem, false));
 
+    var stopAllCommand = new StopAll(m_drivetrainSubsystem, m_endgameSubsystem, m_shooterSubsystem);
     m_stopAll = new JoystickButton(m_driverJoystick, 11);
-    m_stopAll.whenPressed(new StopAll(m_drivetrainSubsystem, m_endgameSubsystem, m_shooterSubsystem));
+    m_stopAll.whenPressed(stopAllCommand);
     m_stopAll2 = new JoystickButton(m_driverJoystick, 12);
-    m_stopAll2.whenPressed(new StopAll(m_drivetrainSubsystem, m_endgameSubsystem, m_shooterSubsystem));
+    m_stopAll2.whenPressed(stopAllCommand);
     
     m_alignToTarget = new JoystickButton(m_driverJoystick, 9);
     var alignToTargetCommand = new EnableTargetingAlignToTarget(m_drivetrainSubsystem, vision);
@@ -75,6 +78,14 @@ public class RobotContainer {
 
     // Default commands
     m_drivetrainSubsystem.setDefaultCommand(new DrivetrainOperatorControl(this, m_drivetrainSubsystem));
+
+    // Auto chooser
+    m_autoChooser.setDefaultOption("Do Nothing", stopAllCommand);
+    m_autoChooser.addOption("System Check", new FullSystemCheck(m_drivetrainSubsystem));
+    m_autoChooser.addOption("Leave Tarmac", new LeaveTarmac(m_drivetrainSubsystem));
+    m_autoChooser.addOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrainSubsystem, m_shooterSubsystem));
+
+    SmartDashboard.putData("Auto mode", m_autoChooser);
   }
 
   public double getDriverSpeed() {
@@ -91,7 +102,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return m_autoCommand;
+    return m_autoChooser.getSelected();
   }
 
 }
