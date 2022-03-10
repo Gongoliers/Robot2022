@@ -34,7 +34,7 @@ public final class Constants {
         public static final double kTurnThreshold = 0.2;
         
         // Encoders
-        public static final double kWheelDiameterInches = 4;
+        public static final double kWheelDiameterInches = 4 / 12.0;
         // This was calculated by recording the ticks for one rotation
         public static final double kEncoderDistancePerPulse = (kWheelDiameterInches * Math.PI) / 17923.0;
     }   
@@ -45,28 +45,20 @@ public final class Constants {
   }
 
   public static final class ShooterConstants {
-    // TODO: FIX THESE VALUES
-    public static final int kFeederMotorPWM = 2; 
-    public static final int kShooterMotorPWM = 3;
-    public static final int kShooterEncoderA = 4; 
-    public static final int kShooterEncoderB = 5;
-    // TODO: Tune this when the design of the shooter is finalized
-    public static final double kLowShooterSpeed = 0.35;
-    public static final double kHighShooterSpeed = 0.95;
-    public static final double kMaxVoltage = 12.5;
-
-    // TODO: Tune this to shoot? learn more about this
-    public static final PID kDistancePID = new PID(0.1, 0.0, 0.0);
-    public static final PID kVelocityPID = new PID(0.1, 0.0, 0.0);
-
-    public static final double kFeederMotorSpeed = 0.8;
-
+    public static final int kFeederMotorCANId = 10;
+    public static final int kOuttakeMotorCANId = 11;
+    public static final int kRampUpSeconds = 2;
+    public static final double kFeederMotorTargetSpeed = 0.55;
+    public static final double kOuttakeMotorTargetSpeed = 0.45;
   }
 
   public static final class AutoConstants {
-    public static final double kAutoDriveDistanceInches = 60;
-    public static final double kAutoBackupDistanceInches = 20;
-    public static final double kAutoDriveSpeed = 0.5;
+    public static final double kAutoDriveToFenderSpeed = -0.5;
+    public static final double kAutoDriveToFenderSeconds = 4;
+    /**
+     * This is the distance in feet that the robot needs to drive to leave the tarmac
+     */
+    public static final double kAutoDriveDistanceFeet = 4.5; // TODO: This has not been calibrated
   }
 
   public static final class OIConstants {
