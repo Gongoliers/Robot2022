@@ -70,6 +70,22 @@ public class EndgameSubsystem extends SubsystemBase {
         return m_motors;
     }
 
+    public WPI_TalonSRX getLeftMotor() {
+        return m_leftMotor;
+    }
+
+    public WPI_TalonSRX getRightMotor() {
+        return m_rightMotor;
+    }
+
+    public EncoderSensor getLeftEncoderSensor() {
+        return m_leftEncoder;
+    }
+
+    public EncoderSensor getRightEncoderSensor() {
+        return m_rightEncoder;
+    }
+
     public AverageEncoderSensor getEncoders() {
         return new AverageEncoderSensor(m_leftEncoder, m_rightEncoder);
     }
