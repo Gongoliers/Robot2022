@@ -53,12 +53,11 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kAutoDriveToFenderSpeed = -0.5;
+    public static final double kAutoDriveToFenderSpeed = -0.4;
     public static final double kAutoDriveToFenderSeconds = 4;
-    /**
-     * This is the distance in feet that the robot needs to drive to leave the tarmac
-     */
-    public static final double kAutoDriveDistanceFeet = 4.5; // TODO: This has not been calibrated
+
+    public static final double kAutoDriveAwayFromFenderSpeed = -0.4;
+    public static final double kAutoDriveAwayFromFenderSeconds = 2;
   }
 
   public static final class OIConstants {

@@ -96,12 +96,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_powerEfficiencyModule = new PowerEfficiencyModule(DriveConstants.kSecondsToReachFullSpeed, DriveConstants.kTurnThreshold);
 
         // Path follower module
+        // TODO: Calibrate this
         var pathFollowerModule = new PathFollowerModule(m_gyro,
                 List.of(m_leftEncoderSensor, m_rightEncoderSensor), 0.1, 0.02);
         pathFollowerModule.setForwardTolerance(0.5); // 0.5 feet
         pathFollowerModule.setTurnTolerance(1); // 1 degree
 
         // Target alignment
+        // TODO: Calibrate this
         var targetAlignmentModule = new TargetAlignmentModule(vision.getTargetingCamera(),
              new PID(0.12, 0.05, 0.005), new PID(0, 0, 0), false);
 

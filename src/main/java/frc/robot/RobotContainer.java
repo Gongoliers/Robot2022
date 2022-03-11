@@ -89,6 +89,7 @@ public class RobotContainer {
     var stopCompressorButton = new JoystickButton(m_xbox, Button.kB.value);
     stopCompressorButton.whenPressed(new StopCompressor(m_compressor));
 
+    // TODO: This is temporary for testing purposes
     var shootButton = new JoystickButton(m_driverJoystick, 7);
     shootButton.whileHeld(new Shoot(m_shooterSubsystem));
 
