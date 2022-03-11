@@ -39,8 +39,11 @@ public class LowerMotor extends CommandBase {
          * than the max distance
          * 
          * I am comparing distances rather than velocities for readability
+         * however when given some further thought, this is unreliable
          */
-        if (Math.abs(left.getDistance() - right.getDistance()) > max_distance) {
+
+        double max_velocity = max_distance * EndgameConstants.kLowerMotorSpeed;
+        if (Math.abs(left.getVelocity() - right.getVelocity()) > max_velocity) {
 
             // Grabbing the Speed of the two arms
             double leftRate = Math.abs(left.getVelocity());
