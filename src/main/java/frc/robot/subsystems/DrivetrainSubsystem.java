@@ -97,7 +97,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         // Path follower module
         var pathFollowerModule = new PathFollowerModule(m_gyro,
-                List.of(m_leftEncoderSensor, m_rightEncoderSensor), 0.5, 0.02);
+                List.of(m_leftEncoderSensor, m_rightEncoderSensor), 0.1, 0.02);
         pathFollowerModule.setForwardTolerance(0.5); // 0.5 feet
         pathFollowerModule.setTurnTolerance(1); // 1 degree
 

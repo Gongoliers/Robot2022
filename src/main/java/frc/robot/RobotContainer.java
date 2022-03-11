@@ -22,6 +22,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
+import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.autonomous.EnableTargetingAlignToTarget;
 import frc.robot.commands.autonomous.FullSystemCheck;
 import frc.robot.commands.autonomous.LeaveTarmac;
@@ -87,6 +88,9 @@ public class RobotContainer {
 
     var stopCompressorButton = new JoystickButton(m_xbox, Button.kB.value);
     stopCompressorButton.whenPressed(new StopCompressor(m_compressor));
+
+    var shootButton = new JoystickButton(m_driverJoystick, 7);
+    shootButton.whileHeld(new Shoot(m_shooterSubsystem));
 
     // Default commands
     m_drivetrainSubsystem.setDefaultCommand(new DrivetrainOperatorControl(this, m_drivetrainSubsystem));
