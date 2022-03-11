@@ -27,22 +27,25 @@ public class RaiseMotor extends CommandBase {
          * This code is designed to ensure that the two arms raise at similar rates
          */
 
-        // This is the maximum amount of distance one arm can be away from the other
-        double max_distance = 1; // in
-
+        
         // Initializing the EncoderSensors from the Endgame Subsystem
         EncoderSensor left = m_endgame.getLeftEncoderSensor();
         EncoderSensor right = m_endgame.getRightEncoderSensor();
-
+        
         /**
          * Checking to see if the distance between the two arms is greater
          * than the max distance
          * 
          * I am comparing distances rather than velocities for readability
          * however when given some further thought, this is unreliable
+         * 
+         * 1 m = 39.37
+         * 1 in = 0.025 m
          */
-
-        double max_velocity = max_distance * EndgameConstants.kRaiseMotorSpeed;
+        // This is the maximum amount of distance one arm can be away from the other
+        double max_distance = 0.025; // m
+        
+        double max_velocity = max_distance / EndgameConstants.kRaiseMotorSpeed;
         if (Math.abs(left.getVelocity() - right.getVelocity()) > max_velocity) {
 
             // Grabbing the Speed of the two arms

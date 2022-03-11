@@ -24,25 +24,28 @@ public class LowerMotor extends CommandBase {
     public void execute() {
     
         /**
-         * This code is designed to ensure that the two arms raise at similar rates
+         * This code is designed to ensure that the two arms lower at similar rates
          */
 
-        // This is the maximum amount of distance one arm can be away from the other
-        double max_distance = 1; // in
-
+        
         // Initializing the EncoderSensors from the Endgame Subsystem
         EncoderSensor left = m_endgame.getLeftEncoderSensor();
         EncoderSensor right = m_endgame.getRightEncoderSensor();
-
+        
         /**
          * Checking to see if the distance between the two arms is greater
          * than the max distance
          * 
          * I am comparing distances rather than velocities for readability
          * however when given some further thought, this is unreliable
+         * 
+         * 1 m = 39.37
+         * 1 in = 0.025 m
          */
-
-        double max_velocity = max_distance * EndgameConstants.kLowerMotorSpeed;
+        // This is the maximum amount of distance one arm can be away from the other
+        double max_distance = 0.025; // m
+        
+        double max_velocity = max_distance / EndgameConstants.kLowerMotorSpeed;
         if (Math.abs(left.getVelocity() - right.getVelocity()) > max_velocity) {
 
             // Grabbing the Speed of the two arms
