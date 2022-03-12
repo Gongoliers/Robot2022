@@ -1,38 +1,52 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.thegongoliers.output.actuators.GPiston;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.IntakeConstants;;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
+
     private WPI_TalonSRX m_intakeMotor;
+    private final Solenoid m_intakeSolenoid1;
+    private final GPiston m_intakePiston1;
+
+    private final Solenoid m_intakeSolenoid2;
+    private final GPiston m_intakePiston2;
 
     public IntakeSubsystem() {
-        m_intakeMotor = new WPI_TalonSRX(IntakeConstants.kIntakePWM);
-        m_intakeMotor.setInverted(false);
+        
+        m_intakeMotor = new WPI_TalonSRX(IntakeConstants.kIntakeCanId);
+
+
+        m_intakeSolenoid1 = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN1);
+        m_intakePiston1 = new GPiston(m_intakeSolenoid1);
+
+        m_intakeSolenoid2 = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN2);
+        m_intakePiston2 = new GPiston(m_intakeSolenoid2);
+
     }
 
     @Override
     public void periodic() {
-        //smartdashboard
+        // TODO: smartdashboard
     }
 
     public void stopIntake() {
         m_intakeMotor.stopMotor();
-    }
-
-    public void cancelMove() {
-        //todo implement
+        retract();
     }
 
     public void stopAll() {
         stopIntake();
-        cancelMove();
+        retract();
     }
 
     public void intake() {
-        m_intakeMotor.set(IntakeConstants.kIntakePWM);
+        m_intakeMotor.set(IntakeConstants.kIntakeSpeed);
     }
 
     public void outtake() {
@@ -40,20 +54,17 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void deploy() {
-        //TODO: placeholder
-        /**I think pistons would be used here so I'm adding some commented out code that could be used
-         * 
-         * m_position.set(true);
-         *
-         * ADD THIS CODE TO public class extends
-         * private final Solenoid m_position = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN);
-         * 
-         * it would be too costly on a pneumatic level to have on = retracted, so we will probably have true = extended
-         */
+        m_intakePiston1.extend();
+        m_intakePiston2.extend();
     }
 
     public void retract() {
-        //TODO: placeholder
+        m_intakePiston1.retract();
+        m_intakePiston2.retract();
+    }
+
+    public boolean isDeployed() {
+        return (m_intakePiston1.isExtended() && m_intakePiston2.isExtended());
     }
 
 }

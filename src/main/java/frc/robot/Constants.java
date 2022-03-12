@@ -40,33 +40,45 @@ public final class Constants {
     }   
 
   public static final class IntakeConstants {
-    public static final int kIntakePWM = 7;
+    public static final int kIntakeCanId = 7;
     public static final double kIntakeSpeed = 0.2;
+
+    public static final int kSolenoidCAN1 = 0;
+    public static final int kSolenoidCAN2 = 0;
   }
 
   public static final class ShooterConstants {
     public static final int kFeederMotorCANId = 10;
     public static final int kOuttakeMotorCANId = 11;
+    
     public static final double kRampUpSeconds = 0.5;
+
+    public static final int kInterfaceMotorCANId = 0; // TODO: Configure
+    public static final int kRampUpSeconds = 2;
+
     public static final double kFeederMotorTargetSpeed = 0.55;
     public static final double kOuttakeMotorTargetSpeed = 0.45;
+    public static final double kInterfaceMotorSpeed = 0.3;
   }
 
   public static final class AutoConstants {
-    public static final double kAutoDriveDistanceInches = 60;
-    public static final double kAutoBackupDistanceInches = 20;
-    public static final double kAutoDriveSpeed = 0.5;
+    public static final double kAutoDriveToFenderSpeed = -0.4;
+    public static final double kAutoDriveToFenderSeconds = 4;
+
+    public static final double kAutoDriveAwayFromFenderSpeed = -0.4;
+    public static final double kAutoDriveAwayFromFenderSeconds = 2;
   }
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kXboxControllerPort = 1;
     public static final boolean KSingleDriverMode = false;
   }
 
   public static final class EndgameConstants {
-    public static final int kLeftMotorCAN = 7; // LEFT OF BATTERY (WHEN STANDING BEHIND BATTERY)
-    public static final int kRightMotorCAN = 8; // RIGHT OF BATTERY (WHEN STANDING BEHIND BATTERY)
-    public static final int kSolenoidCAN = 9; // CAN PORT OF SOLENOID
+    public static final int kLeftMotorCAN = 20; // LEFT OF BATTERY (WHEN STANDING BEHIND BATTERY)
+    public static final int kRightMotorCAN = 21; // RIGHT OF BATTERY (WHEN STANDING BEHIND BATTERY)
+    public static final int kSolenoidCAN = 7; // CAN PORT OF SOLENOID
     public static final int kEncoderDistancePerPulse = 0; // TODO: CONFIGURE THIS
     public static final int kCappedDistance = 1; // TODO: Configure this | this controls the amount the distance the motor should travel when raising / lowering the endgame system
     public static final double kRaiseMotorSpeed = 0.2;

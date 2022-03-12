@@ -15,7 +15,6 @@ public class Shoot extends CommandBase {
 
 	@Override
 	public void initialize() {
-		m_shooter.startRampUp();
 	}
 
 	@Override
