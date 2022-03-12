@@ -85,6 +85,11 @@ public class EndgameSubsystem extends SubsystemBase {
         return new AverageEncoderSensor(m_leftEncoder, m_rightEncoder);
     }
 
+    public double getAbsoluteDriftAmount() {
+        double difference = m_leftEncoder.getDistance() - m_rightEncoder.getDistance();
+        return Math.abs(difference);
+    }
+
     public void stop() {
         m_motors.stopMotor();
         m_lockArmsSolenoid.set(false);
@@ -97,7 +102,7 @@ public class EndgameSubsystem extends SubsystemBase {
          * If an error is resulted, the code will stop the motors, HOWEVER, if the driver tries to 
          * operate the endgame subsystem again, no error will occur. (DOUBLE SAFETY CHECK)
          */
-        if ((m_leftEncoder.getDistance() + 2 > m_rightEncoder.getDistance()) && !error_thrown) {
+        if (getAbsoluteDriftAmount() > EndgameConstants.kMaximumDriftAmount && !error_thrown) {
             m_motors.stopMotor();
             error_thrown = true;
         }
