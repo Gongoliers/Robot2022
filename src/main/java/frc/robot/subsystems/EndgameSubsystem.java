@@ -52,15 +52,10 @@ public class EndgameSubsystem extends SubsystemBase {
         // Ensure that Solenoid is Unpowered
         m_unlockArms.set(false);
 
-        // Reverse One Motor Controller
-        m_leftMotor.setInverted(true); // TODO: THIS ISN'T RIGHT -- CONFIGURE
-        /**
-         * TODO: unsure of whether or not this affects Motor Controller group
-         * If this does not affect MotorControllerGroup:
-         *      1. Change getMotors to getLeftMotor & getRightMotor
-         *      2. Change getMotors to setMotors and set from there
-         */
-
+        // Endgame should be run in the positives in both directions.
+        // As far as I know, the motors are by default set to run with
+        // both positives set correctly, so I don't see the purpose of
+        // reversing one of the motors.
     }
     public void powerPneumatics(Boolean power) {
         m_unlockArms.set(power);
