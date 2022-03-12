@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import frc.robot.Constants.ShooterConstants;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.thegongoliers.output.actuators.GSpeedController;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -10,24 +12,25 @@ public class ShooterSubsystem extends SubsystemBase {
 	private final WPI_TalonSRX m_feederMotor;
 	private final WPI_TalonSRX m_outtakeMotor;
 
-	private double m_feederTargetSpeed;
-	private double m_feederSpeed;
+	private final GSpeedController m_feederSpeedController;
+	private final GSpeedController m_outtakeSpeedController;
 
-	private double m_outtakeTargetSpeed;
-	private double m_outtakeSpeed;
+	private double m_feederTSpeed;
+	private double m_outtakeTSpeed;
 
-	private final int m_spinCountThreshold;
-	private int m_spinCount;
 
 	public ShooterSubsystem() {
 		m_feederMotor = new WPI_TalonSRX(ShooterConstants.kFeederMotorCANId);
 		m_outtakeMotor = new WPI_TalonSRX(ShooterConstants.kOuttakeMotorCANId);
-		m_feederTargetSpeed = getFeederTargetSpeed();
-		m_outtakeTargetSpeed = getOuttakeTargetSpeed();
 
-		// Converts seconds to spin calls (50 spin calls = 1 second)
-		m_spinCountThreshold = ShooterConstants.kRampUpSeconds * (1000 / 20);
-		m_spinCount = 0;
+		m_feederSpeedController = new GSpeedController(m_feederMotor);
+		m_outtakeSpeedController = new GSpeedController(m_outtakeMotor);
+
+		m_feederSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
+		m_outtakeSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
+
+		m_feederTSpeed = ShooterConstants.kFeederMotorTargetSpeed;
+		m_outtakeTSpeed = ShooterConstants.kOuttakeMotorTargetSpeed;
 	}
 
 	@Override
@@ -35,10 +38,8 @@ public class ShooterSubsystem extends SubsystemBase {
 	}
 
 	public void spin() {
-		m_updateSpeeds();
-		m_spinCount++;
-		m_feederMotor.set(m_feederSpeed);
-		m_outtakeMotor.set(m_outtakeSpeed);
+		m_feederSpeedController.set(m_feederTSpeed);
+		m_outtakeSpeedController.set(m_outtakeTSpeed);
 	}
 
 	public void stop() {
@@ -47,45 +48,23 @@ public class ShooterSubsystem extends SubsystemBase {
 	}
 
 	public void stopFeederMotor() {
-		m_feederMotor.set(0);
+		m_feederSpeedController.stopMotor();
 	}
 
 	public void stopOuttakeMotor() {
-		m_outtakeMotor.set(0);
+		m_outtakeSpeedController.stopMotor();
 	}
 
-	public double getFeederCurrentSpeed() {
-		return m_feederSpeed;
+	public boolean outtakeReady() {
+		return (m_outtakeSpeedController.get() >= m_outtakeTSpeed);
 	}
 
-	public double getOuttakeCurrentSpeed() {
-		return m_outtakeSpeed;
+	public boolean feederReady() {
+		return (m_feederSpeedController.get() >= m_feederTSpeed);
 	}
 
-	public double getFeederTargetSpeed() {
-		// TODO: Grab this value from SmartDashboard instead
-		return ShooterConstants.kFeederMotorTargetSpeed;
-	}
-
-	public double getOuttakeTargetSpeed() {
-		// TODO: Grab this value from SmartDashboard instead
-		return ShooterConstants.kOuttakeMotorTargetSpeed;
-	}
-
-	public void startRampUp() {
-		m_spinCount = 0;
-	}
-
-	private void m_updateSpeeds() {
-		if (m_spinCount < m_spinCountThreshold) {
-			// Linearly scales the speed based on the time until spin count
-			double rampFactor = m_spinCount / m_spinCountThreshold;
-			m_feederSpeed = m_feederTargetSpeed * rampFactor;
-			m_outtakeSpeed = m_outtakeTargetSpeed * rampFactor;
-		} else {
-			m_feederSpeed = m_feederTargetSpeed;
-			m_outtakeSpeed = m_outtakeTargetSpeed;
-		}
+	public boolean shooterReady() {
+		return (outtakeReady() && feederReady());
 	}
 
 }
