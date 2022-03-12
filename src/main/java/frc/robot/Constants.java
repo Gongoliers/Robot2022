@@ -47,7 +47,7 @@ public final class Constants {
   public static final class ShooterConstants {
     public static final int kFeederMotorCANId = 10;
     public static final int kOuttakeMotorCANId = 11;
-    public static final int kRampUpSeconds = 2;
+    public static final double kRampUpSeconds = 2.0;
     public static final double kFeederMotorTargetSpeed = 0.55;
     public static final double kOuttakeMotorTargetSpeed = 0.45;
   }

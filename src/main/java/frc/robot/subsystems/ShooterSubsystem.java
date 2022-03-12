@@ -26,7 +26,9 @@ public class ShooterSubsystem extends SubsystemBase {
 		m_outtakeTargetSpeed = getOuttakeTargetSpeed();
 
 		// Converts seconds to spin calls (50 spin calls = 1 second)
-		m_spinCountThreshold = ShooterConstants.kRampUpSeconds * (1000 / 20);
+		// Force-casts to an integer since fractional calls to the spin function do not occur
+		// TODO: Math.ceil instead?
+		m_spinCountThreshold = (int) ShooterConstants.kRampUpSeconds * (1000 / 20);
 		m_spinCount = 0;
 	}
 
