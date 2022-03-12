@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.shooter.Shoot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.thegongoliers.output.actuators.GSpeedController;
