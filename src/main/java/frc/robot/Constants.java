@@ -40,8 +40,10 @@ public final class Constants {
     }   
 
   public static final class IntakeConstants {
-    public static final int kIntakePWM = 7;
+    public static final int kIntakeCanId = 7;
     public static final double kIntakeSpeed = 0.2;
+
+    public static final int kSolenoidCAN = 0;
   }
 
   public static final class ShooterConstants {
