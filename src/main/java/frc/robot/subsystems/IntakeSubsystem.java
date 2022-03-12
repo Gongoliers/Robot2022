@@ -11,14 +11,22 @@ import frc.robot.Constants.IntakeConstants;
 public class IntakeSubsystem extends SubsystemBase {
 
     private WPI_TalonSRX m_intakeMotor;
-    private final Solenoid m_intakeSolenoid;
-    private final GPiston m_intakePiston;
+    private final Solenoid m_intakeSolenoid1;
+    private final GPiston m_intakePiston1;
+
+    private final Solenoid m_intakeSolenoid2;
+    private final GPiston m_intakePiston2;
 
     public IntakeSubsystem() {
         
         m_intakeMotor = new WPI_TalonSRX(IntakeConstants.kIntakeCanId);
-        m_intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN);
-        m_intakePiston = new GPiston(m_intakeSolenoid);
+
+
+        m_intakeSolenoid1 = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN1);
+        m_intakePiston1 = new GPiston(m_intakeSolenoid1);
+
+        m_intakeSolenoid2 = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN2);
+        m_intakePiston2 = new GPiston(m_intakeSolenoid2);
 
     }
 
@@ -46,15 +54,17 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void deploy() {
-        m_intakePiston.extend();
+        m_intakePiston1.extend();
+        m_intakePiston2.extend();
     }
 
     public void retract() {
-        m_intakePiston.retract();
+        m_intakePiston1.retract();
+        m_intakePiston2.retract();
     }
 
     public boolean isDeployed() {
-        return m_intakePiston.isExtended();
+        return (m_intakePiston1.isExtended() && m_intakePiston2.isExtended());
     }
 
 }

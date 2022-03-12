@@ -22,6 +22,10 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
+import frc.robot.commands.endgame.DisengageSafetyLock;
+import frc.robot.commands.endgame.EngageSafetyLock;
+import frc.robot.commands.endgame.LowerMotor;
+import frc.robot.commands.endgame.RaiseMotor;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.autonomous.EnableTargetingAlignToTarget;
 import frc.robot.commands.autonomous.FullSystemCheck;
@@ -72,7 +76,7 @@ public class RobotContainer {
     m_turbo.whenPressed(new SetTurboDrivetrain(m_drivetrainSubsystem, true));
     m_turbo.whenReleased(new SetTurboDrivetrain(m_drivetrainSubsystem, false));
 
-    var stopAllCommand = new StopAll(m_drivetrainSubsystem, m_endgameSubsystem, m_shooterSubsystem);
+    var stopAllCommand = new StopAll(m_drivetrainSubsystem, m_endgameSubsystem, m_shooterSubsystem, m_intakeSubsystem);
     m_stopAll = new JoystickButton(m_driverJoystick, 11);
     m_stopAll.whenPressed(stopAllCommand);
     m_stopAll2 = new JoystickButton(m_driverJoystick, 12);
@@ -92,6 +96,20 @@ public class RobotContainer {
     // TODO: This is temporary for testing purposes
     var shootButton = new JoystickButton(m_driverJoystick, 7);
     shootButton.whileHeld(new Shoot(m_shooterSubsystem));
+
+    JoystickButton m_raise_endgame = new JoystickButton(m_driverJoystick, 7);
+    var raiseEndgameCommand = new RaiseMotor(m_endgameSubsystem);
+    var engageSafetyCommand = new EngageSafetyLock(m_endgameSubsystem);
+    var disengageSafetyCommand = new DisengageSafetyLock(m_endgameSubsystem);
+    m_raise_endgame.whenPressed(disengageSafetyCommand);
+    m_raise_endgame.whileHeld(raiseEndgameCommand);
+    m_raise_endgame.whenReleased(engageSafetyCommand);
+
+    JoytickButton m_lower_endgame = new JoystickButton(m_driverJoystick, 8);
+    var lowerEndgamecommand = new LowerMotor(m_endgameSubsystem);
+    m_lower_endgame.whenPressed(disengageSafetyCommand);
+    m_lower_endgame.whileHeld(lowerEndgamecommand);
+    m_lower_endgame.whenReleased(engageSafetyCommand);
 
     // Default commands
     m_drivetrainSubsystem.setDefaultCommand(new DrivetrainOperatorControl(this, m_drivetrainSubsystem));
