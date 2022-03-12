@@ -36,13 +36,10 @@ public class ShooterSubsystem extends SubsystemBase {
 		m_feederSpeedController = new GSpeedController(m_feederMotor);
 		m_outtakeSpeedController = new GSpeedController(m_outtakeMotor);
 
-
-		// Converts seconds to spin calls (50 spin calls = 1 second)
-		// Force-casts to an integer since fractional calls to the spin function do not occur
-		// TODO: Math.ceil instead?
-		m_spinCountThreshold = (int) ShooterConstants.kRampUpSeconds * (1000 / 20);
-		m_spinCount = 0;
-
+		/**
+		 * If we were counting by spins, the formula that we would use is 
+		 * m_spinCountThreshold = (int) ShooterConstants.kRampUpSeconds * (1000 / 20)
+		 */
 		m_feederSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
 		m_outtakeSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
 

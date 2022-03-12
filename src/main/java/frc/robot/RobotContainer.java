@@ -105,7 +105,7 @@ public class RobotContainer {
     m_raise_endgame.whileHeld(raiseEndgameCommand);
     m_raise_endgame.whenReleased(engageSafetyCommand);
 
-    JoytickButton m_lower_endgame = new JoystickButton(m_driverJoystick, 8);
+    JoystickButton m_lower_endgame = new JoystickButton(m_driverJoystick, 8);
     var lowerEndgamecommand = new LowerMotor(m_endgameSubsystem);
     m_lower_endgame.whenPressed(disengageSafetyCommand);
     m_lower_endgame.whileHeld(lowerEndgamecommand);
