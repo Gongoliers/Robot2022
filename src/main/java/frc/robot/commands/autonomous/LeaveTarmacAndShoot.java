@@ -12,7 +12,7 @@ public class LeaveTarmacAndShoot extends SequentialCommandGroup {
         addCommands(
             new LeaveTarmac(drivetrain),
             new Drive(drivetrain, Constants.AutoConstants.kAutoDriveToFenderSpeed).withTimeout(Constants.AutoConstants.kAutoDriveToFenderSeconds),
-            new Shoot(shooter)
+            new Shoot(shooter).withTimeout(8.0)
         );
     }
 }
