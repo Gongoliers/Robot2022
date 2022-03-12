@@ -23,11 +23,10 @@ public class EndgameSubsystem extends SubsystemBase {
     private final MotorControllerGroup m_motors = new MotorControllerGroup(m_leftMotor, m_rightMotor);
 
     // Initializing Pneumatics
-    private final Solenoid m_unlockArms = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidCAN);
+    private final Solenoid m_lockArmsSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidCAN);
     
     // Initializing EncoderSensor
-    private EncoderSensor m_leftEncoder;
-    private EncoderSensor m_rightEncoder;
+    private EncoderSensor m_leftEncoder, m_rightEncoder;
 
     // Reckless Mode
     private Boolean error_thrown = false;
@@ -44,21 +43,22 @@ public class EndgameSubsystem extends SubsystemBase {
         m_leftEncoder = new PhoenixMotorControllerEncoder(m_leftMotor, FeedbackDevice.CTRE_MagEncoder_Relative);
         m_rightEncoder = new PhoenixMotorControllerEncoder(m_rightMotor, FeedbackDevice.CTRE_MagEncoder_Relative);
 
+        // TODO: verify all encoders
         m_leftEncoder.reset();
         m_rightEncoder.reset();
-        // TODO: verify all encoders
 
 
         // Ensure that Solenoid is Unpowered
-        m_unlockArms.set(false);
+        m_lockArmsSolenoid.set(false);
 
         // Endgame should be run in the positives in both directions.
         // As far as I know, the motors are by default set to run with
         // both positives set correctly, so I don't see the purpose of
         // reversing one of the motors.
     }
-    public void powerPneumatics(Boolean power) {
-        m_unlockArms.set(power);
+
+    public void lock(Boolean state) {
+        m_lockArmsSolenoid.set(state);
     }
 
     public MotorControllerGroup getMotors() {
@@ -87,7 +87,7 @@ public class EndgameSubsystem extends SubsystemBase {
 
     public void stop() {
         m_motors.stopMotor();
-        m_unlockArms.set(false);
+        m_lockArmsSolenoid.set(false);
     }
 
     @Override
