@@ -51,9 +51,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private VoltageControlModule m_voltageControlModule;
     private PowerEfficiencyModule m_powerEfficiencyModule;
 
-    // Turbo
-    private boolean m_turboEnabled = false; 
-
     
     // Initiating NAVX
     public AHRS m_navx = new AHRS(SerialPort.Port.kMXP);
@@ -135,7 +132,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
      * setTurboEnabled(false) = robot travels at normal speed
      */
     public void setTurboEnabled(boolean turboEnabled) {
-        m_turboEnabled = turboEnabled;
         if (turboEnabled) {
             m_voltageControlModule.setMaxVoltage(DriveConstants.kFastVoltage);
         } else {
