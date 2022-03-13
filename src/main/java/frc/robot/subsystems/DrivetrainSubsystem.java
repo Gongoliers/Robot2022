@@ -88,6 +88,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
         // Modular Drivetrain
         m_modularDrivetrain = ModularDrivetrain.from(m_drivetrain);
+        m_modularDrivetrain.setInactiveResetSeconds(DriveConstants.kInactivityThresholdSeconds);
         
         // Voltage Control Module 
         m_voltageControlModule = new VoltageControlModule(DriveConstants.kFastVoltage);
