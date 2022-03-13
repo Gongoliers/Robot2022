@@ -2,7 +2,6 @@ package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.commands.drivetrain.Drive;
 

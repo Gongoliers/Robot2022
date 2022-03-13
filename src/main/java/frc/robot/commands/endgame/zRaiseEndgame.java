@@ -14,6 +14,7 @@ public class zRaiseEndgame extends SequentialCommandGroup {
     public zRaiseEndgame(EndgameSubsystem endgame) {
         addCommands(
             new DisengageSafetyLock(endgame),
+            // TODO: ADD DELAY COMMAND FOR FUTURE USE
             new RaiseMotor(endgame),
             new EngageSafetyLock(endgame)
          );

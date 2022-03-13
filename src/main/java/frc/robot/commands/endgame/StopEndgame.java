@@ -20,13 +20,13 @@ public class StopEndgame extends CommandBase {
     @Override
     public void execute() {
         m_endgame.stop();
-        new EngageSafetyLock(m_endgame); // TODO: Does this code work?
+        m_endgame.powerPneumatics(false);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
