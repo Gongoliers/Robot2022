@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.kylecorry.pid.PID;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -24,6 +22,9 @@ public final class Constants {
         public static final int kRightDriveCAN1 = 4;
         public static final int kRightDriveCAN2 = 5;
         public static final int kRightDriveCAN3 = 6;
+
+        // Inactivity
+        public static final double kInactivityThresholdSeconds = 1.0;
 
         // Voltage Regulation
         public static final double kNormalVoltage = 5.25;
