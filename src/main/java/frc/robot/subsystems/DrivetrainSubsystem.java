@@ -11,6 +11,7 @@ import com.thegongoliers.output.drivetrain.PathFollowerModule;
 import com.thegongoliers.output.drivetrain.PowerEfficiencyModule;
 import com.thegongoliers.output.drivetrain.StabilityModule;
 import com.thegongoliers.output.drivetrain.TargetAlignmentModule;
+import com.thegongoliers.output.drivetrain.TractionControlModule;
 import com.thegongoliers.output.drivetrain.VoltageControlModule;
 import com.thegongoliers.math.GMath;
 import com.thegongoliers.input.odometry.AverageEncoderSensor;
@@ -90,6 +91,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
         var stability = new StabilityModule(m_gyro, 0.02, 0.35);
 
+        var tractionControl = new TractionControlModule(m_leftEncoderSensor, m_rightEncoderSensor, 0.05, 0.2);
+
         // Voltage Control Module 
         m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
 
@@ -108,7 +111,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         var targetAlignmentModule = new TargetAlignmentModule(vision.getTargetingCamera(),
              new PID(0.12, 0.05, 0.005), new PID(0, 0, 0), false);
 
-        m_modularDrivetrain.setModules(pathFollowerModule, targetAlignmentModule, m_voltageControlModule, m_powerEfficiencyModule);
+        m_modularDrivetrain.setModules(tractionControl, pathFollowerModule, targetAlignmentModule, m_voltageControlModule, m_powerEfficiencyModule);
     }
 
     public void arcadeDrive(double forwardSpeed, double turnSpeed) {

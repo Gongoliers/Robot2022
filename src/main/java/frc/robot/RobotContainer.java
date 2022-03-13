@@ -198,7 +198,8 @@ public class RobotContainer {
          *  -- Button 5 (upper right button @ top of joystick)
          */
         JoystickButton alignToTarget = new JoystickButton(m_driverJoystick, 5);
-        alignToTarget.whenPressed(new EnableTargetingAlignToTarget(m_drivetrain, vision));
+        // TODO: Disabled for now until Limelight is installed
+        // alignToTarget.whenPressed(new EnableTargetingAlignToTarget(m_drivetrain, vision));
 
         /**
          * Switch Left & Right Directions
@@ -346,5 +347,9 @@ public class RobotContainer {
 
 
 
+    }
+
+    public void startCompressor(){
+        m_compressor.start();
     }
 }

@@ -55,8 +55,8 @@ public final class Constants {
     
     public static final double kRampUpSeconds = 0.5;
 
-    public static final double kFeederMotorTargetSpeed = 0.55;
-    public static final double kOuttakeMotorTargetSpeed = 0.45;
+    public static final double kFeederMotorTargetSpeed = 0.65;
+    public static final double kOuttakeMotorTargetSpeed = 0.55;
     public static final double kInterfaceMotorSpeed = 1.0;
   }
 
