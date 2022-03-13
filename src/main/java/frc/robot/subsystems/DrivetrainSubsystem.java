@@ -87,10 +87,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
         // Modular Drivetrain
         m_modularDrivetrain = ModularDrivetrain.from(m_drivetrain);
+        // TODO: This didn't seem to work
         // m_modularDrivetrain.setInactiveResetSeconds(DriveConstants.kInactivityThresholdSeconds);
         
+        // These modules are calibrated if needed - in testing, they weren't needed (traction control seemed more useful than stability with the drivetrain)
         var stability = new StabilityModule(m_gyro, 0.02, 0.35);
-
         var traction = new TractionControlModule(m_leftEncoderSensor, m_rightEncoderSensor, 0.2, 0.2);
 
         // Voltage Control Module 
@@ -111,7 +112,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         var targetAlignmentModule = new TargetAlignmentModule(vision.getTargetingCamera(),
              new PID(0.12, 0.05, 0.005), new PID(0, 0, 0), false);
 
-        m_modularDrivetrain.setModules(pathFollowerModule, targetAlignmentModule, traction, m_voltageControlModule, m_powerEfficiencyModule);
+        m_modularDrivetrain.setModules(pathFollowerModule, targetAlignmentModule, m_voltageControlModule, m_powerEfficiencyModule);
     }
 
     public void arcadeDrive(double forwardSpeed, double turnSpeed) {
