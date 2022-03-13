@@ -36,7 +36,7 @@ public class LowerMotor extends CommandBase{
         // } else {
         //     return false;
         // }
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true

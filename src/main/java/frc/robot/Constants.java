@@ -54,7 +54,6 @@ public final class Constants {
     public static final double kRampUpSeconds = 0.5;
 
     public static final int kInterfaceMotorCANId = 0; // TODO: Configure
-    public static final int kRampUpSeconds = 2;
 
     public static final double kFeederMotorTargetSpeed = 0.55;
     public static final double kOuttakeMotorTargetSpeed = 0.45;
