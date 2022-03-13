@@ -1,5 +1,6 @@
 package frc.robot.commands.shooter;
 
+import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -7,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class Shoot extends CommandBase {
 
 	private ShooterSubsystem m_shooter;
+	private long m_startTime;
 
 	public Shoot(ShooterSubsystem shooter) {
 		addRequirements(shooter);
@@ -15,11 +17,15 @@ public class Shoot extends CommandBase {
 
 	@Override
 	public void initialize() {
+		m_startTime = System.currentTimeMillis();
 	}
 
 	@Override
 	public void execute() {
 		m_shooter.spin();
+		if (System.currentTimeMillis() - m_startTime >= Constants.ShooterConstants.kRampUpSeconds){
+			m_shooter.feed();
+		}
 	}
 
 	@Override

@@ -81,6 +81,7 @@ public class EndgameSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        // TODO: Enable this once encoders are in place
         // /**
         //  * This ensures that the two arms are at (about) the same height when extending / retracting
         //  * If an error is resulted, the code will stop the motors, HOWEVER, if the driver tries to 
