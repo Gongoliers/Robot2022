@@ -1,144 +1,352 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.function.BooleanSupplier;
+
+import com.thegongoliers.hardware.Hardware;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import frc.robot.Constants.OIConstants;
+import frc.robot.DPadButton.Direction;
 import frc.robot.commands.StopAll;
-import frc.robot.subsystems.CompressorSubsystem;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.EndgameSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
-import frc.robot.commands.drivetrain.SetTurboDrivetrain;
-import frc.robot.commands.endgame.DisengageSafetyLock;
-import frc.robot.commands.endgame.EngageSafetyLock;
-import frc.robot.commands.endgame.LowerMotor;
-import frc.robot.commands.endgame.RaiseMotor;
-import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.autonomous.EnableTargetingAlignToTarget;
 import frc.robot.commands.autonomous.FullSystemCheck;
 import frc.robot.commands.autonomous.LeaveTarmac;
 import frc.robot.commands.autonomous.LeaveTarmacAndShoot;
 import frc.robot.commands.compressor.StartCompressor;
 import frc.robot.commands.compressor.StopCompressor;
+import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
+import frc.robot.commands.drivetrain.InvertDirections;
+import frc.robot.commands.drivetrain.SetTurboDrivetrain;
+import frc.robot.commands.endgame.DisengageSafetyLock;
+import frc.robot.commands.endgame.EngageSafetyLock;
+import frc.robot.commands.endgame.LowerMotor;
+import frc.robot.commands.endgame.RaiseMotor;
+import frc.robot.commands.intake.DeployIntake;
+import frc.robot.commands.intake.Intake;
+import frc.robot.commands.intake.Outtake;
+import frc.robot.commands.intake.RetractIntake;
+import frc.robot.commands.shooter.Shoot;
+import frc.robot.subsystems.CompressorSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.EndgameSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final VisionSubsystem vision = new VisionSubsystem();
-  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem(vision);
-  private final EndgameSubsystem m_endgameSubsystem = new EndgameSubsystem();
-  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
-  private final CompressorSubsystem m_compressor = new CompressorSubsystem();
-  private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+    /**
+     * Initializing VisionSystem
+     */
+    private final VisionSubsystem vision = new VisionSubsystem();
 
-  private Joystick m_driverJoystick;
-  private XboxController m_xbox;
-  private JoystickButton m_turbo, m_stopAll, m_stopAll2, m_alignToTarget;
+    /**
+     * Initiating DrivetrainSubsystem
+     */
+    private final DrivetrainSubsystem m_drivetrain = new DrivetrainSubsystem(vision);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
-  }
+    /**
+     * Initiating EndgameSubsystem
+     */
+    private final EndgameSubsystem m_endgame = new EndgameSubsystem();
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
+    /**
+     * Initiating ShooterSubsystem
+     */
+    private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
-    // Driver Joystick Buttons
-    m_driverJoystick = new Joystick(Constants.OIConstants.kDriverControllerPort);
-    m_xbox = new XboxController(Constants.OIConstants.kXboxControllerPort);
+    /**
+     * Initiating IntakeSubsystem
+     */
+    private final IntakeSubsystem m_intake = new IntakeSubsystem();
+
+    /**
+     * Initiating CompressorSubsystem
+     */
+    private final CompressorSubsystem m_compressor = new CompressorSubsystem();
+
+    /**
+     * Initiating SendableChooser
+     */
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
     
-    m_turbo = new JoystickButton(m_driverJoystick, 1);
-    m_turbo.whenPressed(new SetTurboDrivetrain(m_drivetrainSubsystem, true));
-    m_turbo.whenReleased(new SetTurboDrivetrain(m_drivetrainSubsystem, false));
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand() {
+        return autoChooser.getSelected();
+    }
 
-    var stopAllCommand = new StopAll(m_drivetrainSubsystem, m_endgameSubsystem, m_shooterSubsystem, m_intakeSubsystem);
-    m_stopAll = new JoystickButton(m_driverJoystick, 11);
-    m_stopAll.whenPressed(stopAllCommand);
-    m_stopAll2 = new JoystickButton(m_driverJoystick, 12);
-    m_stopAll2.whenPressed(stopAllCommand);
+    /**
+     * Initiating Controllers
+     */
+    private Joystick m_driverJoystick;
+    private XboxController m_manipulatorController;
+
+    // This is a multiplier to switch left/right directions
+    private int lrAdjust = 1;
+
+    /**
+     * The container for the robot. 
+     * Contains subsystems, OI devices, and commands
+     */
+    public RobotContainer() {
+        // Initialize button bindings
+        configureDriverBindings();
+        configureManipulatorBindings();
+        configureAutonomous();
+    }
+
+    /**
+     * This function adds all Autonomous Options to the SmartDashboard
+     */
+    private void configureAutonomous() {
+        autoChooser.setDefaultOption("Do Nothing", new StopAll(m_drivetrain, m_endgame, m_shooter, m_intake));
+        autoChooser.addOption("System Check", new FullSystemCheck(m_drivetrain));
+        autoChooser.addOption("Leave Tarmac", new LeaveTarmac(m_drivetrain));
+        autoChooser.addOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter));
     
-    m_alignToTarget = new JoystickButton(m_driverJoystick, 9);
-    var alignToTargetCommand = new EnableTargetingAlignToTarget(m_drivetrainSubsystem, vision);
-    m_alignToTarget.whenPressed(alignToTargetCommand);
-    m_alignToTarget.whenReleased(alignToTargetCommand);
+        SmartDashboard.putData("Auto mode", autoChooser);
+    }
 
-    var startCompressorButton = new JoystickButton(m_xbox, Button.kA.value);
-    startCompressorButton.whenPressed(new StartCompressor(m_compressor));
+    /** These Functions Allow the DriverOperatedCommand to get speed and rotation */
+    public double getDriverSpeed() {
+        return m_driverJoystick.getY();
+     }
+   
+     public double getDriverRotation() {
+        return lrAdjust*m_driverJoystick.getZ();
+     }
 
-    var stopCompressorButton = new JoystickButton(m_xbox, Button.kB.value);
-    stopCompressorButton.whenPressed(new StopCompressor(m_compressor));
+     public void invertLR() {
+         lrAdjust*=-1;
+     }
+    
+     public void quickRumble(boolean left) {
+        m_manipulatorController.setRumble(left ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 1.0);
+        
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask(){
+            @Override
+            public void run() {
+                m_manipulatorController.setRumble(left ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 0);
+            }
+        }, 500);
+    }
 
-    // TODO: This is temporary for testing purposes
-    var shootButton = new JoystickButton(m_driverJoystick, 7);
-    shootButton.whileHeld(new Shoot(m_shooterSubsystem));
+    /**
+     * 
+     * END OF FRC CODE
+     * THE FOLLOWING CODE IS SOLELY DEDICATED TO MAPPING BINDINGS
+     * 
+     */
 
-    JoystickButton m_raise_endgame = new JoystickButton(m_driverJoystick, 7);
-    var raiseEndgameCommand = new RaiseMotor(m_endgameSubsystem);
-    var engageSafetyCommand = new EngageSafetyLock(m_endgameSubsystem);
-    var disengageSafetyCommand = new DisengageSafetyLock(m_endgameSubsystem);
-    m_raise_endgame.whenPressed(disengageSafetyCommand);
-    m_raise_endgame.whileHeld(raiseEndgameCommand);
-    m_raise_endgame.whenReleased(engageSafetyCommand);
+    /**
+     * SECTION 1:
+     *  -- Configuring The Driver's Bindings
+     * 
+     */
+    private void configureDriverBindings() {
+        // Driver Joystick Buttons
+        m_driverJoystick = new Joystick(OIConstants.kDriverControllerPort);
 
-    // TODO: CONFIGURE THIS => SEPARATE disengageSafety / engageSafety
-    JoystickButton m_lower_endgame = new JoystickButton(m_driverJoystick, 8);
-    var lowerEndgamecommand = new LowerMotor(m_endgameSubsystem);
-    m_lower_endgame.whenPressed(disengageSafetyCommand);
-    m_lower_endgame.whileHeld(lowerEndgamecommand);
-    m_lower_endgame.whenReleased(engageSafetyCommand);
+        /**
+         * Turbo Button Binding
+         *  -- Enables / Disables Turbo Functionality
+         * 
+         * Binding:
+         *  -- Joystick Trigger
+         */
+        JoystickButton turbo = new JoystickButton(m_driverJoystick, 1);
+        turbo.whenPressed(new SetTurboDrivetrain(m_drivetrain, true));
+        turbo.whenReleased(new SetTurboDrivetrain(m_drivetrain, false));
 
-    // Default commands
-    m_drivetrainSubsystem.setDefaultCommand(new DrivetrainOperatorControl(this, m_drivetrainSubsystem));
+        /**
+         * Driver's Joystick Axis
+         *  -- Allows the driver to control the robot
+         * 
+         * Binding:
+         *  -- Y (Axis 2) Controls speed +/-
+         *  -- Z (Axis 3) Controls rotation
+         */
+        m_drivetrain.setDefaultCommand(new DrivetrainOperatorControl(this, m_drivetrain));
 
-    // Auto chooser
-    m_autoChooser.setDefaultOption("Do Nothing", stopAllCommand);
-    m_autoChooser.addOption("System Check", new FullSystemCheck(m_drivetrainSubsystem));
-    m_autoChooser.addOption("Leave Tarmac", new LeaveTarmac(m_drivetrainSubsystem));
-    m_autoChooser.addOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrainSubsystem, m_shooterSubsystem));
+        /**
+         * Driver's Stop All Command
+         *  -- Stops all Active Subsystems on the Robot
+         * 
+         * Binding: 
+         *  -- Button 4 (bottom left button @ top of joystick)
+         */
+        JoystickButton stopAll = new JoystickButton(m_driverJoystick, 4);
+        stopAll.whenPressed(new StopAll(m_drivetrain, m_endgame, m_shooter, m_intake));
 
-    SmartDashboard.putData("Auto mode", m_autoChooser);
-  }
+        /**
+         * Align to Target Command
+         *  -- Aligns Robot to Target
+         * 
+         * Binding:
+         *  -- Button 5 (upper right button @ top of joystick)
+         */
+        JoystickButton alignToTarget = new JoystickButton(m_driverJoystick, 5);
+        alignToTarget.whenPressed(new EnableTargetingAlignToTarget(m_drivetrain, vision));
 
-  public double getDriverSpeed() {
-     return m_driverJoystick.getY();
-  }
+        /**
+         * Switch Left & Right Directions
+         *  -- Switches Left & Right Directions
+         *  -- Requested by Driveteam
+         * 
+         * Binding:
+         *  -- Button 2 (button on side of axis)
+         */
+        JoystickButton switchDirections = new JoystickButton(m_driverJoystick, 2);
+        switchDirections.whenPressed(new InvertDirections(this));
+    }
+    private void configureManipulatorBindings() {
+        // Manipulator Xbox Controller
+        m_manipulatorController = new XboxController(OIConstants.kXboxControllerPort);
 
-  public double getDriverRotation() {
-     return m_driverJoystick.getZ();
-  }
+// COMPRESSOR SUBSYSTEM
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    return m_autoChooser.getSelected();
-  }
+        /**
+         * Start Compressor Command
+         *  -- Starts the Compressor (for Pneumatics)
+         * 
+         * Binding:
+         *  -- X button
+         */
+        JoystickButton startCompressor = new JoystickButton(m_manipulatorController, XboxController.Button.kX.value);
+        startCompressor.whenPressed(new StartCompressor(m_compressor));
 
+        /**
+         * Stop Compressor Command
+         *  -- Stops the Compressor (for Pneumatics)
+         * 
+         * Binding:
+         *  -- B button
+         */
+        JoystickButton stopCompressor = new JoystickButton(m_manipulatorController, XboxController.Button.kB.value);
+        stopCompressor.whenPressed(new StopCompressor(m_compressor));
+
+// ENDGAME SUBSYSTEM
+
+        /**
+         * Disengages Endgame Lock
+         *  -- Disengages Endgame Safety
+         * 
+         * Binding: 
+         *  -- Left DPAD Button
+         */
+        DPadButton disengageSafety =  new DPadButton(m_manipulatorController, Direction.LEFT);
+        disengageSafety.whenPressed(new DisengageSafetyLock(m_endgame));
+
+        /**
+         * Engages Endgame Lock
+         *  -- Engages Endgame Safety
+         * 
+         * Binding:
+         *  -- Right DPAD button
+         */
+        DPadButton engageSafety = new DPadButton(m_manipulatorController, Direction.RIGHT);
+        engageSafety.whenPressed(new EngageSafetyLock(m_endgame));
+
+        /** 
+         * Raise Endgame
+         *  -- Raises Endgame
+         * 
+         * Binding:
+         *  -- Up DPAD Button
+        */
+        DPadButton raiseEndgame = new DPadButton(m_manipulatorController, Direction.UP);
+        raiseEndgame.whileHeld(new RaiseMotor(m_endgame));
+
+        /**
+         * Lower Endgame
+         *  -- Lowers Endgame
+         * 
+         * Binding:
+         *  -- Down DPAD Button
+         */
+        DPadButton lowerEndgame = new DPadButton(m_manipulatorController, Direction.DOWN);
+        lowerEndgame.whileHeld(new LowerMotor(m_endgame));
+
+// Shooter Subsystem
+
+        /**
+         * Shoot Balls
+         *  -- Shoots Balls
+         * 
+         * Binding:
+         *  -- Right Trigger
+         */
+        Button shootBalls = Hardware.makeButton(new BooleanSupplier() {
+            @Override
+            public boolean getAsBoolean() {
+                return m_manipulatorController.getRightTriggerAxis() > 0.8;
+            }
+        });
+        shootBalls.whileHeld(new Shoot(m_shooter));
+        //TODO: interrupted
+
+// Intake Subsystem
+
+        /**
+         * Deploy Intake
+         *  -- Deploys the Intake
+         * 
+         * Binding:
+         *  -- Y
+         */
+        JoystickButton deployIntake = new JoystickButton(m_manipulatorController, XboxController.Button.kY.value);
+        deployIntake.whenPressed(new DeployIntake(m_intake));
+
+        /**
+         * Retract Intake
+         *  -- Retracts the Intake
+         * 
+         * Binding: 
+         *  -- A
+         */
+        JoystickButton retractIntake = new JoystickButton(m_manipulatorController, XboxController.Button.kA.value);
+        retractIntake.whenPressed(new RetractIntake(m_intake));
+
+        /**
+         * Activate Intake
+         *  -- Activates the Intake
+         * 
+         * Binding: 
+         *  -- Left Trigger
+         */
+        Button intakeBalls = Hardware.makeButton(new BooleanSupplier() {
+            @Override
+            public boolean getAsBoolean() {
+                return m_manipulatorController.getLeftTriggerAxis() > 0.8;
+            }
+        });
+        intakeBalls.whileHeld(new Intake(m_intake));
+
+        /**
+         * Outtake
+         *  -- Outtakes Any Balls
+         * 
+         * Binding:
+         *  -- Left Bumper
+         */
+        JoystickButton outtakeBalls = new JoystickButton(m_manipulatorController, XboxController.Button.kLeftBumper.value);
+        outtakeBalls.whileHeld(new Outtake(m_intake));
+
+
+
+    }
 }
