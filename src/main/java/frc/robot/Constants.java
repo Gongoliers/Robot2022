@@ -80,7 +80,7 @@ public final class Constants {
     public static final int kSolenoidCAN = 7; // CAN PORT OF SOLENOID
     public static final int kEncoderDistancePerPulse = 0; // TODO: CONFIGURE THIS
     public static final int kCappedDistance = 1; // TODO: Configure this | this controls the amount the distance the motor should travel when raising / lowering the endgame system
-    public static final double kRaiseMotorSpeed = 0.2;
-    public static final double kLowerMotorSpeed = -0.2;
+    public static final double kRaiseMotorSpeed = 0.1;
+    public static final double kLowerMotorSpeed = -0.1;
   }
 }

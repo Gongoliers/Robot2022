@@ -43,5 +43,6 @@ public class LowerMotor extends CommandBase{
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
+        m_endgame.getMotors().stopMotor();
     }
 }
