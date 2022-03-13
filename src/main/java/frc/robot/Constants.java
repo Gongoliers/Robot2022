@@ -42,6 +42,7 @@ public final class Constants {
 
   public static final class IntakeConstants {
     public static final int kIntakeCanId = 7;
+    public static final int kIntakeInnerCanId = 8;
     public static final double kIntakeSpeed = 0.2;
 
     public static final int kSolenoidCAN1 = 0;
