@@ -28,10 +28,10 @@ public final class Constants {
 
         // Voltage Regulation
         public static final double kNormalVoltage = 5.25;
-        public static final double kFastVoltage = 12;
+        public static final double kFastVoltage = 10;
 
         // Power Control
-        public static final double kSecondsToReachFullSpeed = 0.25; 
+        public static final double kSecondsToReachFullSpeed = 0.3; 
         public static final double kTurnThreshold = 0.2;
         
         // Encoders
@@ -41,32 +41,30 @@ public final class Constants {
     }   
 
   public static final class IntakeConstants {
-    public static final int kIntakeCanId = 7;
-    public static final int kIntakeInnerCanId = 8;
-    public static final double kIntakeSpeed = 0.2;
+    public static final int kIntakeCanId = 32;
+    public static final double kIntakeSpeed = 0.3;
 
-    public static final int kSolenoidCAN1 = 0;
-    public static final int kSolenoidCAN2 = 0;
+    public static final int kSolenoidCAN1 = 5;
+    public static final int kSolenoidCAN2 = 6;
   }
 
   public static final class ShooterConstants {
     public static final int kFeederMotorCANId = 10;
     public static final int kOuttakeMotorCANId = 11;
+    public static final int kInterfaceMotorCANId = 12;
     
     public static final double kRampUpSeconds = 0.5;
 
-    public static final int kInterfaceMotorCANId = 0; // TODO: Configure
-
     public static final double kFeederMotorTargetSpeed = 0.55;
     public static final double kOuttakeMotorTargetSpeed = 0.45;
-    public static final double kInterfaceMotorSpeed = 0.3;
+    public static final double kInterfaceMotorSpeed = 1.0;
   }
 
   public static final class AutoConstants {
-    public static final double kAutoDriveToFenderSpeed = -0.25;
+    public static final double kAutoDriveToFenderSpeed = 0.5;
     public static final double kAutoDriveToFenderSeconds = 3;
 
-    public static final double kAutoDriveAwayFromFenderSpeed = -0.25;
+    public static final double kAutoDriveAwayFromFenderSpeed = -0.5;
     public static final double kAutoDriveAwayFromFenderSeconds = 2;
   }
 

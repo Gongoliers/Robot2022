@@ -6,7 +6,6 @@ import com.thegongoliers.output.actuators.GPiston;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -20,11 +19,8 @@ public class IntakeSubsystem extends SubsystemBase {
     private final GPiston m_intakePiston2;
 
     public IntakeSubsystem() {
-        
-        var outerMotor = new WPI_TalonSRX(IntakeConstants.kIntakeCanId);
-        var innerMotor = new WPI_TalonSRX(IntakeConstants.kIntakeInnerCanId);
-
-        m_intakeMotor = new MotorControllerGroup(outerMotor, innerMotor);
+    
+        m_intakeMotor = new WPI_TalonSRX(IntakeConstants.kIntakeCanId);
 
         m_intakeSolenoid1 = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN1);
         m_intakePiston1 = new GPiston(m_intakeSolenoid1);

@@ -33,6 +33,9 @@ public class ShooterSubsystem extends SubsystemBase {
 		m_outtakeMotor = new WPI_TalonSRX(ShooterConstants.kOuttakeMotorCANId);
 		m_interfaceMotor = new WPI_TalonSRX(ShooterConstants.kInterfaceMotorCANId);
 
+		m_interfaceMotor.setInverted(true);
+		m_outtakeMotor.setInverted(true);
+
 		m_feederSpeedController = new GSpeedController(m_feederMotor);
 		m_outtakeSpeedController = new GSpeedController(m_outtakeMotor);
 

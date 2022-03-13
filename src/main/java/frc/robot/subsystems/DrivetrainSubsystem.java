@@ -9,6 +9,7 @@ import com.kylecorry.pid.PID;
 import com.thegongoliers.output.drivetrain.ModularDrivetrain;
 import com.thegongoliers.output.drivetrain.PathFollowerModule;
 import com.thegongoliers.output.drivetrain.PowerEfficiencyModule;
+import com.thegongoliers.output.drivetrain.StabilityModule;
 import com.thegongoliers.output.drivetrain.TargetAlignmentModule;
 import com.thegongoliers.output.drivetrain.VoltageControlModule;
 import com.thegongoliers.math.GMath;
@@ -87,8 +88,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_modularDrivetrain = ModularDrivetrain.from(m_drivetrain);
         m_modularDrivetrain.setInactiveResetSeconds(DriveConstants.kInactivityThresholdSeconds);
         
+        var stability = new StabilityModule(m_gyro, 0.02, 0.35);
+
         // Voltage Control Module 
-        m_voltageControlModule = new VoltageControlModule(DriveConstants.kFastVoltage);
+        m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
 
         // Power Effeciency Module
         m_powerEfficiencyModule = new PowerEfficiencyModule(DriveConstants.kSecondsToReachFullSpeed, DriveConstants.kTurnThreshold);
@@ -96,7 +99,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // Path follower module
         // TODO: Calibrate this
         var pathFollowerModule = new PathFollowerModule(m_gyro,
-                List.of(m_leftEncoderSensor, m_rightEncoderSensor), 0.1, 0.02);
+                List.of(m_leftEncoderSensor, m_rightEncoderSensor), 0.25, 0.02);
         pathFollowerModule.setForwardTolerance(0.5); // 0.5 feet
         pathFollowerModule.setTurnTolerance(1); // 1 degree
 
@@ -110,7 +113,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void arcadeDrive(double forwardSpeed, double turnSpeed) {
         // TODO: Extract turn deadband constant
-        var turn = GMath.deadband(turnSpeed, 0.2);
+        var turn = GMath.deadband(turnSpeed, 0.2) * 0.75;
         m_modularDrivetrain.arcade(-forwardSpeed, turn);
     }
 
