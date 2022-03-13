@@ -10,7 +10,7 @@ public class CompressorSubsystem extends SubsystemBase {
 
     public CompressorSubsystem(){
         m_compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-        start();
+        stop();
     }
 
     public void start(){

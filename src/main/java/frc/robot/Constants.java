@@ -62,10 +62,10 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kAutoDriveToFenderSpeed = -0.4;
-    public static final double kAutoDriveToFenderSeconds = 4;
+    public static final double kAutoDriveToFenderSpeed = -0.25;
+    public static final double kAutoDriveToFenderSeconds = 3;
 
-    public static final double kAutoDriveAwayFromFenderSpeed = -0.4;
+    public static final double kAutoDriveAwayFromFenderSpeed = -0.25;
     public static final double kAutoDriveAwayFromFenderSeconds = 2;
   }
 
