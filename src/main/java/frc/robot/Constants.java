@@ -23,6 +23,9 @@ public final class Constants {
         public static final int kRightDriveCAN2 = 5;
         public static final int kRightDriveCAN3 = 6;
 
+        // Inactivity
+        public static final double kInactivityThresholdSeconds = 1.0;
+
         // Voltage Regulation
         public static final double kNormalVoltage = 5.25;
         public static final double kFastVoltage = 12;
