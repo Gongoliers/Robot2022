@@ -8,8 +8,8 @@ public class DisengageSafetyLock extends CommandBase{
     private EndgameSubsystem m_endgame;
 
     public DisengageSafetyLock(EndgameSubsystem endgame) {
-
         addRequirements(endgame);
+        m_endgame = endgame;
     }
 
     // Called just before this Command runs the first time

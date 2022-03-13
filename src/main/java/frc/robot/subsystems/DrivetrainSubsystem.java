@@ -87,11 +87,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
         // Modular Drivetrain
         m_modularDrivetrain = ModularDrivetrain.from(m_drivetrain);
-        m_modularDrivetrain.setInactiveResetSeconds(DriveConstants.kInactivityThresholdSeconds);
+        // m_modularDrivetrain.setInactiveResetSeconds(DriveConstants.kInactivityThresholdSeconds);
         
         var stability = new StabilityModule(m_gyro, 0.02, 0.35);
 
-        var tractionControl = new TractionControlModule(m_leftEncoderSensor, m_rightEncoderSensor, 0.05, 0.2);
+        var traction = new TractionControlModule(m_leftEncoderSensor, m_rightEncoderSensor, 0.2, 0.2);
 
         // Voltage Control Module 
         m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
@@ -102,8 +102,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // Path follower module
         // TODO: Calibrate this
         var pathFollowerModule = new PathFollowerModule(m_gyro,
-                List.of(m_leftEncoderSensor, m_rightEncoderSensor), 0.25, 0.02);
-        pathFollowerModule.setForwardTolerance(0.5); // 0.5 feet
+                List.of(m_leftEncoderSensor, m_rightEncoderSensor), new PID(0.7, 1.6, 0.02), new PID(0.02, 0, 0));
+        pathFollowerModule.setForwardTolerance(0.1); // 0.5 feet
         pathFollowerModule.setTurnTolerance(1); // 1 degree
 
         // Target alignment
@@ -111,7 +111,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         var targetAlignmentModule = new TargetAlignmentModule(vision.getTargetingCamera(),
              new PID(0.12, 0.05, 0.005), new PID(0, 0, 0), false);
 
-        m_modularDrivetrain.setModules(tractionControl, pathFollowerModule, targetAlignmentModule, m_voltageControlModule, m_powerEfficiencyModule);
+        m_modularDrivetrain.setModules(pathFollowerModule, targetAlignmentModule, traction, m_voltageControlModule, m_powerEfficiencyModule);
     }
 
     public void arcadeDrive(double forwardSpeed, double turnSpeed) {

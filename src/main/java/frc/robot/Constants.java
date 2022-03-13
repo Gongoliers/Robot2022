@@ -53,11 +53,11 @@ public final class Constants {
     public static final int kOuttakeMotorCANId = 11;
     public static final int kInterfaceMotorCANId = 12;
     
-    public static final double kRampUpSeconds = 0.5;
+    public static final double kRampUpSeconds = 1.2;
 
-    public static final double kFeederMotorTargetSpeed = 0.65;
-    public static final double kOuttakeMotorTargetSpeed = 0.55;
-    public static final double kInterfaceMotorSpeed = 1.0;
+    public static final double kFeederMotorTargetSpeed = 0.67;
+    public static final double kOuttakeMotorTargetSpeed = 0.57;
+    public static final double kInterfaceMotorSpeed = 0.5;
   }
 
   public static final class AutoConstants {

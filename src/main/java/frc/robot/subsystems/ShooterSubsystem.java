@@ -43,6 +43,8 @@ public class ShooterSubsystem extends SubsystemBase {
 		 * If we were counting by spins, the formula that we would use is 
 		 * m_spinCountThreshold = (int) ShooterConstants.kRampUpSeconds * (1000 / 20)
 		 */
+		m_feederSpeedController.setScale(ShooterConstants.kFeederMotorTargetSpeed);
+		m_outtakeSpeedController.setScale(ShooterConstants.kOuttakeMotorTargetSpeed);
 		m_feederSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
 		m_outtakeSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
 
@@ -57,8 +59,8 @@ public class ShooterSubsystem extends SubsystemBase {
 	}
 
 	public void spin() {
-		m_feederSpeedController.set(m_feederTSpeed);
-		m_outtakeSpeedController.set(m_outtakeTSpeed);
+		m_feederSpeedController.set(1.0);
+		m_outtakeSpeedController.set(1.0);
 		if (shooterReady()) {
 			m_interfaceMotor.set(m_interfaceSpeed);
 		}

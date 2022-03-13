@@ -33,7 +33,9 @@ import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.Intake;
 import frc.robot.commands.intake.Outtake;
 import frc.robot.commands.intake.RetractIntake;
+import frc.robot.commands.intake.StopIntake;
 import frc.robot.commands.shooter.Shoot;
+import frc.robot.commands.shooter.StopShooter;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.EndgameSubsystem;
@@ -104,6 +106,9 @@ public class RobotContainer {
         configureDriverBindings();
         configureManipulatorBindings();
         configureAutonomous();
+
+        // m_intake.setDefaultCommand(new StopIntake(m_intake));
+        // m_shooter.setDefaultCommand(new StopShooter(m_shooter));
     }
 
     /**
@@ -120,11 +125,11 @@ public class RobotContainer {
 
     /** These Functions Allow the DriverOperatedCommand to get speed and rotation */
     public double getDriverSpeed() {
-        return m_driverJoystick.getY();
+        return lrAdjust*m_driverJoystick.getY();
      }
    
      public double getDriverRotation() {
-        return lrAdjust*m_driverJoystick.getZ();
+        return m_driverJoystick.getZ();
      }
 
      public void invertLR() {
@@ -351,5 +356,9 @@ public class RobotContainer {
 
     public void startCompressor(){
         m_compressor.start();
+    }
+
+    public void stopCompressor(){
+        m_compressor.stop();
     }
 }
