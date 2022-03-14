@@ -85,7 +85,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if (Timer.getMatchTime() < 1) {m_robotContainer.lockEndgame();}
   }
 
   @Override

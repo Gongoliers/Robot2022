@@ -134,10 +134,6 @@ public class RobotContainer {
      public void invertLR() {
          lrAdjust*=-1;
      }
-
-     public void lockEndgame() {
-        m_endgame.powerPneumatics(false);
-    }
     
      public void quickRumble(boolean left) {
         m_manipulatorController.setRumble(left ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 1.0);
