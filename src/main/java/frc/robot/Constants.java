@@ -75,6 +75,7 @@ public final class Constants {
   }
 
   public static final class EndgameConstants {
+    public static final double kDelayToUnlockPneumatics = 1.0; // THIS IS THE DELAY BETWEEN THE MOTORS SPINNGING AND THE PNEUMATICS BEING TOLD TO DISENGAGE
     public static final int kLeftMotorCAN = 20; // LEFT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kRightMotorCAN = 21; // RIGHT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kSolenoidCAN = 7; // CAN PORT OF SOLENOID
