@@ -9,6 +9,7 @@ public class StopEndgame extends CommandBase {
 
     public StopEndgame(EndgameSubsystem endgame) {
         addRequirements(endgame);
+        m_endgame = endgame;
     }
 
     // Called just before this Command runs the first time

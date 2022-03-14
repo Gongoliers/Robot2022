@@ -81,34 +81,35 @@ public class EndgameSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        /**
-         * This ensures that the two arms are at (about) the same height when extending / retracting
-         * If an error is resulted, the code will stop the motors, HOWEVER, if the driver tries to 
-         * operate the endgame subsystem again, no error will occur. (DOUBLE SAFETY CHECK)
-         */
-        if ((m_leftEncoder.getDistance() + 2 > m_rightEncoder.getDistance()) && !error_thrown) {
-            m_motors.stopMotor();
-            error_thrown = true;
-        }
-        /** 
-         * This is a safety check. We will implement a check within the command, 
-         *  but this acts as a catch all => ensures that the Endgame does not over
-         *  retract
-        */
-        if (m_leftEncoder.getDistance() > (EndgameConstants.kCappedDistance + 1)) {
-            // TODO: Ensure that this aligns with the direction that the sensor
-            // returns --> i.e. make sure positive velocity = retracting
-            if (m_leftEncoder.getVelocity() > 0) {
-                m_leftMotor.stopMotor();
-            }
-        }
-        if (m_rightEncoder.getDistance() > (EndgameConstants.kCappedDistance + 1)) {
-            // TODO: Ensure that this aligns with the direction that the sensor
-            // returns --> i.e. make sure positive velocity = retracting
-            if (m_rightEncoder.getVelocity() > 0) {
-                m_rightMotor.stopMotor();
-            }
-        }
+        // TODO: Enable this once encoders are in place
+        // /**
+        //  * This ensures that the two arms are at (about) the same height when extending / retracting
+        //  * If an error is resulted, the code will stop the motors, HOWEVER, if the driver tries to 
+        //  * operate the endgame subsystem again, no error will occur. (DOUBLE SAFETY CHECK)
+        //  */
+        // if ((m_leftEncoder.getDistance() + 2 > m_rightEncoder.getDistance()) && !error_thrown) {
+        //     m_motors.stopMotor();
+        //     error_thrown = true;
+        // }
+        // /** 
+        //  * This is a safety check. We will implement a check within the command, 
+        //  *  but this acts as a catch all => ensures that the Endgame does not over
+        //  *  retract
+        // */
+        // if (m_leftEncoder.getDistance() > (EndgameConstants.kCappedDistance + 1)) {
+        //     // TODO: Ensure that this aligns with the direction that the sensor
+        //     // returns --> i.e. make sure positive velocity = retracting
+        //     if (m_leftEncoder.getVelocity() > 0) {
+        //         m_leftMotor.stopMotor();
+        //     }
+        // }
+        // if (m_rightEncoder.getDistance() > (EndgameConstants.kCappedDistance + 1)) {
+        //     // TODO: Ensure that this aligns with the direction that the sensor
+        //     // returns --> i.e. make sure positive velocity = retracting
+        //     if (m_rightEncoder.getVelocity() > 0) {
+        //         m_rightMotor.stopMotor();
+        //     }
+        // }
     }
     
 }

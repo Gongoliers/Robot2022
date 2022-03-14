@@ -4,7 +4,11 @@
 
 package frc.robot;
 
+import com.thegongoliers.input.power.Battery;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -12,6 +16,7 @@ public class Robot extends TimedRobot {
 
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
+  private Battery m_battery;
 
   // on robot start
   @Override
@@ -19,6 +24,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    m_battery = new Battery(11.5, 13.1, 18);
   }
 
   /**
@@ -35,6 +41,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+    SmartDashboard.putNumber("Battery %", m_battery.getBatteryPercentage());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -53,6 +61,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    m_robotContainer.stopCompressor();
   }
 
   /** This function is called periodically during autonomous. */
@@ -68,6 +78,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    m_robotContainer.stopCompressor();
   }
 
   /** This function is called periodically during operator control. */
@@ -78,6 +90,7 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    m_robotContainer.startCompressor();
   }
 
   /** This function is called periodically during test mode. */

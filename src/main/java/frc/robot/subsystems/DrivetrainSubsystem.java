@@ -9,7 +9,9 @@ import com.kylecorry.pid.PID;
 import com.thegongoliers.output.drivetrain.ModularDrivetrain;
 import com.thegongoliers.output.drivetrain.PathFollowerModule;
 import com.thegongoliers.output.drivetrain.PowerEfficiencyModule;
+import com.thegongoliers.output.drivetrain.StabilityModule;
 import com.thegongoliers.output.drivetrain.TargetAlignmentModule;
+import com.thegongoliers.output.drivetrain.TractionControlModule;
 import com.thegongoliers.output.drivetrain.VoltageControlModule;
 import com.thegongoliers.math.GMath;
 import com.thegongoliers.input.odometry.AverageEncoderSensor;
@@ -85,10 +87,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
         // Modular Drivetrain
         m_modularDrivetrain = ModularDrivetrain.from(m_drivetrain);
-        m_modularDrivetrain.setInactiveResetSeconds(DriveConstants.kInactivityThresholdSeconds);
+        // TODO: This didn't seem to work
+        // m_modularDrivetrain.setInactiveResetSeconds(DriveConstants.kInactivityThresholdSeconds);
         
+        // These modules are calibrated if needed - in testing, they weren't needed (traction control seemed more useful than stability with the drivetrain)
+        var stability = new StabilityModule(m_gyro, 0.02, 0.35);
+        var traction = new TractionControlModule(m_leftEncoderSensor, m_rightEncoderSensor, 0.2, 0.2);
+
         // Voltage Control Module 
-        m_voltageControlModule = new VoltageControlModule(DriveConstants.kFastVoltage);
+        m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
 
         // Power Effeciency Module
         m_powerEfficiencyModule = new PowerEfficiencyModule(DriveConstants.kSecondsToReachFullSpeed, DriveConstants.kTurnThreshold);
@@ -96,8 +103,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // Path follower module
         // TODO: Calibrate this
         var pathFollowerModule = new PathFollowerModule(m_gyro,
-                List.of(m_leftEncoderSensor, m_rightEncoderSensor), 0.1, 0.02);
-        pathFollowerModule.setForwardTolerance(0.5); // 0.5 feet
+                List.of(m_leftEncoderSensor, m_rightEncoderSensor), new PID(0.7, 1.6, 0.02), new PID(0.02, 0, 0));
+        pathFollowerModule.setForwardTolerance(0.1); // 0.5 feet
         pathFollowerModule.setTurnTolerance(1); // 1 degree
 
         // Target alignment
@@ -110,7 +117,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void arcadeDrive(double forwardSpeed, double turnSpeed) {
         // TODO: Extract turn deadband constant
-        var turn = GMath.deadband(turnSpeed, 0.2);
+        var turn = GMath.deadband(turnSpeed, 0.2) * 0.75;
         m_modularDrivetrain.arcade(-forwardSpeed, turn);
     }
 

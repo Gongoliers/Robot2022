@@ -23,8 +23,6 @@ public class ShooterSubsystem extends SubsystemBase {
 	private final GSpeedController m_feederSpeedController;
 	private final GSpeedController m_outtakeSpeedController;
 
-	private double m_feederTSpeed;
-	private double m_outtakeTSpeed;
 	private double m_interfaceSpeed;
 
 
@@ -32,6 +30,9 @@ public class ShooterSubsystem extends SubsystemBase {
 		m_feederMotor = new WPI_TalonSRX(ShooterConstants.kFeederMotorCANId);
 		m_outtakeMotor = new WPI_TalonSRX(ShooterConstants.kOuttakeMotorCANId);
 		m_interfaceMotor = new WPI_TalonSRX(ShooterConstants.kInterfaceMotorCANId);
+
+		m_interfaceMotor.setInverted(true);
+		m_outtakeMotor.setInverted(true);
 
 		m_feederSpeedController = new GSpeedController(m_feederMotor);
 		m_outtakeSpeedController = new GSpeedController(m_outtakeMotor);
@@ -43,8 +44,10 @@ public class ShooterSubsystem extends SubsystemBase {
 		m_feederSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
 		m_outtakeSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
 
-		m_feederTSpeed = ShooterConstants.kFeederMotorTargetSpeed;
-		m_outtakeTSpeed = ShooterConstants.kOuttakeMotorTargetSpeed;
+		// Scale the shooter motors to limit the max speed
+		m_feederSpeedController.setScale(ShooterConstants.kFeederMotorTargetSpeed);
+		m_outtakeSpeedController.setScale(ShooterConstants.kOuttakeMotorTargetSpeed);
+
 		m_interfaceSpeed = ShooterConstants.kInterfaceMotorSpeed;
 
 	}
@@ -54,12 +57,13 @@ public class ShooterSubsystem extends SubsystemBase {
 	}
 
 	public void spin() {
-		m_feederSpeedController.set(m_feederTSpeed);
-		m_outtakeSpeedController.set(m_outtakeTSpeed);
-		if (shooterReady()) {
-			m_interfaceMotor.set(m_interfaceSpeed);
-		}
+		m_feederSpeedController.set(1.0);
+		m_outtakeSpeedController.set(1.0);
 	}	
+
+	public void feed(){
+		m_interfaceMotor.set(m_interfaceSpeed);
+	}
 
 	public void stop() {
 		stopFeederMotor();
@@ -78,17 +82,4 @@ public class ShooterSubsystem extends SubsystemBase {
 	public void stopInterfaceMotor() {
 		m_interfaceMotor.stopMotor();
 	}
-
-	public boolean outtakeReady() {
-		return (m_outtakeSpeedController.get() >= m_outtakeTSpeed);
-	}
-
-	public boolean feederReady() {
-		return (m_feederSpeedController.get() >= m_feederTSpeed);
-	}
-
-	public boolean shooterReady() {
-		return (outtakeReady() && feederReady());
-	}
-
 }

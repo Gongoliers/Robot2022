@@ -9,6 +9,7 @@ public class RaiseMotor extends CommandBase {
     private EndgameSubsystem m_endgame;
     public RaiseMotor(EndgameSubsystem endgame) {
         addRequirements(endgame);
+        m_endgame = endgame;
     }
 
      // Called just before this Command runs the first time
@@ -41,5 +42,6 @@ public class RaiseMotor extends CommandBase {
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
+        m_endgame.getMotors().stopMotor();
     }
 }

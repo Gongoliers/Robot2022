@@ -8,8 +8,8 @@ public class EngageSafetyLock extends CommandBase{
     private EndgameSubsystem m_endgame;
 
     public EngageSafetyLock(EndgameSubsystem endgame) {
-
         addRequirements(endgame);
+        m_endgame = endgame;
     }
 
     // Called just before this Command runs the first time
