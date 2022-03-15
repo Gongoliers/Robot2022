@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     m_battery = new Battery(11.5, 13.1, 18);
+    EndgameTimer.resetOverride();
   }
 
   /**
@@ -44,7 +45,6 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
     SmartDashboard.putNumber("Battery %", m_battery.getBatteryPercentage());
-    EndgameTimer.resetOverride();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
