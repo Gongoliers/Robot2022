@@ -1,5 +1,7 @@
 package frc.robot.commands.endgame;
 
+import com.thegongoliers.input.odometry.AverageEncoderSensor;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.EndgameSubsystem;
 import frc.robot.Constants.EndgameConstants;
@@ -20,23 +22,18 @@ public class RaiseMotor extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        m_endgame.getMotors().set(EndgameConstants.kRaiseMotorSpeed);
+        if (m_endgame.isSafe()) {
+            m_endgame.getMotors().set(EndgameConstants.kRaiseMotorSpeed);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        // AverageEncoderSensor m_encoder = m_endgame.getEncoders();
-        // /** TODO: Does this BaseEncoderSensor update every time this function is caled?
+        AverageEncoderSensor m_encoder = m_endgame.getEncoders();
         //  *      If not, change .getEncoders to .getEncoderDistance, have it return a variable
         //  *      and the variable will be updated in the Subsystem's perioidic
-        //  */
-        // if (m_encoder.getDistance() >= EndgameConstants.kCappedDistance) {
-        //     return true;
-        // } else {
-        //     return false;
-        // }
-        return true;
+        return m_encoder.getDistance() >= EndgameConstants.kCappedDistance;
     }
 
     // Called once after isFinished returns true

@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     m_battery = new Battery(11.5, 13.1, 18);
+    EndgameTimer.resetOverride();
   }
 
   /**
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+
     CommandScheduler.getInstance().run();
     SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
     SmartDashboard.putNumber("Battery %", m_battery.getBatteryPercentage());

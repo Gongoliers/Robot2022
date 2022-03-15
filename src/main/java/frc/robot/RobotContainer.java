@@ -32,9 +32,7 @@ import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.Intake;
 import frc.robot.commands.intake.Outtake;
 import frc.robot.commands.intake.RetractIntake;
-import frc.robot.commands.intake.StopIntake;
 import frc.robot.commands.shooter.Shoot;
-import frc.robot.commands.shooter.StopShooter;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.EndgameSubsystem;
@@ -215,6 +213,17 @@ public class RobotContainer {
          */
         JoystickButton switchDirections = new JoystickButton(m_driverJoystick, 2);
         switchDirections.whenPressed(new InvertDirections(this));
+
+        /**
+         * Override Match Timer
+         *  -- Overrides Match Timer Lock for Endgaem
+         *  -- Requested by Brad
+         * 
+         * Binding: 
+         *  -- Button 14
+         */
+        JoystickButton overrideTimer = new JoystickButton(m_driverJoystick, 14);
+        overrideTimer.whenPressed(new OverrideMatchTimer());
     }
     private void configureManipulatorBindings() {
         // Manipulator Xbox Controller

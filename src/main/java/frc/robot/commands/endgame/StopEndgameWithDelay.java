@@ -12,6 +12,4 @@ public class StopEndgameWithDelay extends SequentialCommandGroup {
                     new WaitCommand(EndgameConstants.kDelayToUnlockPneumatics),
                     new StopEndgameMotor(endgame));
     }
-
-    
 }
