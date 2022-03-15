@@ -12,6 +12,4 @@ public class LowerMotorWithDelayAndSafety extends SequentialCommandGroup {
                     new WaitCommand(EndgameConstants.kDelayToUnlockPneumatics),
                     new LowerMotor(endgame));
     }
-
-    
 }

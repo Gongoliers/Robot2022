@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.EndgameTimer;
 import frc.robot.PhoenixMotorControllerEncoder;
 import frc.robot.Constants.EndgameConstants;
 
@@ -62,8 +63,15 @@ public class EndgameSubsystem extends SubsystemBase {
          */
 
     }
+
+    public boolean isSafe() {
+        return EndgameTimer.getMatchTime() < 30;
+    }
+    
     public void powerPneumatics(Boolean power) {
-        m_unlockArms.set(power);
+        if (isSafe()) {
+            m_unlockArms.set(power);
+        }
     }
 
     public MotorControllerGroup getMotors() {

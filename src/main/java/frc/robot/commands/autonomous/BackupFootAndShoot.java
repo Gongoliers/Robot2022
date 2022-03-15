@@ -9,7 +9,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class BackupFootAndShoot extends SequentialCommandGroup {
     public BackupFootAndShoot(DrivetrainSubsystem drivetrain, ShooterSubsystem shooter){
         addCommands(
-            new DriveDistance(drivetrain, (double) 1.0),
+            new DriveDistance(drivetrain, (double) 1.0).withTimeout(1.0),
             new Shoot(shooter).withTimeout(8.0)
         );
     }
