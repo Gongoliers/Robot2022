@@ -34,7 +34,7 @@ public class LowerMotor extends CommandBase{
         AverageEncoderSensor m_encoder = m_endgame.getEncoders();
         //  *      If not, change .getEncoders to .getEncoderDistance, have it return a variable
         //  *      and the variable will be updated in the Subsystem's perioidic
-        if (m_encoder.getDistance() >= 1) {
+        if (m_encoder.getDistance() <= 1) {
             return true;
         } 
         return false;

@@ -213,6 +213,17 @@ public class RobotContainer {
          */
         JoystickButton switchDirections = new JoystickButton(m_driverJoystick, 2);
         switchDirections.whenPressed(new InvertDirections(this));
+
+        /**
+         * Override Match Timer
+         *  -- Overrides Match Timer Lock for Endgaem
+         *  -- Requested by Brad
+         * 
+         * Binding: 
+         *  -- Button 14
+         */
+        JoystickButton overrideTimer = new JoystickButton(m_driverJoystick, 14);
+        overrideTimer.whenPressed(new OverrideMatchTimer());
     }
     private void configureManipulatorBindings() {
         // Manipulator Xbox Controller

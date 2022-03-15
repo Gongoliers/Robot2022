@@ -20,5 +20,9 @@ public class EndgameTimer {
     public static void breakTimer() {
         override = true;
     }
+
+    public static void resetOverride() {
+        override = false;
+    }
     
 }
