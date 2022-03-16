@@ -3,27 +3,32 @@ package frc.robot.commands.shooter;
 import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
 
+import com.thegongoliers.input.time.Clock;
+import com.thegongoliers.input.time.RobotClock;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class Shoot extends CommandBase {
 
 	private ShooterSubsystem m_shooter;
-	private long m_startTime;
+	private double m_startTime;
+	private Clock m_clock;
 
 	public Shoot(ShooterSubsystem shooter) {
 		addRequirements(shooter);
 		m_shooter = shooter;
+		m_clock = new RobotClock();
 	}
 
 	@Override
 	public void initialize() {
-		m_startTime = System.currentTimeMillis();
+		m_startTime = m_clock.getTime();
 	}
 
 	@Override
 	public void execute() {
 		m_shooter.spin();
-		if (System.currentTimeMillis() - m_startTime >= Constants.ShooterConstants.kRampUpSeconds){
+		if (m_clock.getTime() - m_startTime >= Constants.ShooterConstants.kRampUpSeconds){
 			m_shooter.feed();
 		}
 	}

@@ -8,6 +8,7 @@ import com.thegongoliers.input.odometry.EncoderSensor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.EndgameTimer;
 import frc.robot.PhoenixMotorControllerEncoder;
@@ -53,8 +54,10 @@ public class EndgameSubsystem extends SubsystemBase {
         // Ensure that Solenoid is Unpowered
         m_unlockArms.set(false);
 
+        getMotors().setInverted(true);
+
         // Reverse One Motor Controller
-        m_leftMotor.setInverted(true); // TODO: THIS ISN'T RIGHT -- CONFIGURE
+        // m_leftMotor.setInverted(true); // TODO: THIS ISN'T RIGHT -- CONFIGURE
         /**
          * TODO: unsure of whether or not this affects Motor Controller group
          * If this does not affect MotorControllerGroup:
@@ -89,6 +92,7 @@ public class EndgameSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putNumber("Endgame", getEncoders().getDistance());
         // TODO: Enable this once encoders are in place
         // /**
         //  * This ensures that the two arms are at (about) the same height when extending / retracting

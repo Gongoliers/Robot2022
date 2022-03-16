@@ -57,15 +57,15 @@ public final class Constants {
 
     public static final double kFeederMotorTargetSpeed = 0.67;
     public static final double kOuttakeMotorTargetSpeed = 0.57;
-    public static final double kInterfaceMotorSpeed = 0.5;
+    public static final double kInterfaceMotorSpeed = 0.35;
   }
 
   public static final class AutoConstants {
     public static final double kAutoDriveToFenderSpeed = 0.5;
-    public static final double kAutoDriveToFenderSeconds = 3;
+    public static final double kAutoDriveToFenderSeconds = 4.5;
 
     public static final double kAutoDriveAwayFromFenderSpeed = -0.5;
-    public static final double kAutoDriveAwayFromFenderSeconds = 2;
+    public static final double kAutoDriveAwayFromFenderSeconds = 3.5;
   }
 
   public static final class OIConstants {

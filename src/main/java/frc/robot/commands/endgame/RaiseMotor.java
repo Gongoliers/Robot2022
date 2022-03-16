@@ -22,9 +22,9 @@ public class RaiseMotor extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        if (m_endgame.isSafe()) {
+        // if (m_endgame.isSafe()) {
             m_endgame.getMotors().set(EndgameConstants.kRaiseMotorSpeed);
-        }
+        // }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -33,7 +33,7 @@ public class RaiseMotor extends CommandBase {
         AverageEncoderSensor m_encoder = m_endgame.getEncoders();
         //  *      If not, change .getEncoders to .getEncoderDistance, have it return a variable
         //  *      and the variable will be updated in the Subsystem's perioidic
-        return m_encoder.getDistance() >= EndgameConstants.kCappedDistance;
+        return false;//m_encoder.getDistance() >= EndgameConstants.kCappedDistance;
     }
 
     // Called once after isFinished returns true

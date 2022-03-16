@@ -25,7 +25,10 @@ import frc.robot.commands.compressor.StopCompressor;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.InvertDirections;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
+import frc.robot.commands.endgame.DisengageSafetyLock;
+import frc.robot.commands.endgame.EngageSafetyLock;
 import frc.robot.commands.endgame.LowerMotorWithDelayAndSafety;
+import frc.robot.commands.endgame.OverrideMatchTimer;
 import frc.robot.commands.endgame.RaiseMotorWithDelayAndSafety;
 import frc.robot.commands.endgame.StopEndgameWithDelay;
 import frc.robot.commands.intake.DeployIntake;
@@ -115,7 +118,7 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Do Nothing", new StopAll(m_drivetrain, m_endgame, m_shooter, m_intake));
         autoChooser.addOption("System Check", new FullSystemCheck(m_drivetrain));
         autoChooser.addOption("Leave Tarmac", new LeaveTarmac(m_drivetrain));
-        autoChooser.addOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter));
+        autoChooser.addOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
     
         SmartDashboard.putData("Auto mode", autoChooser);
     }
@@ -220,9 +223,9 @@ public class RobotContainer {
          *  -- Requested by Brad
          * 
          * Binding: 
-         *  -- Button 14
+         *  -- Button 11
          */
-        JoystickButton overrideTimer = new JoystickButton(m_driverJoystick, 14);
+        JoystickButton overrideTimer = new JoystickButton(m_driverJoystick, 11);
         overrideTimer.whenPressed(new OverrideMatchTimer());
     }
     private void configureManipulatorBindings() {
@@ -262,6 +265,12 @@ public class RobotContainer {
         DPadButton raiseEndgame = new DPadButton(m_manipulatorController, Direction.UP);
         raiseEndgame.whenPressed(new RaiseMotorWithDelayAndSafety(m_endgame));
         raiseEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
+
+
+        DPadButton toggleEndgame = new DPadButton(m_manipulatorController, Direction.LEFT);
+        toggleEndgame.whenPressed(new DisengageSafetyLock(m_endgame));
+        toggleEndgame.whenReleased(new EngageSafetyLock(m_endgame));
+
 
         // NOTE ABOUT ENDGAME: STOPENDGAME AUTOMATICALLY LOCKS THE PNEUMATICS
 
