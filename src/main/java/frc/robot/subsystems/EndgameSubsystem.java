@@ -31,8 +31,8 @@ public class EndgameSubsystem extends SubsystemBase {
     private EncoderSensor m_leftEncoder;
     private EncoderSensor m_rightEncoder;
 
-    // Reckless Mode
-    private Boolean error_thrown = false;
+    // Initialize Ignoring Encoders
+    private boolean m_ignoreEncoders;
     
     public EndgameSubsystem() {
         /** Configuring Encoder Values
@@ -54,7 +54,8 @@ public class EndgameSubsystem extends SubsystemBase {
         // Ensure that Solenoid is Unpowered
         m_unlockArms.set(false);
 
-        getMotors().setInverted(true);
+        m_leftMotor.setInverted(true);
+        m_rightMotor.setInverted(true);
 
         // Reverse One Motor Controller
         // m_leftMotor.setInverted(true); // TODO: THIS ISN'T RIGHT -- CONFIGURE
@@ -66,28 +67,59 @@ public class EndgameSubsystem extends SubsystemBase {
          */
 
     }
-
-    public boolean isSafe() {
-        return EndgameTimer.getMatchTime() < 30;
-    }
     
     public void powerPneumatics(Boolean power) {
-        if (isSafe()) {
+        if (EndgameTimer.getMatchTime() < 30) {
             m_unlockArms.set(power);
         }
     }
 
-    public MotorControllerGroup getMotors() {
-        return m_motors;
+    public void setSpeed(double s) {
+        if (!leftMotorDone()) {
+            m_leftMotor.set(s);
+        }
+        if (!rightMotorDone()) {
+           m_rightMotor.set(s);
+        }
     }
 
     public AverageEncoderSensor getEncoders() {
         return new AverageEncoderSensor(m_leftEncoder, m_rightEncoder);
     }
 
+    public void resetEncoders() {
+        m_leftEncoder.reset();
+        m_rightEncoder.reset();
+    }
+
     public void stop() {
         m_motors.stopMotor();
         m_unlockArms.set(false);
+    }
+    
+    public void stopMotors() {
+        m_leftMotor.stopMotor();
+        m_rightMotor.stopMotor();
+    }
+
+    public void ignoreEncoders(boolean val) {
+        m_ignoreEncoders = val;
+    }
+
+    public boolean leftMotorDone() {
+        if (m_ignoreEncoders) {return false;}
+        if (m_leftEncoder.getVelocity() > 0) {
+            return (m_leftEncoder.getDistance() >= EndgameConstants.kCappedDistance);
+        } 
+        return (m_leftEncoder.getDistance() <= 1); //TODO: CALIBRATE ME
+    }
+
+    public boolean rightMotorDone() {
+        if (m_ignoreEncoders) {return false;}
+        if (m_rightEncoder.getVelocity() > 0) {
+            return (m_rightEncoder.getDistance() >= EndgameConstants.kCappedDistance);
+        } 
+        return (m_rightEncoder.getDistance() <= 1); //TODO: CALIBRATE ME
     }
 
     @Override

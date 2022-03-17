@@ -24,5 +24,9 @@ public class EndgameTimer {
     public static void resetOverride() {
         override = false;
     }
+
+    public static boolean isTimerBroken() {
+        return override; 
+    }
     
 }

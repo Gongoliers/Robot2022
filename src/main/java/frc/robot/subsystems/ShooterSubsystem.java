@@ -44,22 +44,32 @@ public class ShooterSubsystem extends SubsystemBase {
 		m_feederSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
 		m_outtakeSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
 
-		// Scale the shooter motors to limit the max speed
-		m_feederSpeedController.setScale(ShooterConstants.kFeederMotorTargetSpeed);
-		m_outtakeSpeedController.setScale(ShooterConstants.kOuttakeMotorTargetSpeed);
-
-		m_interfaceSpeed = ShooterConstants.kInterfaceMotorSpeed;
-
+		
 	}
-
+	
 	@Override
 	public void periodic() {
 	}
-
-	public void spin() {
+	
+	public void spinForHigh() {
+		// Scale the shooter motors to limit the max speed
+		m_feederSpeedController.setScale(ShooterConstants.kFeederMotorTargetSpeedHigh);
+		m_outtakeSpeedController.setScale(ShooterConstants.kOuttakeMotorTargetSpeedHigh);
+		m_interfaceSpeed = ShooterConstants.kInterfaceMotorSpeedHigh;
+		
 		m_feederSpeedController.set(1.0);
 		m_outtakeSpeedController.set(1.0);
-	}	
+	}
+	
+	public void spinForLow() {
+		// Scale the shooter motors to limit the max speed
+		m_feederSpeedController.setScale(ShooterConstants.kFeederMotorTargetSpeedLow);
+		m_outtakeSpeedController.setScale(ShooterConstants.kOuttakeMotorTargetSpeedLow);
+		m_interfaceSpeed = ShooterConstants.kInterfaceMotorSpeedLow;
+		
+		m_feederSpeedController.set(1.0);
+		m_outtakeSpeedController.set(1.0);
+	}
 
 	public void feed(){
 		m_interfaceMotor.set(m_interfaceSpeed);

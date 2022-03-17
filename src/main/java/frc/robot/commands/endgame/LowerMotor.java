@@ -1,8 +1,5 @@
 package frc.robot.commands.endgame;
 
-
-import com.thegongoliers.input.odometry.AverageEncoderSensor;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.EndgameSubsystem;
 import frc.robot.Constants.EndgameConstants;
@@ -10,9 +7,27 @@ import frc.robot.Constants.EndgameConstants;
 public class LowerMotor extends CommandBase{
     
     private EndgameSubsystem m_endgame;
+    private double m_speed;
+
+    /**
+     * This method uses the default speed provided in EndgameConstants
+     * @param endgame
+     */
     public LowerMotor(EndgameSubsystem endgame) {
         addRequirements(endgame);
         m_endgame = endgame;
+        m_speed = EndgameConstants.kLowerMotorSpeed;
+    }
+
+    /**
+     * This method uses a speed passed into the method LowerMotor
+     * @param endgame
+     * @param speed
+     */
+    public LowerMotor(EndgameSubsystem endgame, double speed) {
+        addRequirements(endgame);
+        m_endgame = endgame;
+        m_speed = speed;
     }
 
      // Called just before this Command runs the first time
@@ -23,23 +38,18 @@ public class LowerMotor extends CommandBase{
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        // if (m_endgame.isSafe()) {
-            m_endgame.getMotors().set(EndgameConstants.kLowerMotorSpeed);
-        // }
+        m_endgame.setSpeed(m_speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        AverageEncoderSensor m_encoder = m_endgame.getEncoders();
-        //  *      If not, change .getEncoders to .getEncoderDistance, have it return a variable
-        //  *      and the variable will be updated in the Subsystem's perioidic
-        return false;//m_encoder.getDistance() <= 1;
+        return (m_endgame.leftMotorDone() && m_endgame.rightMotorDone());
     }
 
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
-        m_endgame.getMotors().stopMotor();
+        m_endgame.stopMotors();
     }
 }

@@ -55,9 +55,13 @@ public final class Constants {
     
     public static final double kRampUpSeconds = 1.2;
 
-    public static final double kFeederMotorTargetSpeed = 0.67;
-    public static final double kOuttakeMotorTargetSpeed = 0.57;
-    public static final double kInterfaceMotorSpeed = 0.35;
+    public static final double kFeederMotorTargetSpeedHigh = 0.67;
+    public static final double kOuttakeMotorTargetSpeedHigh = 0.57;
+    public static final double kInterfaceMotorSpeedHigh = 0.35;
+
+    public static final double kFeederMotorTargetSpeedLow = 0.67;
+    public static final double kOuttakeMotorTargetSpeedLow = 0.57;
+    public static final double kInterfaceMotorSpeedLow = 0.35;
   }
 
   public static final class AutoConstants {
