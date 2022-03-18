@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -22,6 +23,7 @@ import frc.robot.commands.autonomous.FullSystemCheck;
 import frc.robot.commands.autonomous.LeaveTarmac;
 import frc.robot.commands.autonomous.LeaveTarmacAndShoot;
 import frc.robot.commands.compressor.StartCompressor;
+import frc.robot.commands.compressor.StartLimitedCompressor;
 import frc.robot.commands.compressor.StopCompressor;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.InvertDirections;
@@ -40,6 +42,7 @@ import frc.robot.commands.intake.Intake;
 import frc.robot.commands.intake.Outtake;
 import frc.robot.commands.intake.RetractIntake;
 import frc.robot.commands.shooter.Shoot;
+import frc.robot.commands.shooter.ShootLow;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.EndgameSubsystem;
@@ -258,7 +261,8 @@ public class RobotContainer {
          *  -- X button
          */
         JoystickButton startCompressor = new JoystickButton(m_manipulatorController, XboxController.Button.kX.value);
-        startCompressor.whenPressed(new StartCompressor(m_compressor));
+        startCompressor.whileHeld(new StartCompressor(m_compressor));
+        startCompressor.whenReleased(new SequentialCommandGroup(new StopCompressor(m_compressor), new StartLimitedCompressor(m_compressor, getDriverSpeed())));
 
         /**
          * Stop Compressor Command
@@ -283,9 +287,9 @@ public class RobotContainer {
         raiseEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
 
 
-        // DPadButton toggleEndgame = new DPadButton(m_manipulatorController, Direction.LEFT);
-        // toggleEndgame.whenPressed(new DisengageSafetyLock(m_endgame));
-        // toggleEndgame.whenReleased(new EngageSafetyLock(m_endgame));
+        DPadButton toggleEndgame = new DPadButton(m_manipulatorController, Direction.LEFT);
+        toggleEndgame.whenPressed(new DisengageSafetyLock(m_endgame));
+        toggleEndgame.whenReleased(new EngageSafetyLock(m_endgame));
 
 
         // NOTE ABOUT ENDGAME: STOPENDGAME AUTOMATICALLY LOCKS THE PNEUMATICS
@@ -333,6 +337,16 @@ public class RobotContainer {
         });
         shootBalls.whileHeld(new Shoot(m_shooter));
         //TODO: interrupted
+
+        /**
+         * Shoot Balls Low
+         *  -- Shoots Balls
+         * 
+         * Binding: 
+         *  -- Right Bumper
+         */
+        JoystickButton shootBallsLow = new JoystickButton(m_manipulatorController, XboxController.Button.kRightBumper.value);
+        shootBallsLow.whenPressed(new ShootLow(m_shooter));
 
 // Intake Subsystem
 

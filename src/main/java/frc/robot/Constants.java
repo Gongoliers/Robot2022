@@ -87,4 +87,8 @@ public final class Constants {
     public static final double kRaiseMotorSpeed = 0.1;
     public static final double kLowerMotorSpeed = -0.1;
   }
+
+  public static final class CompressorConstants {
+    public static final double kLimitedCompressorMaxDriveSpeed = 0.4;
+  }
 }
