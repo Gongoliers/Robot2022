@@ -1,7 +1,5 @@
 package frc.robot.commands.endgame;
 
-import com.thegongoliers.input.odometry.EncoderSensor;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.EndgameSubsystem;
 import frc.robot.Constants.EndgameConstants;

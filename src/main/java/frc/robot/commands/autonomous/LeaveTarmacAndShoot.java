@@ -5,7 +5,6 @@ import frc.robot.Constants;
 import frc.robot.commands.drivetrain.Drive;
 import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.Intake;
-import frc.robot.commands.shooter.Shoot;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
