@@ -72,7 +72,7 @@ public class RobotContainer {
     /**
      * Initiating CompressorSubsystem
      */
-    private final CompressorSubsystem m_compressor = new CompressorSubsystem();
+    //private final CompressorSubsystem m_compressor = new CompressorSubsystem();
 
     /**
      * Initiating SendableChooser
@@ -242,7 +242,7 @@ public class RobotContainer {
          *  -- X button
          */
         JoystickButton startCompressor = new JoystickButton(m_manipulatorController, XboxController.Button.kX.value);
-        startCompressor.whenPressed(new StartCompressor(m_compressor));
+        //startCompressor.whenPressed(new StartCompressor(m_compressor));
 
         /**
          * Stop Compressor Command
@@ -252,7 +252,7 @@ public class RobotContainer {
          *  -- B button
          */
         JoystickButton stopCompressor = new JoystickButton(m_manipulatorController, XboxController.Button.kB.value);
-        stopCompressor.whenPressed(new StopCompressor(m_compressor));
+       // stopCompressor.whenPressed(new StopCompressor(m_compressor));
 
 // ENDGAME SUBSYSTEM
         /** 
@@ -355,10 +355,10 @@ public class RobotContainer {
     }
 
     public void startCompressor(){
-        m_compressor.start();
+       // m_compressor.start();
     }
 
     public void stopCompressor(){
-        m_compressor.stop();
+      //  m_compressor.stop();
     }
 }

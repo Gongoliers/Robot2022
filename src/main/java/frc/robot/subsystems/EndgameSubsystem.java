@@ -54,8 +54,6 @@ public class EndgameSubsystem extends SubsystemBase {
         // Ensure that Solenoid is Unpowered
         m_unlockArms.set(false);
 
-        getMotors().setInverted(true);
-
         // Reverse One Motor Controller
         // m_leftMotor.setInverted(true); // TODO: THIS ISN'T RIGHT -- CONFIGURE
         /**
@@ -78,7 +76,8 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public MotorControllerGroup getMotors() {
-        return m_motors;
+        // return m_motors;
+        return new MotorControllerGroup(m_rightMotor);
     }
 
     public AverageEncoderSensor getEncoders() {
@@ -92,7 +91,9 @@ public class EndgameSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Endgame", getEncoders().getDistance());
+        SmartDashboard.putNumber("Endgame LEFT", m_leftEncoder.getDistance());
+        SmartDashboard.putNumber("Endgame RIGHT", m_rightEncoder.getDistance());
+
         // TODO: Enable this once encoders are in place
         // /**
         //  * This ensures that the two arms are at (about) the same height when extending / retracting
@@ -107,15 +108,15 @@ public class EndgameSubsystem extends SubsystemBase {
         //  * This is a safety check. We will implement a check within the command, 
         //  *  but this acts as a catch all => ensures that the Endgame does not over
         //  *  retract
-        // */
-        // if (m_leftEncoder.getDistance() > (EndgameConstants.kCappedDistance + 1)) {
+        // // */
+        // if (m_leftEncoder.getDistance() > (EndgameConstants.kCappedDistance)) {
         //     // TODO: Ensure that this aligns with the direction that the sensor
         //     // returns --> i.e. make sure positive velocity = retracting
         //     if (m_leftEncoder.getVelocity() > 0) {
         //         m_leftMotor.stopMotor();
         //     }
         // }
-        // if (m_rightEncoder.getDistance() > (EndgameConstants.kCappedDistance + 1)) {
+        // if (m_rightEncoder.getDistance() > (EndgameConstants.kCappedDistance)) {
         //     // TODO: Ensure that this aligns with the direction that the sensor
         //     // returns --> i.e. make sure positive velocity = retracting
         //     if (m_rightEncoder.getVelocity() > 0) {
