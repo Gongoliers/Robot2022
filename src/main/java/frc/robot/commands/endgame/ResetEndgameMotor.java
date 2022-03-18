@@ -4,16 +4,18 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.EndgameSubsystem;
 import frc.robot.Constants.EndgameConstants;
 
-public class LowerMotor extends CommandBase{
+public class ResetEndgameMotor extends CommandBase{
     
     private EndgameSubsystem m_endgame;
     private double m_speed;
+    private double initial_encoder_A;
+    private double initial_encoder_B;
 
     /**
      * This method uses the default speed provided in EndgameConstants
      * @param endgame
      */
-    public LowerMotor(EndgameSubsystem endgame) {
+    public ResetEndgameMotor(EndgameSubsystem endgame) {
         addRequirements(endgame);
         m_endgame = endgame;
         m_speed = EndgameConstants.kLowerMotorSpeed;
@@ -24,7 +26,7 @@ public class LowerMotor extends CommandBase{
      * @param endgame
      * @param speed
      */
-    public LowerMotor(EndgameSubsystem endgame, double speed) {
+    public ResetEndgameMotor(EndgameSubsystem endgame, double speed) {
         addRequirements(endgame);
         m_endgame = endgame;
         m_speed = speed;
@@ -33,6 +35,8 @@ public class LowerMotor extends CommandBase{
      // Called just before this Command runs the first time
     @Override
     public void initialize() {
+        initial_encoder_A = m_endgame.getAEncoder().getDistance();
+        initial_encoder_B = m_endgame.getBEncoder().getDistance();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -44,7 +48,7 @@ public class LowerMotor extends CommandBase{
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return (m_endgame.AMotorDone() && m_endgame.BMotorDone());
+        return ((initial_encoder_A - EndgameConstants.kCappedDistance > m_endgame.getAEncoder().getDistance()) && (initial_encoder_B - EndgameConstants.kCappedDistance > m_endgame.getBEncoder().getDistance()));
     }
 
     // Called once after isFinished returns true

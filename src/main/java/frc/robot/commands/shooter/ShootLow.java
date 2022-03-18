@@ -8,13 +8,13 @@ import com.thegongoliers.input.time.RobotClock;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class Shoot extends CommandBase {
+public class ShootLow extends CommandBase {
 
 	private ShooterSubsystem m_shooter;
 	private double m_startTime;
 	private Clock m_clock;
 
-	public Shoot(ShooterSubsystem shooter) {
+	public ShootLow(ShooterSubsystem shooter) {
 		addRequirements(shooter);
 		m_shooter = shooter;
 		m_clock = new RobotClock();

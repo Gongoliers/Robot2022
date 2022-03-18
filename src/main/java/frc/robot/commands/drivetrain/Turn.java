@@ -28,7 +28,7 @@ public class Turn extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        m_drivetrain.arcadeDrive(0, m_speed); // FIXME: Add arcadeDrive to subsystem
+        m_drivetrain.arcadeDrive(0, m_speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

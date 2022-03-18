@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OIConstants;
 import frc.robot.DPadButton.Direction;
 import frc.robot.commands.StopAll;
@@ -21,21 +23,27 @@ import frc.robot.commands.autonomous.FullSystemCheck;
 import frc.robot.commands.autonomous.LeaveTarmac;
 import frc.robot.commands.autonomous.LeaveTarmacAndShoot;
 import frc.robot.commands.compressor.StartCompressor;
+import frc.robot.commands.compressor.StartLimitedCompressor;
 import frc.robot.commands.compressor.StopCompressor;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.InvertDirections;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
+import frc.robot.commands.endgame.DisableEncoderChecks;
 import frc.robot.commands.endgame.DisengageSafetyLock;
 import frc.robot.commands.endgame.EngageSafetyLock;
+import frc.robot.commands.endgame.OverrideEndgame;
+import frc.robot.commands.endgame.ResetEndgameOverride;
 import frc.robot.commands.endgame.LowerMotor;
 import frc.robot.commands.endgame.OverrideMatchTimer;
 import frc.robot.commands.endgame.RaiseMotorWithDelayAndSafety;
+import frc.robot.commands.endgame.ResetEndgame;
 import frc.robot.commands.endgame.StopEndgameWithDelay;
 import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.Intake;
 import frc.robot.commands.intake.Outtake;
 import frc.robot.commands.intake.RetractIntake;
 import frc.robot.commands.shooter.Shoot;
+import frc.robot.commands.shooter.ShootLow;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.EndgameSubsystem;
@@ -148,6 +156,18 @@ public class RobotContainer {
         }, 500);
     }
 
+    public void resetEndgameEncoders() {
+        m_endgame.resetEncoders();
+    }
+
+    public void retractEndgame() {
+        // GO FROM 29.5 => 5 in
+        Command retract_endgame = new ResetEndgame(m_endgame);
+        retract_endgame.schedule();
+
+        
+    }
+
     /**
      * 
      * END OF FRC CODE
@@ -226,7 +246,7 @@ public class RobotContainer {
          *  -- Button 11
          */
         JoystickButton overrideTimer = new JoystickButton(m_driverJoystick, 11);
-        overrideTimer.whenPressed(new OverrideMatchTimer());
+        overrideTimer.whenPressed(new ResetEndgameOverride());
     }
     private void configureManipulatorBindings() {
         // Manipulator Xbox Controller
@@ -242,7 +262,8 @@ public class RobotContainer {
          *  -- X button
          */
         JoystickButton startCompressor = new JoystickButton(m_manipulatorController, XboxController.Button.kX.value);
-        startCompressor.whenPressed(new StartCompressor(m_compressor));
+        startCompressor.whileHeld(new StartCompressor(m_compressor));
+        startCompressor.whenReleased(new SequentialCommandGroup(new StopCompressor(m_compressor), new StartLimitedCompressor(m_compressor, getDriverSpeed())));
 
         /**
          * Stop Compressor Command
@@ -285,6 +306,21 @@ public class RobotContainer {
         lowerEndgame.whenPressed(new LowerMotor(m_endgame));
         lowerEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
 
+        /**
+         * Break Safety
+         *  -- Disables timer safety
+         * 
+         * Binding: 
+         *  -- Right DPAD Button
+         */
+        Trigger endgameEnabled = new Trigger(EndgameTimer::isTimerBroken).negate();
+        Trigger overrideEndgame = new DPadButton(m_manipulatorController, Direction.RIGHT).and(endgameEnabled);
+        overrideEndgame.whenActive(new OverrideEndgame());
+
+        Trigger endgameDisabled = new Trigger(EndgameTimer::isTimerBroken);
+        Trigger overrideEncoders = new DPadButton(m_manipulatorController, Direction.RIGHT).and(endgameDisabled);
+        overrideEncoders.whenActive(new DisableEncoderChecks(m_endgame));
+
 // Shooter Subsystem
 
         /**
@@ -302,6 +338,16 @@ public class RobotContainer {
         });
         shootBalls.whileHeld(new Shoot(m_shooter));
         //TODO: interrupted
+
+        /**
+         * Shoot Balls Low
+         *  -- Shoots Balls
+         * 
+         * Binding: 
+         *  -- Right Bumper
+         */
+        JoystickButton shootBallsLow = new JoystickButton(m_manipulatorController, XboxController.Button.kRightBumper.value);
+        shootBallsLow.whenPressed(new ShootLow(m_shooter));
 
 // Intake Subsystem
 

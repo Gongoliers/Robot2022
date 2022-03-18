@@ -20,4 +20,8 @@ public class CompressorSubsystem extends SubsystemBase {
     public void stop(){
         m_compressor.disable();
     }
+
+    public boolean enabled(){
+        return m_compressor.enabled();
+    }
 }
