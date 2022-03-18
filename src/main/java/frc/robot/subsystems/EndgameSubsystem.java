@@ -7,7 +7,6 @@ import com.thegongoliers.input.odometry.EncoderSensor;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.EndgameTimer;
@@ -16,20 +15,17 @@ import frc.robot.Constants.EndgameConstants;
 
 public class EndgameSubsystem extends SubsystemBase {
     // Left Motor (when standing behind battery)
-    private final WPI_TalonSRX m_leftMotor = new WPI_TalonSRX(EndgameConstants.kLeftMotorCAN);
+    private final WPI_TalonSRX m_motorA = new WPI_TalonSRX(EndgameConstants.kMotorACAN);
 
     // Right Motor (when standing behind battery)
-    private final WPI_TalonSRX m_rightMotor = new WPI_TalonSRX(EndgameConstants.kRightMotorCAN);
-
-    // Binding Motors Together
-    private final MotorControllerGroup m_motors = new MotorControllerGroup(m_leftMotor, m_rightMotor);
+    private final WPI_TalonSRX m_motorB = new WPI_TalonSRX(EndgameConstants.kMotorBCAN);
 
     // Initializing Pneumatics
     private final Solenoid m_unlockArms = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidCAN);
     
     // Initializing EncoderSensor
-    private EncoderSensor m_leftEncoder;
-    private EncoderSensor m_rightEncoder;
+    private EncoderSensor m_encoderA;
+    private EncoderSensor m_encoderB;
 
     // Initialize Ignoring Encoders
     private boolean m_ignoreEncoders;
@@ -43,28 +39,16 @@ public class EndgameSubsystem extends SubsystemBase {
          * See __ for documentation regarding FeedbackDevice Constants:
          * https://store.ctr-electronics.com/content/api/cpp/html/namespacectre_1_1phoenix_1_1motorcontrol.html#a76df6b51b79bdd3710ddcd6ef43050e7
          */
-        m_leftEncoder = new PhoenixMotorControllerEncoder(m_leftMotor, FeedbackDevice.CTRE_MagEncoder_Relative);
-        m_rightEncoder = new PhoenixMotorControllerEncoder(m_rightMotor, FeedbackDevice.CTRE_MagEncoder_Relative);
+        m_encoderA = new PhoenixMotorControllerEncoder(m_motorA, FeedbackDevice.CTRE_MagEncoder_Relative);
+        m_encoderB = new PhoenixMotorControllerEncoder(m_motorB, FeedbackDevice.CTRE_MagEncoder_Relative);
 
-        m_leftEncoder.reset();
-        m_rightEncoder.reset();
+        m_encoderA.reset();
+        m_encoderB.reset();
         // TODO: verify all encoders
 
 
         // Ensure that Solenoid is Unpowered
         m_unlockArms.set(false);
-
-        m_leftMotor.setInverted(true);
-        m_rightMotor.setInverted(true);
-
-        // Reverse One Motor Controller
-        // m_leftMotor.setInverted(true); // TODO: THIS ISN'T RIGHT -- CONFIGURE
-        /**
-         * TODO: unsure of whether or not this affects Motor Controller group
-         * If this does not affect MotorControllerGroup:
-         *      1. Change getMotors to getLeftMotor & getRightMotor
-         *      2. Change getMotors to setMotors and set from there
-         */
 
     }
     
@@ -75,85 +59,69 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double s) {
-        if (!leftMotorDone()) {
-            m_leftMotor.set(s);
-        }
-        if (!rightMotorDone()) {
-           m_rightMotor.set(s);
+        if (s > 0) { // s > 0 GOING UP !!!!
+            if (m_encoderA.getVelocity() > m_encoderB.getVelocity()) {
+                if (!AMotorDone()) {
+                    // Lowering Motor A speed
+                    m_motorA.set((m_encoderB.getVelocity() / m_encoderA.getVelocity())*s);
+                }
+                if (!BMotorDone()) {
+                   m_motorB.set(s);
+                }
+            } else if (m_encoderA.getVelocity() < m_encoderB.getVelocity()) {
+                if (!AMotorDone()) {
+                    m_motorA.set(s);
+                } 
+                if (!BMotorDone()) {
+                    m_motorB.set((m_encoderA.getVelocity() / m_encoderB.getVelocity())*s);
+                }
+            }
         }
     }
 
     public AverageEncoderSensor getEncoders() {
-        return new AverageEncoderSensor(m_leftEncoder, m_rightEncoder);
+        return new AverageEncoderSensor(m_encoderA, m_encoderB);
     }
 
     public void resetEncoders() {
-        m_leftEncoder.reset();
-        m_rightEncoder.reset();
+        m_encoderA.reset();
+        m_encoderB.reset();
     }
 
     public void stop() {
-        m_motors.stopMotor();
+        m_motorA.stopMotor();
+        m_motorB.stopMotor();
         m_unlockArms.set(false);
     }
     
     public void stopMotors() {
-        m_leftMotor.stopMotor();
-        m_rightMotor.stopMotor();
+        m_motorA.stopMotor();
+        m_motorB.stopMotor();
     }
 
     public void ignoreEncoders(boolean val) {
         m_ignoreEncoders = val;
     }
 
-    public boolean leftMotorDone() {
+    public boolean AMotorDone() {
         if (m_ignoreEncoders) {return false;}
-        if (m_leftEncoder.getVelocity() > 0) {
-            return (m_leftEncoder.getDistance() >= EndgameConstants.kCappedDistance);
+        if (m_motorA.get() > 0) {
+            return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
         } 
-        return (m_leftEncoder.getDistance() <= 1); //TODO: CALIBRATE ME
+        return (m_encoderA.getDistance() <= 1); //TODO: CALIBRATE ME
     }
 
-    public boolean rightMotorDone() {
+    public boolean BMotorDone() {
         if (m_ignoreEncoders) {return false;}
-        if (m_rightEncoder.getVelocity() > 0) {
-            return (m_rightEncoder.getDistance() >= EndgameConstants.kCappedDistance);
+        if (m_motorB.get() > 0) {
+            return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
         } 
-        return (m_rightEncoder.getDistance() <= 1); //TODO: CALIBRATE ME
+        return (m_encoderB.getDistance() <= 1); //TODO: CALIBRATE ME
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Endgame", getEncoders().getDistance());
-        // TODO: Enable this once encoders are in place
-        // /**
-        //  * This ensures that the two arms are at (about) the same height when extending / retracting
-        //  * If an error is resulted, the code will stop the motors, HOWEVER, if the driver tries to 
-        //  * operate the endgame subsystem again, no error will occur. (DOUBLE SAFETY CHECK)
-        //  */
-        // if ((m_leftEncoder.getDistance() + 2 > m_rightEncoder.getDistance()) && !error_thrown) {
-        //     m_motors.stopMotor();
-        //     error_thrown = true;
-        // }
-        // /** 
-        //  * This is a safety check. We will implement a check within the command, 
-        //  *  but this acts as a catch all => ensures that the Endgame does not over
-        //  *  retract
-        // */
-        // if (m_leftEncoder.getDistance() > (EndgameConstants.kCappedDistance + 1)) {
-        //     // TODO: Ensure that this aligns with the direction that the sensor
-        //     // returns --> i.e. make sure positive velocity = retracting
-        //     if (m_leftEncoder.getVelocity() > 0) {
-        //         m_leftMotor.stopMotor();
-        //     }
-        // }
-        // if (m_rightEncoder.getDistance() > (EndgameConstants.kCappedDistance + 1)) {
-        //     // TODO: Ensure that this aligns with the direction that the sensor
-        //     // returns --> i.e. make sure positive velocity = retracting
-        //     if (m_rightEncoder.getVelocity() > 0) {
-        //         m_rightMotor.stopMotor();
-        //     }
-        // }
     }
     
 }
