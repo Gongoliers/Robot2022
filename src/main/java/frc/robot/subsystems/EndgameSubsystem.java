@@ -83,6 +83,10 @@ public class EndgameSubsystem extends SubsystemBase {
         return new AverageEncoderSensor(m_encoderA, m_encoderB);
     }
 
+    public EncoderSensor getAEncoder() {return m_encoderA;}
+
+    public EncoderSensor getBEncoder() {return m_encoderB;}
+
     public void resetEncoders() {
         m_encoderA.reset();
         m_encoderB.reset();
@@ -108,7 +112,7 @@ public class EndgameSubsystem extends SubsystemBase {
         if (m_motorA.get() > 0) {
             return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
         } 
-        return (m_encoderA.getDistance() <= 1); //TODO: CALIBRATE ME
+        return (m_encoderA.getDistance() <= 10); //TODO: CALIBRATE ME
     }
 
     public boolean BMotorDone() {
@@ -116,7 +120,7 @@ public class EndgameSubsystem extends SubsystemBase {
         if (m_motorB.get() > 0) {
             return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
         } 
-        return (m_encoderB.getDistance() <= 1); //TODO: CALIBRATE ME
+        return (m_encoderB.getDistance() <= 10); //TODO: CALIBRATE ME
     }
 
     @Override
