@@ -31,9 +31,10 @@ import frc.robot.commands.drivetrain.SetTurboDrivetrain;
 import frc.robot.commands.endgame.DisableEncoderChecks;
 import frc.robot.commands.endgame.DisengageSafetyLock;
 import frc.robot.commands.endgame.EngageSafetyLock;
-import frc.robot.commands.endgame.LowerMotorWithDelayAndSafety;
 import frc.robot.commands.endgame.OverrideEndgame;
 import frc.robot.commands.endgame.ResetEndgameOverride;
+import frc.robot.commands.endgame.LowerMotor;
+import frc.robot.commands.endgame.OverrideMatchTimer;
 import frc.robot.commands.endgame.RaiseMotorWithDelayAndSafety;
 import frc.robot.commands.endgame.ResetEndgame;
 import frc.robot.commands.endgame.StopEndgameWithDelay;
@@ -302,7 +303,7 @@ public class RobotContainer {
          *  -- Down DPAD Button
          */
         DPadButton lowerEndgame = new DPadButton(m_manipulatorController, Direction.DOWN);
-        lowerEndgame.whenPressed(new LowerMotorWithDelayAndSafety(m_endgame));
+        lowerEndgame.whenPressed(new LowerMotor(m_endgame));
         lowerEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
 
         /**
