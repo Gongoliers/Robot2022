@@ -84,11 +84,12 @@ public class ShooterSubsystem extends SubsystemBase {
 	}
 
 	public void feedTime() {
+		System.out.println(feedWaitTime+""+feedStartTime);
 		if (feedWaitTime != 0.0 && m_clock.getTime() > feedWaitTime) {
 			m_interfaceMotor.set(m_interfaceSpeed);
 			feedWaitTime = 0.0;
 		}
-		else if (feedStartTime != 0.0) {
+		else if (feedStartTime == 0.0) {
 			feedStartTime = m_clock.getTime() + ShooterConstants.kInterfaceMotorRunTime;
 		} else if (feedStartTime > 0 && m_clock.getTime() > feedStartTime) {
 			m_interfaceMotor.stopMotor();
