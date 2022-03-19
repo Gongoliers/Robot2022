@@ -43,6 +43,8 @@ import frc.robot.commands.endgame.LowerMotor;
 import frc.robot.commands.endgame.RaiseMotorWithDelayAndSafety;
 import frc.robot.commands.endgame.ResetEndgame;
 import frc.robot.commands.endgame.StopEndgameWithDelay;
+import frc.robot.commands.endgame.manualControlDown;
+import frc.robot.commands.endgame.manualControlUp;
 import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.Intake;
 import frc.robot.commands.intake.Outtake;
@@ -321,14 +323,13 @@ public class RobotContainer {
          *  -- Up DPAD Button
          */
         DPadButton raiseEndgame = new DPadButton(m_manipulatorController, Direction.UP);
-        raiseEndgame.whenPressed(new RaiseMotorWithDelayAndSafety(m_endgame));
+        raiseEndgame.whenPressed(new manualControlUp(m_endgame));
         raiseEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
 
 
         DPadButton toggleEndgame = new DPadButton(m_manipulatorController, Direction.LEFT);
-        toggleEndgame.toggleWhenPressed(new StartEndCommand(new DisengageSafetyLock(m_endgame), new EngageSafetyLock(m_endgame)));
-            // /new DisengageSafetyLock(m_endgame));
-        // toggleEndgame.whenReleased(new EngageSafetyLock(m_endgame));
+        toggleEndgame.toggleWhenPressed(new DisengageSafetyLock(m_endgame));
+        toggleEndgame.whenReleased(new EngageSafetyLock(m_endgame));
 
 
         // NOTE ABOUT ENDGAME: STOPENDGAME AUTOMATICALLY LOCKS THE PNEUMATICS
@@ -341,7 +342,7 @@ public class RobotContainer {
          *  -- Down DPAD Button
          */
         DPadButton lowerEndgame = new DPadButton(m_manipulatorController, Direction.DOWN);
-        lowerEndgame.whenPressed(new LowerMotor(m_endgame));
+        lowerEndgame.whenPressed(new manualControlDown(m_endgame));
         lowerEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
 
         /**
