@@ -258,7 +258,7 @@ public class RobotContainer {
          * Binding:
          *  -- Button ??
          */
-        JoystickButton manipulatorBackupFootandShoot = new JoystickButton(m_driverJoystick, 22);
+        JoystickButton manipulatorBackupFootandShoot = new JoystickButton(m_driverJoystick, 5);
         manipulatorBackupFootandShoot.whenPressed(new BackupFootAndShoot(m_drivetrain, m_shooter));
         manipulatorBackupFootandShoot.whenReleased(new ParallelCommandGroup(new StopDrivetrain(m_drivetrain), new StopShooter(m_shooter)));
 
@@ -269,7 +269,7 @@ public class RobotContainer {
          * Binding:
          *  -- Button ???
          */
-        JoystickButton manipulatorShoot = new JoystickButton(m_driverJoystick, 22);
+        JoystickButton manipulatorShoot = new JoystickButton(m_driverJoystick, 3);
         manipulatorShoot.whileHeld(new Shoot(m_shooter));
     }
     private void configureManipulatorBindings() {
