@@ -64,7 +64,7 @@ public final class Constants {
     public static final double kInterfaceMotorSpeedLow = 0.35;
 
     public static final double kInterfaceMotorRunTime = 2;
-    public static final double kInterfaceMotorWaitTfime = 1;
+    public static final double kInterfaceMotorWaitTime = 1;
   }
 
   public static final class AutoConstants {

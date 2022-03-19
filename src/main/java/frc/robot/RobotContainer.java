@@ -282,7 +282,7 @@ public class RobotContainer {
          *  -- Button ???
          */
         JoystickButton manipulatorShoot = new JoystickButton(m_driverJoystick, 3);
-        manipulatorShoot.whileHeld(new Shoot(m_shooter));
+        manipulatorShoot.whileHeld(new ShootHigh(m_shooter));
     }
     private void configureManipulatorBindings() {
         // Manipulator Xbox Controller
