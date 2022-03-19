@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.DPadButton.Direction;
 import frc.robot.commands.StopAll;
@@ -25,6 +26,7 @@ import frc.robot.commands.autonomous.LeaveTarmacAndShoot;
 import frc.robot.commands.compressor.StartCompressor;
 import frc.robot.commands.compressor.StartLimitedCompressor;
 import frc.robot.commands.compressor.StopCompressor;
+import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.InvertDirections;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
@@ -41,7 +43,7 @@ import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.Intake;
 import frc.robot.commands.intake.Outtake;
 import frc.robot.commands.intake.RetractIntake;
-import frc.robot.commands.shooter.Shoot;
+import frc.robot.commands.shooter.ShootHigh;
 import frc.robot.commands.shooter.ShootLow;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -237,6 +239,16 @@ public class RobotContainer {
         switchDirections.whenPressed(new InvertDirections(this));
 
         /**
+         * Backup for High Goal
+         *  -- Backs Up from Fender to Shoot for high goal
+         * 
+         * Binding: 
+         *  -- Button 10
+         */
+        JoystickButton positionForHigh = new JoystickButton(m_driverJoystick, 10);
+        positionForHigh.whenPressed(new DriveDistance(m_drivetrain, AutoConstants.kDistanceToDriveForHigh).withTimeout(1.5));
+
+        /**
          * Override Match Timer
          *  -- Overrides Match Timer Lock for Endgaem
          *  -- Requested by Brad
@@ -335,7 +347,7 @@ public class RobotContainer {
                 return m_manipulatorController.getRightTriggerAxis() > 0.8;
             }
         });
-        shootBalls.whileHeld(new Shoot(m_shooter));
+        shootBalls.whileHeld(new ShootHigh(m_shooter));
         //TODO: interrupted
 
         /**
