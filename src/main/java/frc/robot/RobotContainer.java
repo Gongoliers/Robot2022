@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -120,6 +119,7 @@ public class RobotContainer {
         configureDriverBindings();
         configureManipulatorBindings();
         configureAutonomous();
+        configureSmartDashboard();
 
         // m_intake.setDefaultCommand(new StopIntake(m_intake));
         // m_shooter.setDefaultCommand(new StopShooter(m_shooter));
@@ -135,6 +135,13 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
     
         SmartDashboard.putData("Auto mode", autoChooser);
+    }
+
+    /**
+     * This function adds custom options to smartdashboard
+     */
+    private void configureSmartDashboard() {
+        SmartDashboard.putData("Reset Endgame", new LowerMotor(m_endgame));
     }
 
     /** These Functions Allow the DriverOperatedCommand to get speed and rotation */
