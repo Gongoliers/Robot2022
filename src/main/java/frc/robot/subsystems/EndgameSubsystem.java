@@ -59,12 +59,12 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double s) {
-        if (s > 0) { // s > 0 GOING UP !!!!
+        if (s != 0) { // s != 0
             if (m_encoderA.getVelocity() > m_encoderB.getVelocity()) {
                 if (!AMotorDone(s)) {
                     // Lowering Motor A speed
                     m_motorA.set((m_encoderB.getVelocity() / m_encoderA.getVelocity())*s);
-                }
+                } else {System.out.println("MOTOR A DONE");}
                 if (!BMotorDone(s)) {
                    m_motorB.set(s);
                 }
@@ -74,8 +74,15 @@ public class EndgameSubsystem extends SubsystemBase {
                 } 
                 if (!BMotorDone(s)) {
                     m_motorB.set((m_encoderA.getVelocity() / m_encoderB.getVelocity())*s);
-                }
+                } 
+            } else {
+                m_motorA.set(s);
+                m_motorB.set(s);
             }
+            System.out.println("SPEEDS : \nMOTOR A:");
+            System.out.println(m_motorA.get());
+            System.out.println("\nMOTOR B:");
+            System.out.println(m_motorB.get());
         }
     }
 
@@ -117,22 +124,24 @@ public class EndgameSubsystem extends SubsystemBase {
 
     public boolean AMotorDone(double speed) {
         if (m_ignoreEncoders) {
-            System.out.println("ENDGAME SUBSYSTEM: Time Locked");
+            System.out.println("ENDGAME SUBSYSTEM: Ignoring Encoders");
             return false;}
         if (speed > 0) {
+            System.out.println("ENDGAME ENCODER A: "+ m_encoderA.getDistance());
             return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
         } 
-        return (m_encoderA.getDistance() <= 0); //TODO: CALIBRATE ME
+        return (m_encoderA.getDistance() ); //TODO: CALIBRATE ME
     }
 
     public boolean BMotorDone(double speed) {
         if (m_ignoreEncoders) {
-            System.out.println("ENDGAME SUBSYSTEM: Time Locked");
+            System.out.println("ENDGAME SUBSYSTEM: Ignoring Encoders");
             return false;}
         if (speed > 0) {
+            System.out.println("ENDGAME ENCODER B: "+ m_encoderB.getDistance());
             return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
         } 
-        return (m_encoderB.getDistance() <= 0); //TODO: CALIBRATE ME
+        return (m_encoderB.getDistance() ); //TODO: CALIBRATE ME
     }
 
     @Override
