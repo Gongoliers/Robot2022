@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -20,7 +21,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.DPadButton.Direction;
 import frc.robot.commands.StopAll;
-import frc.robot.commands.autonomous.BackupFootAndShoot;
+import frc.robot.commands.autonomous.BackupAndShoot;
 import frc.robot.commands.autonomous.EnableTargetingAlignToTarget;
 import frc.robot.commands.autonomous.FullSystemCheck;
 import frc.robot.commands.autonomous.LeaveTarmac;
@@ -271,7 +272,7 @@ public class RobotContainer {
          *  -- Button ??
          */
         JoystickButton manipulatorBackupFootandShoot = new JoystickButton(m_driverJoystick, 5);
-        manipulatorBackupFootandShoot.whenPressed(new BackupFootAndShoot(m_drivetrain, m_shooter));
+        manipulatorBackupFootandShoot.whenPressed(new BackupAndShoot(m_drivetrain, m_shooter));
         manipulatorBackupFootandShoot.whenReleased(new ParallelCommandGroup(new StopDrivetrain(m_drivetrain), new StopShooter(m_shooter)));
 
         /**
@@ -282,7 +283,7 @@ public class RobotContainer {
          *  -- Button ???
          */
         JoystickButton manipulatorShoot = new JoystickButton(m_driverJoystick, 3);
-        manipulatorShoot.whileHeld(new Shoot(m_shooter));
+        manipulatorShoot.whileHeld(new ShootHigh(m_shooter));
     }
     private void configureManipulatorBindings() {
         // Manipulator Xbox Controller
@@ -325,8 +326,9 @@ public class RobotContainer {
 
 
         DPadButton toggleEndgame = new DPadButton(m_manipulatorController, Direction.LEFT);
-        toggleEndgame.whenPressed(new DisengageSafetyLock(m_endgame));
-        toggleEndgame.whenReleased(new EngageSafetyLock(m_endgame));
+        toggleEndgame.toggleWhenPressed(new StartEndCommand(new DisengageSafetyLock(m_endgame), new EngageSafetyLock(m_endgame)));
+            // /new DisengageSafetyLock(m_endgame));
+        // toggleEndgame.whenReleased(new EngageSafetyLock(m_endgame));
 
 
         // NOTE ABOUT ENDGAME: STOPENDGAME AUTOMATICALLY LOCKS THE PNEUMATICS

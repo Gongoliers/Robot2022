@@ -27,7 +27,7 @@ public final class Constants {
         public static final double kInactivityThresholdSeconds = 1.0;
 
         // Voltage Regulation
-        public static final double kNormalVoltage = 5.25;
+        public static final double kNormalVoltage = 7;
         public static final double kFastVoltage = 10;
 
         // Power Control
@@ -64,7 +64,7 @@ public final class Constants {
     public static final double kInterfaceMotorSpeedLow = 0.35;
 
     public static final double kInterfaceMotorRunTime = 2;
-    public static final double kInterfaceMotorWaitTfime = 1;
+    public static final double kInterfaceMotorWaitTime = 1.2;
   }
 
   public static final class AutoConstants {
@@ -88,11 +88,12 @@ public final class Constants {
     public static final int kMotorACAN = 20; // LEFT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kMotorBCAN = 21; // RIGHT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kSolenoidCAN = 7; // CAN PORT OF SOLENOID
-    public static final int kCappedDistance = 29000; // TODO: Configure this | this controls the amount the distance the motor should travel when raising / lowering the endgame system
-    public static final double kRaiseMotorSpeedA = 0.14;
-    public static final double kRaiseMotorSpeedB = 0.1;
-    public static final double kLowerMotorSpeedA = -0.06;
-    public static final double kLowerMotorSpeedB = -0.1;
+    public static final int kCappedDistanceA = 31000; // TODO: Configure this | this controls the amount the distance the motor should travel when raising / lowering the endgame system
+    public static final int kCappedDistanceB = 28700; // TODO: Configure this | this controls the amount the distance the motor should travel when raising / lowering the endgame system
+    public static final double kRaiseMotorSpeedA = 0.11*3;
+    public static final double kRaiseMotorSpeedB = 0.1*3;
+    public static final double kLowerMotorSpeedA = -0.09*5;
+    public static final double kLowerMotorSpeedB = -0.1*5;
     public static final int kLimitSwitchAPort = 1;
     public static final int kLimitSwitchBPort = 0;
   }

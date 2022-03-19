@@ -58,6 +58,12 @@ public class EndgameSubsystem extends SubsystemBase {
 
     }
 
+    public void manualControl(Double speed) {
+        m_unlockArms.set(true);
+        m_motorA.set(speed);
+        m_motorB.set(speed);
+    }
+
     public void powerPneumatics(Boolean power) {
         if (EndgameTimer.getMatchTime() < 30) {
             m_unlockArms.set(power);
@@ -133,17 +139,16 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public boolean AMotorDone(double speed) {
-        return true;
-        // if (m_Adone && speed > 0) {
-        //     m_Adone = false;}
-        // if (speed > 0) {
-        //     if (m_ignoreEncoders) {
-        //         return false;
-        //     } return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
-        // } else if (speed < 0) {
-        //     if (!m_Adone && !m_limitSwitchA.isTriggered()) {m_Adone = true;}
-        //     return (m_Adone);
-        // } else return false;
+        if (m_Adone && speed > 0) {
+            m_Adone = false;}
+        if (speed > 0) {
+            if (m_ignoreEncoders) {
+                return false;
+            } return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistanceA);
+        } else if (speed < 0) {
+            if (!m_Adone && !m_limitSwitchA.isTriggered()) {m_Adone = true;}
+            return (m_Adone);
+        } else return false;
     }
 
     public boolean BMotorDone(double speed) {
@@ -152,7 +157,7 @@ public class EndgameSubsystem extends SubsystemBase {
         if (speed > 0) {
             if (m_ignoreEncoders) {
                 return false;
-            } return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
+            } return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistanceB);
         } else if (speed < 0) {
             if (!m_Bdone && !m_limitSwitchB.isTriggered()) {
                 m_Bdone = true;}
@@ -163,7 +168,7 @@ public class EndgameSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Endgame", getEncoders().getDistance());
-        System.out.println("ENC A:"+m_encoderA.getDistance()+"ENC B"+m_encoderB.getDistance()+"A"+AMotorDone()+"B"+BMotorDone());
+        //System.out.println("ENC A:"+m_encoderA.getDistance()+"ENC B"+m_encoderB.getDistance()+"A"+AMotorDone()+"B"+BMotorDone());
     }
 
 }
