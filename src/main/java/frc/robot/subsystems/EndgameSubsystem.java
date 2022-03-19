@@ -4,7 +4,9 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.thegongoliers.input.odometry.AverageEncoderSensor;
 import com.thegongoliers.input.odometry.EncoderSensor;
+import com.thegongoliers.input.switches.LimitSwitch;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,6 +31,10 @@ public class EndgameSubsystem extends SubsystemBase {
 
     // Initialize Ignoring Encoders
     private boolean m_ignoreEncoders;
+
+    // Initialize Limit Switches
+    private DigitalInput m_limitSwitchA;
+    private DigitalInput m_limitSwitchB;
     
     public EndgameSubsystem() {
         /** Configuring Encoder Values
@@ -41,6 +47,9 @@ public class EndgameSubsystem extends SubsystemBase {
          */
         m_encoderA = new PhoenixMotorControllerEncoder(m_motorA, FeedbackDevice.CTRE_MagEncoder_Relative);
         m_encoderB = new PhoenixMotorControllerEncoder(m_motorB, FeedbackDevice.CTRE_MagEncoder_Relative);
+
+        m_limitSwitchA = new DigitalInput(EndgameConstants.kLimitSwitchAPort);
+        m_limitSwitchB = new DigitalInput(EndgameConstants.kLimitSwitchBPort);
 
         m_encoderA.reset();
         m_encoderB.reset();
@@ -118,30 +127,36 @@ public class EndgameSubsystem extends SubsystemBase {
         return AMotorDone(m_motorA.get());
     }
 
-    public boolean BMotorDone() {
-        return BMotorDone(m_motorB.get());
-    }
-
     public boolean AMotorDone(double speed) {
+        if (speed == 0) {return false;}
         if (m_ignoreEncoders) {
             System.out.println("ENDGAME SUBSYSTEM: Ignoring Encoders");
             return false;}
         if (speed > 0) {
             System.out.println("ENDGAME ENCODER A: "+ m_encoderA.getDistance());
             return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
-        } 
-        return (m_encoderA.getDistance() ); //TODO: CALIBRATE ME
+        } else {
+            // SPEED IS DECREASING
+            return m_limitSwitchA.get();
+        }
+    }
+
+    public boolean BMotorDone() {
+        return BMotorDone(m_motorB.get());
     }
 
     public boolean BMotorDone(double speed) {
+        if (speed == 0) {return false;}
         if (m_ignoreEncoders) {
             System.out.println("ENDGAME SUBSYSTEM: Ignoring Encoders");
             return false;}
         if (speed > 0) {
             System.out.println("ENDGAME ENCODER B: "+ m_encoderB.getDistance());
             return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
-        } 
-        return (m_encoderB.getDistance() ); //TODO: CALIBRATE ME
+        } else {
+            // SPEED IS DECREASING
+            return m_limitSwitchB.get();
+        }
     }
 
     @Override

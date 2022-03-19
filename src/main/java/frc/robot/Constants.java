@@ -86,6 +86,8 @@ public final class Constants {
     public static final int kCappedDistance = 29000; // TODO: Configure this | this controls the amount the distance the motor should travel when raising / lowering the endgame system
     public static final double kRaiseMotorSpeed = 0.1;
     public static final double kLowerMotorSpeed = -0.1;
+    public static final int kLimitSwitchAPort = 1;
+    public static final int kLimitSwitchBPort = 1;
   }
 
   public static final class CompressorConstants {
