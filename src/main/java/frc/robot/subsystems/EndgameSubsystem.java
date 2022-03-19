@@ -60,8 +60,12 @@ public class EndgameSubsystem extends SubsystemBase {
 
     public void manualControl(Double speed) {
         m_unlockArms.set(true);
-        m_motorA.set(speed);
-        m_motorB.set(speed);
+        if (!m_limitSwitchA.isTriggered()) {
+            m_motorA.set(speed);
+        }
+        if (!m_limitSwitchB.isTriggered()) {
+            m_motorB.set(speed);
+        }
     }
 
     public void powerPneumatics(Boolean power) {
