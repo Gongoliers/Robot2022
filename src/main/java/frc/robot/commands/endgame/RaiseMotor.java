@@ -20,17 +20,19 @@ public class RaiseMotor extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        m_endgame.setSpeed(EndgameConstants.kRaiseMotorSpeed);
+        System.out.println("EXECUTING");
+        m_endgame.setSpeed(EndgameConstants.kRaiseMotorSpeedA, EndgameConstants.kRaiseMotorSpeedB);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return (m_endgame.AMotorDone(EndgameConstants.kRaiseMotorSpeed) && m_endgame.BMotorDone(EndgameConstants.kRaiseMotorSpeed));
+        return (m_endgame.AMotorDone(EndgameConstants.kRaiseMotorSpeedA) && m_endgame.BMotorDone(EndgameConstants.kRaiseMotorSpeedB));
     }
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
+        System.out.println("DONE!");
         m_endgame.stopMotors();
     }
 }

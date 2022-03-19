@@ -62,6 +62,9 @@ public final class Constants {
     public static final double kFeederMotorTargetSpeedLow = 0.35;
     public static final double kOuttakeMotorTargetSpeedLow = 0.3;
     public static final double kInterfaceMotorSpeedLow = 0.35;
+
+    public static final double kInterfaceMotorRunTime = 2;
+    public static final double kInterfaceMotorWaitTfime = 1;
   }
 
   public static final class AutoConstants {
@@ -80,12 +83,16 @@ public final class Constants {
 
   public static final class EndgameConstants {
     public static final double kDelayToUnlockPneumatics = 1.0; // THIS IS THE DELAY BETWEEN THE MOTORS SPINNGING AND THE PNEUMATICS BEING TOLD TO DISENGAGE
-    public static final int kMotorACAN = 21; // LEFT OF BATTERY (WHEN STANDING BEHIND BATTERY)
-    public static final int kMotorBCAN = 20; // RIGHT OF BATTERY (WHEN STANDING BEHIND BATTERY)
+    public static final int kMotorACAN = 20; // LEFT OF BATTERY (WHEN STANDING BEHIND BATTERY)
+    public static final int kMotorBCAN = 21; // RIGHT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kSolenoidCAN = 7; // CAN PORT OF SOLENOID
     public static final int kCappedDistance = 29000; // TODO: Configure this | this controls the amount the distance the motor should travel when raising / lowering the endgame system
-    public static final double kRaiseMotorSpeed = 0.1;
-    public static final double kLowerMotorSpeed = -0.1;
+    public static final double kRaiseMotorSpeedA = 0.14;
+    public static final double kRaiseMotorSpeedB = 0.1;
+    public static final double kLowerMotorSpeedA = -0.06;
+    public static final double kLowerMotorSpeedB = -0.1;
+    public static final int kLimitSwitchAPort = 1;
+    public static final int kLimitSwitchBPort = 0;
   }
 
   public static final class CompressorConstants {
