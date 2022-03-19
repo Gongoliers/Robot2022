@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.EndgameSubsystem;
 import frc.robot.Constants.EndgameConstants;
 
-public class manualControlUp extends CommandBase{
+public class manualControlDown extends CommandBase{
     
     private EndgameSubsystem m_endgame;
     private double m_speedA;
@@ -14,7 +14,7 @@ public class manualControlUp extends CommandBase{
      * This method uses the default speed provided in EndgameConstants
      * @param endgame
      */
-    public manualControlUp(EndgameSubsystem endgame) {
+    public manualControlDown(EndgameSubsystem endgame) {
         addRequirements(endgame);
         m_endgame = endgame;
     }

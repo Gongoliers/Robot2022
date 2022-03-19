@@ -384,7 +384,7 @@ public class RobotContainer {
          *  -- Right Bumper
          */
         JoystickButton shootBallsLow = new JoystickButton(m_manipulatorController, XboxController.Button.kRightBumper.value);
-        shootBallsLow.whenPressed(new ShootLow(m_shooter));
+        shootBallsLow.whileHeld(new ShootLow(m_shooter));
 
 // Intake Subsystem
 
