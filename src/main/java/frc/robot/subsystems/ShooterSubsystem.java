@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import frc.robot.Constants.ShooterConstants;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.thegongoliers.input.time.Clock;
+import com.thegongoliers.input.time.RobotClock;
 import com.thegongoliers.output.actuators.GSpeedController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -11,6 +13,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
 	private final WPI_TalonSRX m_feederMotor;
 	private final WPI_TalonSRX m_outtakeMotor;
+
+	private Clock m_clock;
+	private double feedStartTime;
+	private double feedWaitTime;
 
 	/**
 	 * This motor acts as a feeder from the intake subsystem to
@@ -44,7 +50,9 @@ public class ShooterSubsystem extends SubsystemBase {
 		m_feederSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
 		m_outtakeSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
 
-		
+		m_clock = new RobotClock();
+		feedStartTime = 0.0;
+		feedWaitTime = 0.0;
 	}
 	
 	@Override
@@ -71,8 +79,23 @@ public class ShooterSubsystem extends SubsystemBase {
 		m_outtakeSpeedController.set(1.0);
 	}
 
-	public void feed(){
+	public void feedManual(){
 		m_interfaceMotor.set(m_interfaceSpeed);
+	}
+
+	public void feedTime() {
+		System.out.println(feedWaitTime+""+feedStartTime);
+		if (feedWaitTime != 0.0 && m_clock.getTime() > feedWaitTime) {
+			m_interfaceMotor.set(m_interfaceSpeed);
+			feedWaitTime = 0.0;
+		}
+		else if (feedStartTime == 0.0) {
+			feedStartTime = m_clock.getTime() + ShooterConstants.kInterfaceMotorRunTime;
+		} else if (feedStartTime > 0 && m_clock.getTime() > feedStartTime) {
+			m_interfaceMotor.stopMotor();
+			feedWaitTime = m_clock.getTime() + ShooterConstants.kInterfaceMotorWaitTime;
+			feedStartTime = 0.0;
+		}
 	}
 
 	public void stop() {

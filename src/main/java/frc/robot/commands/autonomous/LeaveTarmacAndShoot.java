@@ -18,7 +18,7 @@ public class LeaveTarmacAndShoot extends SequentialCommandGroup {
                 new LeaveTarmac(drivetrain)
             ).withTimeout(Constants.AutoConstants.kAutoDriveAwayFromFenderSeconds),
             new Drive(drivetrain, Constants.AutoConstants.kAutoDriveToFenderSpeed).withTimeout(Constants.AutoConstants.kAutoDriveToFenderSeconds),
-            new BackupFootAndShoot(drivetrain, shooter).withTimeout(8.0)
+            new BackupAndShoot(drivetrain, shooter).withTimeout(8.0)
         );
     }
 }
