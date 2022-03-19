@@ -62,6 +62,9 @@ public final class Constants {
     public static final double kFeederMotorTargetSpeedLow = 0.35;
     public static final double kOuttakeMotorTargetSpeedLow = 0.3;
     public static final double kInterfaceMotorSpeedLow = 0.35;
+
+    public static final double kInterfaceMotorRunTime = 2;
+    public static final double kInterfaceMotorWaitTfime = 1;
   }
 
   public static final class AutoConstants {
@@ -86,7 +89,7 @@ public final class Constants {
     public static final int kCappedDistance = 29000; // TODO: Configure this | this controls the amount the distance the motor should travel when raising / lowering the endgame system
     public static final double kRaiseMotorSpeed = 0.1;
     public static final double kLowerMotorSpeed = -0.1;
-    public static final int kLimitSwitchAPort = 1;
+    public static final int kLimitSwitchAPort = 0;
     public static final int kLimitSwitchBPort = 1;
   }
 
