@@ -61,18 +61,18 @@ public class EndgameSubsystem extends SubsystemBase {
     public void setSpeed(double s) {
         if (s > 0) { // s > 0 GOING UP !!!!
             if (m_encoderA.getVelocity() > m_encoderB.getVelocity()) {
-                if (!AMotorDone()) {
+                if (!AMotorDone(s)) {
                     // Lowering Motor A speed
                     m_motorA.set((m_encoderB.getVelocity() / m_encoderA.getVelocity())*s);
                 }
-                if (!BMotorDone()) {
+                if (!BMotorDone(s)) {
                    m_motorB.set(s);
                 }
             } else if (m_encoderA.getVelocity() < m_encoderB.getVelocity()) {
-                if (!AMotorDone()) {
+                if (!AMotorDone(s)) {
                     m_motorA.set(s);
                 } 
-                if (!BMotorDone()) {
+                if (!BMotorDone(s)) {
                     m_motorB.set((m_encoderA.getVelocity() / m_encoderB.getVelocity())*s);
                 }
             }
@@ -108,7 +108,9 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public boolean AMotorDone() {
-        if (m_ignoreEncoders) {return false;}
+        if (m_ignoreEncoders) {
+            System.out.println("TimeLocked");
+            return false;}
         if (m_motorA.get() > 0) {
             return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
         } 
@@ -118,6 +120,24 @@ public class EndgameSubsystem extends SubsystemBase {
     public boolean BMotorDone() {
         if (m_ignoreEncoders) {return false;}
         if (m_motorB.get() > 0) {
+            return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
+        } 
+        return (m_encoderB.getDistance() <= 0); //TODO: CALIBRATE ME
+    }
+
+    public boolean AMotorDone(double speed) {
+        if (m_ignoreEncoders) {
+            System.out.println("TimeLocked");
+            return false;}
+        if (speed > 0) {
+            return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
+        } 
+        return (m_encoderA.getDistance() <= 0); //TODO: CALIBRATE ME
+    }
+
+    public boolean BMotorDone(double speed) {
+        if (m_ignoreEncoders) {return false;}
+        if (speed > 0) {
             return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
         } 
         return (m_encoderB.getDistance() <= 0); //TODO: CALIBRATE ME
