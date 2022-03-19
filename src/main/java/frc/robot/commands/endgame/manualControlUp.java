@@ -2,13 +2,10 @@ package frc.robot.commands.endgame;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.EndgameSubsystem;
-import frc.robot.Constants.EndgameConstants;
 
 public class manualControlUp extends CommandBase{
     
     private EndgameSubsystem m_endgame;
-    private double m_speedA;
-    private double m_speedB;
 
     /**
      * This method uses the default speed provided in EndgameConstants
