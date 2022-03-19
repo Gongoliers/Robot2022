@@ -2,12 +2,13 @@ package frc.robot.commands.compressor;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CompressorSubsystem;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.CompressorConstants;
 
 public class StartLimitedCompressor extends CommandBase {
     
     private CompressorSubsystem m_compressor;
-    private double driverSpeed;
+    private RobotContainer rc;
     private boolean paused;
     private boolean end;
 
@@ -15,7 +16,7 @@ public class StartLimitedCompressor extends CommandBase {
      * This method uses the default speed provided in EndgameConstants
      * @param endgame
      */
-    public StartLimitedCompressor(CompressorSubsystem compressor, double driverSpeed) {
+    public StartLimitedCompressor(CompressorSubsystem compressor, RobotContainer rc) {
         addRequirements(compressor);
         m_compressor = compressor;
     }
@@ -23,7 +24,7 @@ public class StartLimitedCompressor extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        if (driverSpeed > CompressorConstants.kLimitedCompressorMaxDriveSpeed && m_compressor.enabled()) {
+        if (rc.getDriverSpeed() > CompressorConstants.kLimitedCompressorMaxDriveSpeed && m_compressor.enabled()) {
             paused = true;
             m_compressor.stop();
         } else {

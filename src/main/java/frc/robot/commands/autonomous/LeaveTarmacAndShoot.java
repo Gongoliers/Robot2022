@@ -2,6 +2,7 @@ package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.commands.compressor.StartLimitedCompressor;
 import frc.robot.commands.drivetrain.Drive;
 import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.Intake;
