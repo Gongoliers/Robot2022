@@ -108,26 +108,16 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public boolean AMotorDone() {
-        if (m_ignoreEncoders) {
-            System.out.println("TimeLocked");
-            return false;}
-        if (m_motorA.get() > 0) {
-            return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
-        } 
-        return (m_encoderA.getDistance() <= 0); //TODO: CALIBRATE ME
+        return AMotorDone(m_motorA.get());
     }
 
     public boolean BMotorDone() {
-        if (m_ignoreEncoders) {return false;}
-        if (m_motorB.get() > 0) {
-            return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
-        } 
-        return (m_encoderB.getDistance() <= 0); //TODO: CALIBRATE ME
+        return BMotorDone(m_motorB.get());
     }
 
     public boolean AMotorDone(double speed) {
         if (m_ignoreEncoders) {
-            System.out.println("TimeLocked");
+            System.out.println("ENDGAME SUBSYSTEM: Time Locked");
             return false;}
         if (speed > 0) {
             return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
@@ -136,7 +126,9 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public boolean BMotorDone(double speed) {
-        if (m_ignoreEncoders) {return false;}
+        if (m_ignoreEncoders) {
+            System.out.println("ENDGAME SUBSYSTEM: Time Locked");
+            return false;}
         if (speed > 0) {
             return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
         } 

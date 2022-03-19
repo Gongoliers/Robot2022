@@ -26,7 +26,8 @@ public class RaiseMotor extends CommandBase {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return (m_endgame.AMotorDone(EndgameConstants
+        return (m_endgame.AMotorDone(EndgameConstants.kRaiseMotorSpeed) && m_endgame.BMotorDone(EndgameConstants.kRaiseMotorSpeed));
+    }
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
