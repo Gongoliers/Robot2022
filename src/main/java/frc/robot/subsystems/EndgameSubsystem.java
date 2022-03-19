@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.thegongoliers.input.odometry.AverageEncoderSensor;
 import com.thegongoliers.input.odometry.EncoderSensor;
-import com.thegongoliers.input.switches.LimitSwitch;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -73,7 +72,7 @@ public class EndgameSubsystem extends SubsystemBase {
                 if (!AMotorDone(s)) {
                     // Lowering Motor A speed
                     m_motorA.set((m_encoderB.getVelocity() / m_encoderA.getVelocity())*s);
-                } else {System.out.println("MOTOR A DONE");}
+                } 
                 if (!BMotorDone(s)) {
                    m_motorB.set(s);
                 }
@@ -88,10 +87,6 @@ public class EndgameSubsystem extends SubsystemBase {
                 m_motorA.set(s);
                 m_motorB.set(s);
             }
-            System.out.println("SPEEDS : \nMOTOR A:");
-            System.out.println(m_motorA.get());
-            System.out.println("\nMOTOR B:");
-            System.out.println(m_motorB.get());
         }
     }
 
@@ -99,9 +94,6 @@ public class EndgameSubsystem extends SubsystemBase {
         return new AverageEncoderSensor(m_encoderA, m_encoderB);
     }
 
-    public EncoderSensor getAEncoder() {return m_encoderA;}
-
-    public EncoderSensor getBEncoder() {return m_encoderB;}
 
     public void resetEncoders() {
         m_encoderA.reset();
@@ -133,7 +125,6 @@ public class EndgameSubsystem extends SubsystemBase {
             System.out.println("ENDGAME SUBSYSTEM: Ignoring Encoders");
             return false;}
         if (speed > 0) {
-            System.out.println("ENDGAME ENCODER A: "+ m_encoderA.getDistance());
             return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
         } else {
             // SPEED IS DECREASING
@@ -151,7 +142,6 @@ public class EndgameSubsystem extends SubsystemBase {
             System.out.println("ENDGAME SUBSYSTEM: Ignoring Encoders");
             return false;}
         if (speed > 0) {
-            System.out.println("ENDGAME ENCODER B: "+ m_encoderB.getDistance());
             return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
         } else {
             // SPEED IS DECREASING
