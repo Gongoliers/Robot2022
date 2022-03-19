@@ -56,6 +56,9 @@ public class EndgameSubsystem extends SubsystemBase {
         // Ensure that Solenoid is Unpowered
         m_unlockArms.set(false);
 
+        m_motorA.setInverted(true);
+        m_motorB.setInverted(true);
+
     }
 
     public void manualControl(Double speed) {
