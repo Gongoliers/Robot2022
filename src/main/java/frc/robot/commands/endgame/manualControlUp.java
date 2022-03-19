@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.EndgameSubsystem;
 import frc.robot.Constants.EndgameConstants;
 
-public class LowerMotor extends CommandBase{
+public class manualControlUp extends CommandBase{
     
     private EndgameSubsystem m_endgame;
     private double m_speedA;
@@ -14,40 +14,21 @@ public class LowerMotor extends CommandBase{
      * This method uses the default speed provided in EndgameConstants
      * @param endgame
      */
-    public LowerMotor(EndgameSubsystem endgame) {
+    public manualControlUp(EndgameSubsystem endgame) {
         addRequirements(endgame);
         m_endgame = endgame;
-        m_speedA = EndgameConstants.kLowerMotorSpeedA;
-        m_speedB = EndgameConstants.kLowerMotorSpeedB;
-    }
-
-    /**
-     * This method uses a speed passed into the method LowerMotor
-     * @param endgame
-     * @param speed
-     */
-    public LowerMotor(EndgameSubsystem endgame, double speedA, double speedB) {
-        addRequirements(endgame);
-        m_endgame = endgame;
-        m_speedA = speedA;
-        m_speedB = speedB;
-    }
-
-     // Called just before this Command runs the first time
-    @Override
-    public void initialize() {
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        m_endgame.setSpeed(m_speedA, m_speedB);
+        m_endgame.manualControl(.5);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return (m_endgame.AMotorDone() && m_endgame.BMotorDone());
+        return false;
     }
 
     // Called once after isFinished returns true

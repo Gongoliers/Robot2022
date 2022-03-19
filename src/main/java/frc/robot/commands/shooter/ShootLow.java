@@ -28,9 +28,7 @@ public class ShootLow extends CommandBase {
 	@Override
 	public void execute() {
 		m_shooter.spinForLow();
-		if (m_clock.getTime() - m_startTime >= Constants.ShooterConstants.kRampUpSeconds){
-			m_shooter.feedTime();
-		}
+		m_shooter.feedTime();
 	}
 
 	@Override
