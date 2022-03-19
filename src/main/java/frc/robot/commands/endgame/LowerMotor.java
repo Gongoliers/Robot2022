@@ -7,7 +7,8 @@ import frc.robot.Constants.EndgameConstants;
 public class LowerMotor extends CommandBase{
     
     private EndgameSubsystem m_endgame;
-    private double m_speed;
+    private double m_speedA;
+    private double m_speedB;
 
     /**
      * This method uses the default speed provided in EndgameConstants
@@ -16,7 +17,8 @@ public class LowerMotor extends CommandBase{
     public LowerMotor(EndgameSubsystem endgame) {
         addRequirements(endgame);
         m_endgame = endgame;
-        m_speed = EndgameConstants.kLowerMotorSpeed;
+        m_speedA = EndgameConstants.kLowerMotorSpeedA;
+        m_speedB = EndgameConstants.kLowerMotorSpeedB;
     }
 
     /**
@@ -24,10 +26,11 @@ public class LowerMotor extends CommandBase{
      * @param endgame
      * @param speed
      */
-    public LowerMotor(EndgameSubsystem endgame, double speed) {
+    public LowerMotor(EndgameSubsystem endgame, double speedA, double speedB) {
         addRequirements(endgame);
         m_endgame = endgame;
-        m_speed = speed;
+        m_speedA = speedA;
+        m_speedB = speedB;
     }
 
      // Called just before this Command runs the first time
@@ -38,13 +41,15 @@ public class LowerMotor extends CommandBase{
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        m_endgame.setSpeed(m_speed);
+        System.out.println("Execute");
+        m_endgame.setSpeed(m_speedA, m_speedB);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return (m_endgame.AMotorDone(EndgameConstants.kLowerMotorSpeed) && m_endgame.BMotorDone(EndgameConstants.kLowerMotorSpeed));
+        System.out.println("FINISHED");
+        return (m_endgame.AMotorDone() && m_endgame.BMotorDone());
     }
 
     // Called once after isFinished returns true
