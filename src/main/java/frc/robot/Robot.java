@@ -95,7 +95,6 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
     m_robotContainer.resetEndgameEncoders();
     m_robotContainer.startCompressor();
-    m_robotContainer.retractEndgame(); 
   }
 
   /** This function is called periodically during test mode. */

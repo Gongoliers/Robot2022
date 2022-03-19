@@ -6,7 +6,6 @@ import com.thegongoliers.input.odometry.AverageEncoderSensor;
 import com.thegongoliers.input.odometry.EncoderSensor;
 import com.thegongoliers.input.switches.LimitSwitch;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,6 +32,8 @@ public class EndgameSubsystem extends SubsystemBase {
     private boolean m_ignoreEncoders;
     private LimitSwitch m_limitSwitchA;
     private LimitSwitch m_limitSwitchB;
+    private boolean m_Adone;
+    private boolean m_Bdone;
 
     public EndgameSubsystem() {
         /** Configuring Encoder Values
@@ -63,27 +64,39 @@ public class EndgameSubsystem extends SubsystemBase {
         }
     }
 
-    public void setSpeed(double s) {
+    public boolean oneMotorDone() {
+        return AMotorDone() || BMotorDone();
+    }
+
+    public void setSpeed(double sa, double sb) {
         double velocity_EncoderA = Math.abs(m_encoderA.getVelocity());
         double velocity_EncoderB = Math.abs(m_encoderB.getVelocity());
-        if (velocity_EncoderA > velocity_EncoderB) {
-            if (!AMotorDone(s)) {
-                // Lowering Motor A speed
-                m_motorA.set((m_encoderB.getVelocity() / m_encoderA.getVelocity())*s);
+        // if ((velocity_EncoderA > velocity_EncoderB) && !oneMotorDone()) {
+        //     if (!AMotorDone(s)) {
+        //         // Lowering Motor A speed
+        //         m_motorA.set((m_encoderB.getVelocity() / m_encoderA.getVelocity())*s);
+        //     }else {m_motorA.stopMotor();}
+        //     if (!BMotorDone(s)) {
+        //         m_motorB.set(s);
+        //     }else {m_motorB.stopMotor();}
+        // } else if (velocity_EncoderA < velocity_EncoderB && !oneMotorDone()) {
+        //     if (!AMotorDone(s)) {
+        //         m_motorA.set(s);
+        //     }else {m_motorA.stopMotor();}
+        //     if (!BMotorDone(s)) {
+        //         m_motorB.set((m_encoderA.getVelocity() / m_encoderB.getVelocity())*s);
+        //     } else {m_motorB.stopMotor();}
+        // } else {
+            if (!AMotorDone(sa)) {
+                m_motorA.set(sa);}
+            else {
+                m_motorA.stopMotor();
             }
-            if (!BMotorDone(s)) {
-                m_motorB.set(s);
-            }
-        } else if (velocity_EncoderA < velocity_EncoderB) {
-            if (!AMotorDone(s)) {
-                m_motorA.set(s);
-            }
-            if (!BMotorDone(s)) {
-                m_motorB.set((m_encoderA.getVelocity() / m_encoderB.getVelocity())*s);
-            }
-        } else {
-            m_motorA.set(s);
-            m_motorB.set(s);
+            if (!BMotorDone(sb)) {
+                m_motorB.set(sb);}
+            else {
+                m_motorB.stopMotor();
+            // }
         }
     }
 
@@ -120,30 +133,37 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public boolean AMotorDone(double speed) {
-        if (speed > 0) {
-            if (m_ignoreEncoders) {
-                return false;
-            } return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
-        } else if (speed < 0) {
-            return (m_limitSwitchA.isTriggered());
-        } else return false;
+        return true;
+        // if (m_Adone && speed > 0) {
+        //     m_Adone = false;}
+        // if (speed > 0) {
+        //     if (m_ignoreEncoders) {
+        //         return false;
+        //     } return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
+        // } else if (speed < 0) {
+        //     if (!m_Adone && !m_limitSwitchA.isTriggered()) {m_Adone = true;}
+        //     return (m_Adone);
+        // } else return false;
     }
 
     public boolean BMotorDone(double speed) {
+        if (m_Bdone && speed > 0) {
+            m_Bdone = false;}
         if (speed > 0) {
             if (m_ignoreEncoders) {
                 return false;
             } return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
         } else if (speed < 0) {
-            return (m_limitSwitchB.isTriggered());
+            if (!m_Bdone && !m_limitSwitchB.isTriggered()) {
+                m_Bdone = true;}
+            return (m_Bdone);
         } else return false;
     }
 
     @Override
     public void periodic() {
-        // TEMP CODE
-        System.out.println("ENDGAME LIMIT SWITCHES:\nA: "+m_limitSwitchA.isTriggered()+"\nB: "+m_limitSwitchB.isTriggered());
         SmartDashboard.putNumber("Endgame", getEncoders().getDistance());
+        System.out.println("ENC A:"+m_encoderA.getDistance()+"ENC B"+m_encoderB.getDistance()+"A"+AMotorDone()+"B"+BMotorDone());
     }
 
 }
