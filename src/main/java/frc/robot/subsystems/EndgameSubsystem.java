@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.thegongoliers.input.odometry.AverageEncoderSensor;
 import com.thegongoliers.input.odometry.EncoderSensor;
+import com.thegongoliers.input.switches.LimitSwitch;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -29,6 +30,11 @@ public class EndgameSubsystem extends SubsystemBase {
 
     // Initialize Ignoring Encoders
     private boolean m_ignoreEncoders;
+
+    // Initializing Limit Switches
+    private LimitSwitch m_limitSwitchA;
+    private LimitSwitch m_limitSwitchB;
+
     
     public EndgameSubsystem() {
         /** Configuring Encoder Values
@@ -44,7 +50,9 @@ public class EndgameSubsystem extends SubsystemBase {
 
         m_encoderA.reset();
         m_encoderB.reset();
-        // TODO: verify all encoders
+
+        m_limitSwitchA = new LimitSwitch(0);
+        m_limitSwitchB = new LimitSwitch(1);
 
 
         // Ensure that Solenoid is Unpowered
@@ -59,23 +67,26 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double s) {
-        if (s > 0) { // s > 0 GOING UP !!!!
-            if (m_encoderA.getVelocity() > m_encoderB.getVelocity()) {
-                if (!AMotorDone(s)) {
-                    // Lowering Motor A speed
-                    m_motorA.set((m_encoderB.getVelocity() / m_encoderA.getVelocity())*s);
-                }
-                if (!BMotorDone(s)) {
-                   m_motorB.set(s);
-                }
-            } else if (m_encoderA.getVelocity() < m_encoderB.getVelocity()) {
-                if (!AMotorDone(s)) {
-                    m_motorA.set(s);
-                } 
-                if (!BMotorDone(s)) {
-                    m_motorB.set((m_encoderA.getVelocity() / m_encoderB.getVelocity())*s);
-                }
+        double velocity_EncoderA = Math.abs(m_encoderA.getVelocity());
+        double velocity_EncoderB = Math.abs(m_encoderB.getVelocity());
+        if (velocity_EncoderA > velocity_EncoderB) {
+            if (!AMotorDone(s)) {
+                // Lowering Motor A speed
+                m_motorA.set((m_encoderB.getVelocity() / m_encoderA.getVelocity())*s);
             }
+            if (!BMotorDone(s)) {
+                m_motorB.set(s);
+            }
+        } else if (velocity_EncoderA < velocity_EncoderB) {
+            if (!AMotorDone(s)) {
+                m_motorA.set(s);
+            } 
+            if (!BMotorDone(s)) {
+                m_motorB.set((m_encoderA.getVelocity() / m_encoderB.getVelocity())*s);
+            }
+        } else {
+            m_motorA.set(s);
+            m_motorB.set(s);
         }
     }
 
@@ -116,27 +127,29 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public boolean AMotorDone(double speed) {
-        if (m_ignoreEncoders) {
-            System.out.println("ENDGAME SUBSYSTEM: Time Locked");
-            return false;}
         if (speed > 0) {
-            return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
-        } 
-        return (m_encoderA.getDistance() <= 0); //TODO: CALIBRATE ME
+            if (m_ignoreEncoders) {
+                return false;
+            } return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
+        } else if (speed < 0) {
+            return (m_limitSwitchA.isTriggered());
+        } else return false;
     }
 
     public boolean BMotorDone(double speed) {
-        if (m_ignoreEncoders) {
-            System.out.println("ENDGAME SUBSYSTEM: Time Locked");
-            return false;}
         if (speed > 0) {
-            return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
-        } 
-        return (m_encoderB.getDistance() <= 0); //TODO: CALIBRATE ME
+            if (m_ignoreEncoders) {
+                return false;
+            } return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
+        } else if (speed < 0) {
+            return (m_limitSwitchB.isTriggered());
+        } else return false;
     }
 
     @Override
     public void periodic() {
+        // TEMP CODE
+        System.out.println("ENDGAME LIMIT SWITCHES:\nA: "+m_limitSwitchA.isTriggered()+"\nB: "+m_limitSwitchB.isTriggered());
         SmartDashboard.putNumber("Endgame", getEncoders().getDistance());
     }
     
