@@ -129,10 +129,10 @@ public class RobotContainer {
      * This function adds all Autonomous Options to the SmartDashboard
      */
     private void configureAutonomous() {
-        autoChooser.setDefaultOption("Do Nothing", new StopAll(m_drivetrain, m_endgame, m_shooter, m_intake));
+        autoChooser.addOption("Do Nothing", new StopAll(m_drivetrain, m_endgame, m_shooter, m_intake));
         autoChooser.addOption("System Check", new FullSystemCheck(m_drivetrain));
         autoChooser.addOption("Leave Tarmac", new LeaveTarmac(m_drivetrain));
-        autoChooser.addOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
+        autoChooser.setDefaultOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
     
         SmartDashboard.putData("Auto mode", autoChooser);
     }
