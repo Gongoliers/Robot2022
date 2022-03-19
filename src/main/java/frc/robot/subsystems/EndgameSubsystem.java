@@ -46,15 +46,11 @@ public class EndgameSubsystem extends SubsystemBase {
         m_encoderA = new PhoenixMotorControllerEncoder(m_motorA, FeedbackDevice.CTRE_MagEncoder_Relative);
         m_encoderB = new PhoenixMotorControllerEncoder(m_motorB, FeedbackDevice.CTRE_MagEncoder_Relative);
 
-        m_limitSwitchA = new DigitalInput(EndgameConstants.kLimitSwitchAPort);
-        m_limitSwitchB = new DigitalInput(EndgameConstants.kLimitSwitchBPort);
+        m_limitSwitchA = new LimitSwitch(EndgameConstants.kLimitSwitchAPort);
+        m_limitSwitchB = new LimitSwitch(EndgameConstants.kLimitSwitchBPort);
 
         m_encoderA.reset();
         m_encoderB.reset();
-
-        m_limitSwitchA = new LimitSwitch(0);
-        m_limitSwitchB = new LimitSwitch(1);
-
 
         // Ensure that Solenoid is Unpowered
         m_unlockArms.set(false);
