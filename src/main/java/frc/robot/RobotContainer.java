@@ -326,9 +326,8 @@ public class RobotContainer {
 
 
         DPadButton toggleEndgame = new DPadButton(m_manipulatorController, Direction.LEFT);
-        toggleEndgame.toggleWhenPressed(new StartEndCommand(new DisengageSafetyLock(m_endgame), new EngageSafetyLock(m_endgame)));
-            // /new DisengageSafetyLock(m_endgame));
-        // toggleEndgame.whenReleased(new EngageSafetyLock(m_endgame));
+        toggleEndgame.whenPressed(new DisengageSafetyLock(m_endgame));
+        toggleEndgame.whenReleased(new EngageSafetyLock(m_endgame));
 
 
         // NOTE ABOUT ENDGAME: STOPENDGAME AUTOMATICALLY LOCKS THE PNEUMATICS
