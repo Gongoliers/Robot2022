@@ -112,7 +112,7 @@ public class EndgameSubsystem extends SubsystemBase {
         if (m_motorA.get() > 0) {
             return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
         } 
-        return (m_encoderA.getDistance() <= 10); //TODO: CALIBRATE ME
+        return (m_encoderA.getDistance() <= 0); //TODO: CALIBRATE ME
     }
 
     public boolean BMotorDone() {
@@ -120,7 +120,7 @@ public class EndgameSubsystem extends SubsystemBase {
         if (m_motorB.get() > 0) {
             return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
         } 
-        return (m_encoderB.getDistance() <= 10); //TODO: CALIBRATE ME
+        return (m_encoderB.getDistance() <= 0); //TODO: CALIBRATE ME
     }
 
     @Override
