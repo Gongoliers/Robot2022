@@ -44,6 +44,7 @@ public class LowerMotor extends CommandBase{
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
+        System.out.println("FINISHED");
         return (m_endgame.AMotorDone(EndgameConstants.kLowerMotorSpeed) && m_endgame.BMotorDone(EndgameConstants.kLowerMotorSpeed));
     }
 

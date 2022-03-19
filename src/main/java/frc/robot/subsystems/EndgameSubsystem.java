@@ -67,6 +67,7 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double s) {
+        System.out.println(s);
         if (s != 0) { // s != 0
             if (m_encoderA.getVelocity() > m_encoderB.getVelocity()) {
                 if (!AMotorDone(s)) {
@@ -84,6 +85,7 @@ public class EndgameSubsystem extends SubsystemBase {
                     m_motorB.set((m_encoderA.getVelocity() / m_encoderB.getVelocity())*s);
                 } 
             } else {
+                System.out.println("ELSE IN SETSPEED"+s);
                 m_motorA.set(s);
                 m_motorB.set(s);
             }
@@ -120,16 +122,17 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public boolean AMotorDone(double speed) {
-        if (speed == 0) {return false;}
-        if (m_ignoreEncoders) {
-            System.out.println("ENDGAME SUBSYSTEM: Ignoring Encoders");
-            return false;}
-        if (speed > 0) {
-            return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
-        } else {
-            // SPEED IS DECREASING
-            return m_limitSwitchA.get();
-        }
+        return true;
+        // if (speed == 0) {return false;}
+        // if (m_ignoreEncoders) {
+        //     System.out.println("ENDGAME SUBSYSTEM: Ignoring Encoders");
+        //     return false;}
+        // if (speed > 0) {
+        //     return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistance);
+        // } else {
+        //     // SPEED IS DECREASING
+        //     return m_limitSwitchA.get();
+        // }
     }
 
     public boolean BMotorDone() {
@@ -145,12 +148,14 @@ public class EndgameSubsystem extends SubsystemBase {
             return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistance);
         } else {
             // SPEED IS DECREASING
+            System.out.println(""+speed+m_limitSwitchB.get());
             return m_limitSwitchB.get();
         }
     }
 
     @Override
     public void periodic() {
+        System.out.println("LSA"+m_limitSwitchA.get()+" LSB"+m_limitSwitchB.get());
         SmartDashboard.putNumber("Endgame", getEncoders().getDistance());
     }
     
