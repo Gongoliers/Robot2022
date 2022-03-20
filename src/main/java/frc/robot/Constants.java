@@ -99,6 +99,6 @@ public final class Constants {
   }
 
   public static final class CompressorConstants {
-    public static final double kLimitedCompressorMaxDriveSpeed = 0.4;
+    public static final double kLimitedCompressorMaxDriveSpeed = 0.3;
   }
 }

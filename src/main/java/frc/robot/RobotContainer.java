@@ -306,7 +306,7 @@ public class RobotContainer {
          *  -- X button
          */
         JoystickButton startCompressor = new JoystickButton(m_manipulatorController, XboxController.Button.kX.value);
-        startCompressor.whileHeld(new StartCompressor(m_compressor));
+        startCompressor.whileHeld(new StartLimitedCompressor(m_compressor, this));
         //startCompressor.whenReleased(new SequentialCommandGroup(new StopCompressor(m_compressor), new StartLimitedCompressor(m_compressor, this)));
 
         /**
