@@ -72,9 +72,9 @@ public final class Constants {
     public static final double kAutoDriveToFenderSeconds = 4.5;
 
     public static final double kAutoDriveAwayFromFenderSpeed = -0.5;
-    public static final double kAutoDriveAwayFromFenderSeconds = 3.5;
+    public static final double kAutoDriveAwayFromFenderSeconds = 3;
 
-    public static final double kDistanceToDriveForHigh = 22/12;
+    public static final double kDistanceToDriveForHigh = 22/12.0; // IMPORTANT DIVIDE BY DOUBLE
   }
 
   public static final class OIConstants {
