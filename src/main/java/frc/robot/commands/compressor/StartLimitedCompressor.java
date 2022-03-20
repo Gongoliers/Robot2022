@@ -19,6 +19,7 @@ public class StartLimitedCompressor extends CommandBase {
     public StartLimitedCompressor(CompressorSubsystem compressor, RobotContainer rc) {
         addRequirements(compressor);
         m_compressor = compressor;
+        this.rc = rc;
     }
 
     // Called repeatedly when this Command is scheduled to run
