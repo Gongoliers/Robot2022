@@ -151,4 +151,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         return m_modularDrivetrain;
     }
 
+    public double getDistance(){
+        return new AverageEncoderSensor(m_leftEncoderSensor, m_rightEncoderSensor).getDistance();
+    }
+
 }
