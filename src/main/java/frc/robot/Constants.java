@@ -65,6 +65,10 @@ public final class Constants {
 
     public static final double kInterfaceMotorRunTime = 2;
     public static final double kInterfaceMotorWaitTime = 1.2;
+
+    // TODO: Tune these
+    public static final double kCurrentSpikeThreshold = 20;
+    public static final int kCurrentSensorPort = 2;
   }
 
   public static final class AutoConstants {

@@ -1,5 +1,10 @@
 package frc.robot.subsystems;
 
+import com.thegongoliers.input.current.CurrentSensor;
+import com.thegongoliers.input.current.CurrentSpikeSensor;
+import com.thegongoliers.input.current.HighCurrentSensor;
+import com.thegongoliers.input.current.PDPCurrentSensor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ShooterConstants;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -31,6 +36,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
 	private double m_interfaceSpeed;
 
+	private CurrentSpikeSensor m_currentSpikeSensor;
+	private CurrentSensor m_currentSensor;
+
 
 	public ShooterSubsystem() {
 		m_feederMotor = new WPI_TalonSRX(ShooterConstants.kFeederMotorCANId);
@@ -42,6 +50,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
 		m_feederSpeedController = new GSpeedController(m_feederMotor);
 		m_outtakeSpeedController = new GSpeedController(m_outtakeMotor);
+
+		m_currentSensor = new PDPCurrentSensor(ShooterConstants.kCurrentSensorPort);
+		m_currentSpikeSensor = new CurrentSpikeSensor(new HighCurrentSensor(m_currentSensor, ShooterConstants.kCurrentSpikeThreshold));
 
 		/**
 		 * If we were counting by spins, the formula that we would use is 
@@ -57,6 +68,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	
 	@Override
 	public void periodic() {
+		SmartDashboard.putNumber("Shooter Current", m_currentSensor.getCurrent());
 	}
 	
 	public void spinForHigh() {
@@ -97,6 +109,14 @@ public class ShooterSubsystem extends SubsystemBase {
 		}//TODO: simplify this is hard to read
 	}
 
+	public boolean isCurrentSensorTripped() {
+		return m_currentSpikeSensor.isTriggered();
+	}
+
+	public void resetCurrentSensor() {
+		m_currentSpikeSensor.reset();
+	}
+
 	public void stop() {
 		stopFeederMotor();
 		stopOuttakeMotor();
@@ -113,5 +133,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
 	public void stopInterfaceMotor() {
 		m_interfaceMotor.stopMotor();
+	}
+
+	public boolean isAtFullSpeed(){
+		return m_feederSpeedController.get() >= 0.9 && m_outtakeSpeedController.get() >= 0.9;
 	}
 }
