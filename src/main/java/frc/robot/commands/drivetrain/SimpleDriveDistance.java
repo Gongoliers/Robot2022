@@ -28,7 +28,9 @@ public class SimpleDriveDistance extends CommandBase {
 
     @Override
     public void execute() {
-        if (getError() > 0) {
+        if (isFinished()){
+            m_drivetrain.stop();
+        } else if (getError() > 0) {
             m_drivetrain.arcadeDrive(m_speed, 0.0);
         } else {
             m_drivetrain.arcadeDrive(-m_speed, 0.0);
