@@ -112,7 +112,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         var targetAlignmentModule = new TargetAlignmentModule(vision.getTargetingCamera(),
              new PID(0.12, 0.05, 0.005), new PID(0, 0, 0), false);
 
-        m_modularDrivetrain.setModules(pathFollowerModule, targetAlignmentModule, m_voltageControlModule, m_powerEfficiencyModule);
+        m_modularDrivetrain.setModules(pathFollowerModule, targetAlignmentModule, traction, m_voltageControlModule, m_powerEfficiencyModule);
     }
 
     public void arcadeDrive(double forwardSpeed, double turnSpeed) {
