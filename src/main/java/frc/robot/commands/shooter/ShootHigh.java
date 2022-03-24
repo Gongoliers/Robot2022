@@ -23,6 +23,7 @@ public class ShootHigh extends CommandBase {
 	@Override
 	public void initialize() {
 		m_startTime = m_clock.getTime();
+		m_shooter.resetFeeder();
 	}
 
 	@Override
