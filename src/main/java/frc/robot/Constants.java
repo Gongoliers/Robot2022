@@ -37,7 +37,7 @@ public final class Constants {
         // Encoders
         public static final double kWheelDiameterFeet = 4 / 12.0;
         // This was calculated by recording the ticks for one rotation
-        public static final double kEncoderDistancePerPulse = (kWheelDiameterFeet * Math.PI) / 17923.0;
+        public static final double kEncoderDistancePerPulse = 14 / 12.0 / 19004.0;//(kWheelDiameterFeet * Math.PI) / 17923.0;
     }   
 
   public static final class IntakeConstants {
