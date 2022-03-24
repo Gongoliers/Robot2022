@@ -96,16 +96,8 @@ public class ShooterSubsystem extends SubsystemBase {
 		}
 	}
 
-	public boolean feederTRunning(){
-		return feederRunning && (feederTime + ShooterConstants.kInterfaceMotorRunTime) > m_clock.getTime();
-	}
-
 	public boolean feederTDoneShooting(){
 		return feederRunning && !((feederTime + ShooterConstants.kInterfaceMotorRunTime) > m_clock.getTime());
-	}
-
-	public boolean feederTWaiting(){
-		return !feederRunning && (feederTime + ShooterConstants.kInterfaceMotorWaitTime) < m_clock.getTime();
 	}
 
 	public boolean feederTDoneWaiting(){
@@ -127,6 +119,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		stopFeederMotor();
 		stopOuttakeMotor();
 		stopInterfaceMotor();
+		resetFeeder();
 	}
 
 	public void stopFeederMotor() {
