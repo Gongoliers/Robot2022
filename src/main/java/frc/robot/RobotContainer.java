@@ -32,6 +32,7 @@ import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.InvertDirections;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
+import frc.robot.commands.drivetrain.SimpleDriveDistance;
 import frc.robot.commands.drivetrain.StopDrivetrain;
 import frc.robot.commands.endgame.DisableEncoderChecks;
 import frc.robot.commands.endgame.DisengageSafetyLock;
@@ -257,8 +258,10 @@ public class RobotContainer {
          * Binding: 
          *  -- Button 10
          */
+        // TODO: Use this
+        var backup = new SimpleDriveDistance(m_drivetrain, AutoConstants.kDistanceToDriveForHigh, 0.05, 0.3).withTimeout(3.0);
         JoystickButton positionForHigh = new JoystickButton(m_driverJoystick, 10);
-        positionForHigh.whenPressed(new DriveDistance(m_drivetrain, AutoConstants.kDistanceToDriveForHigh).withTimeout(1.5));
+        positionForHigh.whenPressed(backup);
 
         /**
          * Override Match Timer

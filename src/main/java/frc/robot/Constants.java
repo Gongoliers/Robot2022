@@ -59,8 +59,8 @@ public final class Constants {
     public static final double kOuttakeMotorTargetSpeedHigh = 0.57;
     public static final double kInterfaceMotorSpeedHigh = 0.35;
 
-    public static final double kFeederMotorTargetSpeedLow = 0.35;
-    public static final double kOuttakeMotorTargetSpeedLow = 0.3;
+    public static final double kFeederMotorTargetSpeedLow = 0.4;
+    public static final double kOuttakeMotorTargetSpeedLow = 0.35;
     public static final double kInterfaceMotorSpeedLow = 0.35;
 
     public static final double kInterfaceMotorRunTime = 0.8;

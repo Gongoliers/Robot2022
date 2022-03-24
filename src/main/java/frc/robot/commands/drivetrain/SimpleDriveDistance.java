@@ -15,6 +15,7 @@ public class SimpleDriveDistance extends CommandBase {
     private double m_last_distance;
 
     public SimpleDriveDistance(DrivetrainSubsystem drivetrain, double distance, double threshold, double speed) {
+        addRequirements(drivetrain);
         m_drivetrain = drivetrain;
         m_distance = distance;
         m_threshold = threshold;
