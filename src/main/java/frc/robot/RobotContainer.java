@@ -46,7 +46,7 @@ import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.Intake;
 import frc.robot.commands.intake.Outtake;
 import frc.robot.commands.intake.RetractIntake;
-import frc.robot.commands.shooter.ShootHigh;
+import frc.robot.commands.shooter.ShootHighIndexed;
 import frc.robot.commands.shooter.ShootLow;
 import frc.robot.commands.shooter.StopShooter;
 import frc.robot.subsystems.CompressorSubsystem;
@@ -290,7 +290,7 @@ public class RobotContainer {
          *  -- Button ???
          */
         JoystickButton manipulatorShoot = new JoystickButton(m_driverJoystick, 3);
-        manipulatorShoot.whileHeld(new ShootHigh(m_shooter));
+        manipulatorShoot.whileHeld(new ShootHighIndexed(m_shooter));
     }
     private void configureManipulatorBindings() {
         // Manipulator Xbox Controller
@@ -380,7 +380,7 @@ public class RobotContainer {
                 return m_manipulatorController.getRightTriggerAxis() > 0.8;
             }
         });
-        shootBalls.whileHeld(new ShootHigh(m_shooter));
+        shootBalls.whileHeld(new ShootHighIndexed(m_shooter));
         //TODO: interrupted
 
         /**

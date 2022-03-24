@@ -68,7 +68,7 @@ public final class Constants {
 
     // TODO: Tune these
     public static final double kCurrentSpikeThreshold = 20;
-    public static final int kCurrentSensorPort = 2;
+    public static final int kCurrentSensorPort = 9;
   }
 
   public static final class AutoConstants {

@@ -1,10 +1,14 @@
 package frc.robot.subsystems;
 
+import com.thegongoliers.input.PDP;
 import com.thegongoliers.input.current.CurrentSensor;
 import com.thegongoliers.input.current.CurrentSpikeSensor;
 import com.thegongoliers.input.current.HighCurrentSensor;
 import com.thegongoliers.input.current.PDPCurrentSensor;
+
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -51,7 +55,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		m_feederSpeedController = new GSpeedController(m_feederMotor);
 		m_outtakeSpeedController = new GSpeedController(m_outtakeMotor);
 
-		m_currentSensor = new PDPCurrentSensor(ShooterConstants.kCurrentSensorPort);
+		m_currentSensor = PDP.getInstance().getCurrentSensor(Constants.ShooterConstants.kCurrentSensorPort);
 		m_currentSpikeSensor = new CurrentSpikeSensor(new HighCurrentSensor(m_currentSensor, ShooterConstants.kCurrentSpikeThreshold));
 
 		/**
