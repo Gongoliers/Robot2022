@@ -15,8 +15,8 @@ public class ShooterSubsystem extends SubsystemBase {
 	private final WPI_TalonSRX m_outtakeMotor;
 
 	private Clock m_clock;
-	private double feedStartTime;
-	private double feedWaitTime;
+	private double feederTime;
+	private boolean feederRunning;
 
 	/**
 	 * This motor acts as a feeder from the intake subsystem to
@@ -51,8 +51,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		m_outtakeSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
 
 		m_clock = new RobotClock();
-		feedStartTime = 0.0;
-		feedWaitTime = 0.0;
+		feederTime = -1.0;
 	}
 	
 	@Override
@@ -83,18 +82,45 @@ public class ShooterSubsystem extends SubsystemBase {
 		m_interfaceMotor.set(m_interfaceSpeed);
 	}
 
-	public void feedTime() {
-		if (feedWaitTime != 0.0 && m_clock.getTime() > feedWaitTime) {
-			m_interfaceMotor.set(m_interfaceSpeed);
-			feedWaitTime = 0.0;
+	/**
+	 * We will be setting feederTime to (-1.0) whenever the shooter is in an off state
+	 */
+	public void feedTime(){
+		checkForReset();
+		if (feederTime == -1.0) {
+			feederTime = m_clock.getTime();
+			feederRunning = true;
+		} else if (feederTDoneShooting()){
+			feederTime = m_clock.getTime();
+			feederRunning = false;
 		}
-		else if (feedStartTime == 0.0) {
-			feedStartTime = m_clock.getTime() + ShooterConstants.kInterfaceMotorRunTime;
-		} else if (feedStartTime > 0 && m_clock.getTime() > feedStartTime) {
-			m_interfaceMotor.stopMotor();
-			feedWaitTime = m_clock.getTime() + ShooterConstants.kInterfaceMotorWaitTime;
-			feedStartTime = 0.0;
-		}//TODO: simplify this is hard to read
+	}
+
+	public boolean feederTRunning(){
+		return feederRunning && (feederTime + ShooterConstants.kInterfaceMotorRunTime) > m_clock.getTime();
+	}
+
+	public boolean feederTDoneShooting(){
+		return feederRunning && !((feederTime + ShooterConstants.kInterfaceMotorRunTime) > m_clock.getTime());
+	}
+
+	public boolean feederTWaiting(){
+		return !feederRunning && (feederTime + ShooterConstants.kInterfaceMotorWaitTime) < m_clock.getTime();
+	}
+
+	public boolean feederTDoneWaiting(){
+		return feederRunning && !((feederTime + ShooterConstants.kInterfaceMotorWaitTime) < m_clock.getTime());
+	}
+
+	public void resetFeeder(){
+		feederTime = -1.0;
+		feederRunning = false;
+	}
+
+	public void checkForReset(){
+		if ((m_clock.getTime() + Math.max(ShooterConstants.kInterfaceMotorWaitTime, ShooterConstants.kInterfaceMotorRunTime) + 0.05) > feederTime){
+			resetFeeder();
+		}
 	}
 
 	public void stop() {
