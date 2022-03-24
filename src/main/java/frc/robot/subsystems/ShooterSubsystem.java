@@ -82,37 +82,46 @@ public class ShooterSubsystem extends SubsystemBase {
 		m_interfaceMotor.set(m_interfaceSpeed);
 	}
 
+	public boolean startedUp() {
+		if (m_feederSpeedController.get() >= 0.99 && m_outtakeSpeedController.get() >= 0.99) {
+			System.out.println("TRUE" + "m_feeder" + m_feederSpeedController.get() + "\nm_outtake" + m_outtakeSpeedController.get());
+			return true;
+		} else {return false;}
+	}
 	/**
 	 * We will be setting feederTime to (-1.0) whenever the shooter is in an off state
 	 */
 	public void feedTime(){
-		checkForReset();
+
+		if (!startedUp()){
+			return;
+		}
+
 		if (feederTime == -1.0) {
 			feederTime = m_clock.getTime();
 			feederRunning = true;
 		} else if (feederTDoneShooting()){
 			feederTime = m_clock.getTime();
 			feederRunning = false;
+		} else if (feederTDoneWaiting()) {
+			feederTime = m_clock.getTime();
+			feederRunning = true;
 		}
 	}
 
 	public boolean feederTDoneShooting(){
-		return feederRunning && !((feederTime + ShooterConstants.kInterfaceMotorRunTime) > m_clock.getTime());
+		double end_time = feederTime + ShooterConstants.kInterfaceMotorRunTime;
+		return feederRunning && (m_clock.getTime() > end_time);
 	}
 
 	public boolean feederTDoneWaiting(){
-		return feederRunning && !((feederTime + ShooterConstants.kInterfaceMotorWaitTime) < m_clock.getTime());
+		double end_time = feederTime + ShooterConstants.kInterfaceMotorWaitTime;
+		return !feederRunning && (m_clock.getTime() > end_time);
 	}
 
 	public void resetFeeder(){
 		feederTime = -1.0;
 		feederRunning = false;
-	}
-
-	public void checkForReset(){
-		if ((m_clock.getTime() + Math.max(ShooterConstants.kInterfaceMotorWaitTime, ShooterConstants.kInterfaceMotorRunTime) + 0.05) > feederTime){
-			resetFeeder();
-		}
 	}
 
 	public void stop() {
