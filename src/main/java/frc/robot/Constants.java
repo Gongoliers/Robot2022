@@ -42,7 +42,7 @@ public final class Constants {
 
   public static final class IntakeConstants {
     public static final int kIntakeCanId = 32;
-    public static final double kIntakeSpeed = 0.3;
+    public static final double kIntakeSpeed = 0.312343;
 
     public static final int kSolenoidCAN1 = 5;
     public static final int kSolenoidCAN2 = 6;
@@ -52,7 +52,7 @@ public final class Constants {
     public static final int kFeederMotorCANId = 10;
     public static final int kOuttakeMotorCANId = 11;
     public static final int kInterfaceMotorCANId = 12;
-    
+  
     public static final double kRampUpSeconds = 1.2;
 
     public static final double kFeederMotorTargetSpeedHigh = 0.67;

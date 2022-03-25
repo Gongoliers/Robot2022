@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.thegongoliers.input.time.Clock;
 import com.thegongoliers.input.time.RobotClock;
 import com.thegongoliers.output.actuators.GSpeedController;
+import com.thegongoliers.output.interfaces.Shooter;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -16,6 +17,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
 	private Clock m_clock;
 	private double feederTime;
+	private double feederStartTime;
 	private boolean feederRunning;
 
 	/**
@@ -83,23 +85,33 @@ public class ShooterSubsystem extends SubsystemBase {
 	}
 
 	public boolean startedUp() {
-		if (m_feederSpeedController.get() >= 0.99 && m_outtakeSpeedController.get() >= 0.99) {
-			System.out.println("TRUE" + "m_feeder" + m_feederSpeedController.get() + "\nm_outtake" + m_outtakeSpeedController.get());
-			return true;
-		} else {return false;}
+		var endTime = feederStartTime + ShooterConstants.kRampUpSeconds;
+		return m_clock.getTime() > endTime;
+		// if (endT )
+
+
+		// if (m_feederSpeedController.get() >= 0.99 && m_outtakeSpeedController.get() >= 0.99) {
+		// 	System.out.println("TRUE" + "m_feeder" + m_feederSpeedController.get() + "\nm_outtake" + m_outtakeSpeedController.get());
+		// 	return true;
+		// } else {return false;}
 	}
 	/**
 	 * We will be setting feederTime to (-1.0) whenever the shooter is in an off state
 	 */
 	public void feedTime(){
 
-		if (!startedUp()){
-			return;
-		}
+		// if (feederStartTime == -1.0){
+		// 	feederStartTime = m_clock.getTime();
+		// }
+
+		// if (!startedUp()){
+		// 	stopInterfaceMotor();
+		// 	return;
+		// }
 
 		if (feederTime == -1.0) {
 			feederTime = m_clock.getTime();
-			feederRunning = true;
+			feederRunning = false;
 		} else if (feederTDoneShooting()){
 			feederTime = m_clock.getTime();
 			feederRunning = false;
@@ -107,6 +119,8 @@ public class ShooterSubsystem extends SubsystemBase {
 			feederTime = m_clock.getTime();
 			feederRunning = true;
 		}
+
+		m_interfaceMotor.set(feederRunning ? ShooterConstants.kInterfaceMotorSpeedLow : 0.0);
 	}
 
 	public boolean feederTDoneShooting(){
@@ -120,6 +134,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	}
 
 	public void resetFeeder(){
+		feederStartTime = -1.0;
 		feederTime = -1.0;
 		feederRunning = false;
 	}
