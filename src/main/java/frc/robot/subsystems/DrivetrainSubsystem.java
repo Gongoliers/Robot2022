@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.NavxGyro;
 import frc.robot.PhoenixMotorControllerEncoder;
+import frc.robot.TractionControlModule2;
 import frc.robot.Constants.DriveConstants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -92,7 +93,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         
         // These modules are calibrated if needed - in testing, they weren't needed (traction control seemed more useful than stability with the drivetrain)
         var stability = new StabilityModule(m_gyro, 0.02, 0.35);
-        var traction = new TractionControlModule(m_leftEncoderSensor, m_rightEncoderSensor, 0.2, 0.2);
+        var traction = new TractionControlModule2(m_leftEncoderSensor, m_rightEncoderSensor, 0.2, 0.2, 0.2);
 
         // Voltage Control Module 
         m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
