@@ -11,18 +11,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class ShootHigh extends CommandBase {
 
 	private ShooterSubsystem m_shooter;
-	private double m_startTime;
-	private Clock m_clock;
 
 	public ShootHigh(ShooterSubsystem shooter) {
 		addRequirements(shooter);
 		m_shooter = shooter;
-		m_clock = new RobotClock();
 	}
 
 	@Override
 	public void initialize() {
-		m_startTime = m_clock.getTime();
+		//m_startTime = m_clock.getTime();
 		m_shooter.resetFeeder();
 	}
 

@@ -42,7 +42,7 @@ public final class Constants {
 
   public static final class IntakeConstants {
     public static final int kIntakeCanId = 32;
-    public static final double kIntakeSpeed = 0.3;
+    public static final double kIntakeSpeed = 0.312343;
 
     public static final int kSolenoidCAN1 = 5;
     public static final int kSolenoidCAN2 = 6;
@@ -52,7 +52,7 @@ public final class Constants {
     public static final int kFeederMotorCANId = 10;
     public static final int kOuttakeMotorCANId = 11;
     public static final int kInterfaceMotorCANId = 12;
-    
+  
     public static final double kRampUpSeconds = 1.2;
 
     public static final double kFeederMotorTargetSpeedHigh = 0.67;
@@ -88,12 +88,12 @@ public final class Constants {
     public static final int kMotorACAN = 20; // LEFT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kMotorBCAN = 21; // RIGHT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kSolenoidCAN = 7; // CAN PORT OF SOLENOID
-    public static final int kCappedDistanceA = 31000; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
-    public static final int kCappedDistanceB = 28700; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
-    public static final double kRaiseMotorSpeedA = 0.11*8; // AKA ARM RAISE SPEED
-    public static final double kRaiseMotorSpeedB = 0.1*8;
-    public static final double kLowerMotorSpeedA = -0.09*5; // AKA CLIMB SPEED
-    public static final double kLowerMotorSpeedB = -0.1*5;
+    public static final int kCappedDistanceA = 974977; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
+    public static final int kCappedDistanceB = 1165551; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
+    public static final double kRaiseMotorSpeedA = 0.11*3;//*5; // AKA ARM RAISE SPEED
+    public static final double kRaiseMotorSpeedB = 0.11*4;//*5;
+    public static final double kLowerMotorSpeedA = -0.15*3; // AKA CLIMB SPEED
+    public static final double kLowerMotorSpeedB = -0.15*4;
     public static final int kLimitSwitchAPort = 1;
     public static final int kLimitSwitchBPort = 0;
   }

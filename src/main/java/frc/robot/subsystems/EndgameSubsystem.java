@@ -150,6 +150,7 @@ public class EndgameSubsystem extends SubsystemBase {
             } return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistanceA);
         } else if (speed < 0) {
             if (!m_Adone && !m_limitSwitchA.isTriggered()) {m_Adone = true;}
+            else if (!m_limitSwitchA.isTriggered()) {m_encoderA.reset();}
             return (m_Adone);
         } else return false;
     }
@@ -163,15 +164,18 @@ public class EndgameSubsystem extends SubsystemBase {
             } return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistanceB);
         } else if (speed < 0) {
             if (!m_Bdone && !m_limitSwitchB.isTriggered()) {
-                m_Bdone = true;}
+                m_Bdone = true;} else if (!m_limitSwitchB.isTriggered()) {
+                    m_encoderB.reset();
+                }
             return (m_Bdone);
         } else return false;
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Endgame", getEncoders().getDistance());
-        //System.out.println("ENC A:"+m_encoderA.getDistance()+"ENC B"+m_encoderB.getDistance()+"A"+AMotorDone()+"B"+BMotorDone());
+        SmartDashboard.putNumber("Endgame A", m_encoderA.getDistance());
+        SmartDashboard.putNumber("Endgame B", m_encoderB.getDistance());
+        System.out.println("ENC A:"+m_encoderA.getDistance()+"ENC B"+m_encoderB.getDistance()+"A"+AMotorDone()+"B"+BMotorDone());
     }
 
 }
