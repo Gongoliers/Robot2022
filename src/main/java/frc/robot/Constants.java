@@ -42,7 +42,7 @@ public final class Constants {
 
   public static final class IntakeConstants {
     public static final int kIntakeCanId = 32;
-    public static final double kIntakeSpeed = 0.312343;
+    public static final double kIntakeSpeed = 0.27;
 
     public static final int kSolenoidCAN1 = 5;
     public static final int kSolenoidCAN2 = 6;
