@@ -32,7 +32,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	private final GSpeedController m_outtakeSpeedController;
 
 	private double m_interfaceSpeed;
-	private double m_interfaceWaitTime;
+	private static double m_interfaceWaitTime;
 
 
 	public ShooterSubsystem() {
@@ -129,12 +129,12 @@ public class ShooterSubsystem extends SubsystemBase {
 	}
 
 	public boolean feederTDoneShooting(){
-		double end_time = feederTime + m_interfaceWaitTime;
+		double end_time = feederTime + ShooterConstants.kInterfaceMotorWaitTimeHigh;
 		return feederRunning && (m_clock.getTime() > end_time);
 	}
 
 	public boolean feederTDoneWaiting(){
-		double end_time = feederTime + m_interfaceWaitTime;
+		double end_time = feederTime + ShooterConstants.kInterfaceMotorWaitTimeHigh;
 		return !feederRunning && (m_clock.getTime() > end_time);
 	}
 
