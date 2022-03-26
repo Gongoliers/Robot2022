@@ -55,8 +55,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
 		m_clock = new RobotClock();
 		feederTime = -1.0;
-
-		// m_interfaceWaitTime = ShooterConstants.kInterfaceMotorSpeedHigh;
 	}
 
 	@Override
