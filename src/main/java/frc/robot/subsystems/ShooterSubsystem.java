@@ -32,6 +32,7 @@ public class ShooterSubsystem extends SubsystemBase {
 	private final GSpeedController m_outtakeSpeedController;
 
 	private double m_interfaceSpeed;
+	private double m_interfaceWaitTime;
 
 
 	public ShooterSubsystem() {
@@ -54,6 +55,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
 		m_clock = new RobotClock();
 		feederTime = -1.0;
+
+		m_interfaceWaitTime = ShooterConstants.kInterfaceMotorSpeedHigh;
 	}
 
 	@Override
@@ -64,6 +67,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		// Scale the shooter motors to limit the max speed
 		m_feederSpeedController.setScale(ShooterConstants.kFeederMotorTargetSpeedHigh);
 		m_outtakeSpeedController.setScale(ShooterConstants.kOuttakeMotorTargetSpeedHigh);
+		m_interfaceWaitTime = ShooterConstants.kInterfaceMotorSpeedHigh;
 		m_interfaceSpeed = ShooterConstants.kInterfaceMotorSpeedHigh;
 
 		m_feederSpeedController.set(1.0);
@@ -74,6 +78,7 @@ public class ShooterSubsystem extends SubsystemBase {
 		// Scale the shooter motors to limit the max speed
 		m_feederSpeedController.setScale(ShooterConstants.kFeederMotorTargetSpeedLow);
 		m_outtakeSpeedController.setScale(ShooterConstants.kOuttakeMotorTargetSpeedLow);
+		m_interfaceWaitTime = ShooterConstants.kInterfaceMotorSpeedLow;
 		m_interfaceSpeed = ShooterConstants.kInterfaceMotorSpeedLow;
 
 		m_feederSpeedController.set(1.0);
@@ -124,12 +129,12 @@ public class ShooterSubsystem extends SubsystemBase {
 	}
 
 	public boolean feederTDoneShooting(){
-		double end_time = feederTime + ShooterConstants.kInterfaceMotorRunTime;
+		double end_time = feederTime + m_interfaceWaitTime;
 		return feederRunning && (m_clock.getTime() > end_time);
 	}
 
 	public boolean feederTDoneWaiting(){
-		double end_time = feederTime + ShooterConstants.kInterfaceMotorWaitTime;
+		double end_time = feederTime + m_interfaceWaitTime;
 		return !feederRunning && (m_clock.getTime() > end_time);
 	}
 

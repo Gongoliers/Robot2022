@@ -64,17 +64,19 @@ public final class Constants {
     public static final double kInterfaceMotorSpeedLow = 0.35;
 
     public static final double kInterfaceMotorRunTime = 0.8;
-    public static final double kInterfaceMotorWaitTime = 1.2;
+    public static final double kInterfaceMotorWaitTimeHigh = 1.4;
+    public static final double kInterfaceMotorWaitTimeLow = 1.0;
   }
 
   public static final class AutoConstants {
     public static final double kAutoDriveToFenderSpeed = 0.6;
-    public static final double kAutoDriveToFenderSeconds = 4;
+    public static final double kAutoDriveToFenderSeconds = 3.6;
 
     public static final double kAutoDriveAwayFromFenderSpeed = -0.55;
     public static final double kAutoDriveAwayFromFenderSeconds = 2.5;
 
-    public static final double kDistanceToDriveForHigh = 25/12.0; // IMPORTANT DIVIDE BY DOUBLE
+    public static final double kDistanceToDriveForHigh = 27/12.0; // IMPORTANT DIVIDE BY DOUBLE
+    // public static final double kDistanceToDriveForHigh = 25/12.0; // IMPORTANT DIVIDE BY DOUBLE
   }
 
   public static final class OIConstants {

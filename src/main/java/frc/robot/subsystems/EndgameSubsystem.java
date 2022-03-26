@@ -78,8 +78,8 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double sa, double sb) {
-        double velocity_EncoderA = Math.abs(m_encoderA.getVelocity());
-        double velocity_EncoderB = Math.abs(m_encoderB.getVelocity());
+        // double velocity_EncoderA = Math.abs(m_encoderA.getVelocity());
+        // double velocity_EncoderB = Math.abs(m_encoderB.getVelocity());
         // if ((velocity_EncoderA > velocity_EncoderB) && !oneMotorDone()) {
         //     if (!AMotorDone(s)) {
         //         // Lowering Motor A speed
@@ -149,8 +149,8 @@ public class EndgameSubsystem extends SubsystemBase {
                 return false;
             } return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistanceA);
         } else if (speed < 0) {
-            if (!m_Adone && !m_limitSwitchA.isTriggered()) {m_Adone = true;}
-            else if (!m_limitSwitchA.isTriggered()) {m_encoderA.reset();}
+            if (!m_Adone && !m_limitSwitchA.isTriggered()) {m_encoderA.reset();}
+            if (!m_limitSwitchA.isTriggered()) {m_Adone = true;}
             return (m_Adone);
         } else return false;
     }
@@ -164,9 +164,10 @@ public class EndgameSubsystem extends SubsystemBase {
             } return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistanceB);
         } else if (speed < 0) {
             if (!m_Bdone && !m_limitSwitchB.isTriggered()) {
-                m_Bdone = true;} else if (!m_limitSwitchB.isTriggered()) {
-                    m_encoderB.reset();
-                }
+                m_encoderB.reset();
+            if (!m_limitSwitchB.isTriggered()) {
+                m_Bdone = true;} 
+            }
             return (m_Bdone);
         } else return false;
     }
@@ -175,7 +176,8 @@ public class EndgameSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Endgame A", m_encoderA.getDistance());
         SmartDashboard.putNumber("Endgame B", m_encoderB.getDistance());
-        System.out.println("ENC A:"+m_encoderA.getDistance()+"ENC B"+m_encoderB.getDistance()+"A"+AMotorDone()+"B"+BMotorDone());
+        // System.out.println("ENC A:"+m_encoderA.getDistance()+"ENC B"+m_encoderB.getDistance()+"A"+AMotorDone()+"B"+BMotorDone());
+        // System.out.println("LA"+!m_limitSwitchA.isTriggered() + "LB"+!m_limitSwitchB.isTriggered());
     }
 
 }
