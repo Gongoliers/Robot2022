@@ -16,7 +16,7 @@ public class BackupAndShootWithDelayAndThenLeaveTarmac extends SequentialCommand
                 new WaitCommand(2.0),
                 new SimpleDriveDistance(drivetrain, AutoConstants.kDistanceToDriveForHigh, 0.05, 0.3).withTimeout(3.0),
                 new ShootHigh(shooter).withTimeout(8.0),
-                new WaitCommand(2.0),
+                new WaitCommand(1.5),
                 new Drive(drivetrain, -Constants.AutoConstants.kAutoDriveToFenderSpeed).withTimeout(Constants.AutoConstants.kAutoDriveToFenderSeconds)
         );
     }
