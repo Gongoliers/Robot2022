@@ -13,7 +13,6 @@ public class SetTurboDrivetrain extends InstantCommand {
 
     public SetTurboDrivetrain(DrivetrainSubsystem drivetrain, boolean enabled) {
 
-        addRequirements(drivetrain);
         m_drivetrain = drivetrain;
         m_enabled = enabled;
 
