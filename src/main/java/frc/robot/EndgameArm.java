@@ -1,10 +1,13 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.thegongoliers.input.odometry.EncoderSensor;
+
 public class EndgameArm {
 
-	enum EndgameArmState {
+	private static enum EndgameArmState {
 		ASCENDING,
-		DESCENDING
+		DESCENDING,
 		STOPPED,
 		CAPPED,
 		FLOORED,
@@ -13,7 +16,7 @@ public class EndgameArm {
 	private final WPI_TalonSRX m_motor;
 	private final EncoderSensor m_encoder;
 	private final InvertableLimitSwitch m_limitSwitch;
-	private EndgameArmState m_state = STOPPED;
+	private EndgameArmState m_state = EndgameArmState.STOPPED;
 	private boolean m_safeToAscend = false;
 	private double m_cappedDistance, m_ascentSpeed, m_descentSpeed;
 
@@ -21,6 +24,18 @@ public class EndgameArm {
 		m_motor = motor;
 		m_encoder = encoder;
 		m_limitSwitch = limitSwitch;
+	}
+
+	public WPI_TalonSRX getMotor() {
+		return m_motor;
+	}
+
+	public EncoderSensor getEncoder() {
+		return m_encoder;
+	}
+
+	public InvertableLimitSwitch getLimitSwitch() {
+		return m_limitSwitch;
 	}
 
 	public void setCappedDistance(double distance) {
@@ -47,12 +62,12 @@ public class EndgameArm {
 		switch (m_state) {
 			case ASCENDING:
 				if (m_encoder.getDistance() >= m_cappedDistance) {
-					m_state = CAPPED;
+					m_state = EndgameArmState.CAPPED;
 				}
 				break;
 			case DESCENDING:
 				if (m_limitSwitch.isTriggered()) {
-					m_state = FLOORED;
+					m_state = EndgameArmState.FLOORED;
 					m_encoder.reset();
 				}
 				break;
@@ -63,7 +78,7 @@ public class EndgameArm {
 		}
 	}
 
-	public driveArm() {
+	public void driveArm() {
 		switch (m_state) {
 			case ASCENDING:
 				if (m_safeToAscend) {
