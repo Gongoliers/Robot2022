@@ -58,6 +58,18 @@ public class EndgameArm {
 		m_safeToAscend = true;
 	}
 
+	public void ascend() {
+		if (m_state != EndgameArmState.CAPPED) {
+			m_state = EndgameArmState.ASCENDING;
+		}
+	}
+
+	public void descend() {
+		if (m_state != EndgameArmState.FLOORED) {
+			m_state = EndgameArmState.DESCENDING;
+		}
+	}
+
 	public void update() {
 		switch (m_state) {
 			case ASCENDING:
