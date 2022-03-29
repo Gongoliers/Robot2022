@@ -17,7 +17,7 @@ public class EndgameArm {
 	private final EncoderSensor m_encoder;
 	private final InvertableLimitSwitch m_limitSwitch;
 	private EndgameArmState m_state = EndgameArmState.STOPPED;
-	private boolean m_safeToAscend = false;
+	private boolean m_isSafeToAscend = false;
 	private double m_cappedDistance, m_ascentSpeed, m_descentSpeed;
 
 	public EndgameArm(WPI_TalonSRX motor, EncoderSensor encoder, InvertableLimitSwitch limitSwitch) {
@@ -51,11 +51,11 @@ public class EndgameArm {
 	}
 
 	public void engageSafety() {
-		m_safeToAscend = false;
+		m_isSafeToAscend = false;
 	}
 
 	public void disengageSafety() {
-		m_safeToAscend = true;
+		m_isSafeToAscend = true;
 	}
 
 	public void ascend() {
@@ -93,7 +93,7 @@ public class EndgameArm {
 	public void driveArm() {
 		switch (m_state) {
 			case ASCENDING:
-				if (m_safeToAscend) {
+				if (m_isSafeToAscend) {
 					m_motor.set(m_ascentSpeed);
 				}
 				break;
