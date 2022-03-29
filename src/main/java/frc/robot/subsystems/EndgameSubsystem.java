@@ -4,13 +4,13 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.thegongoliers.input.odometry.AverageEncoderSensor;
 import com.thegongoliers.input.odometry.EncoderSensor;
-import com.thegongoliers.input.switches.LimitSwitch;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.EndgameTimer;
+import frc.robot.InvertableLimitSwitch;
 import frc.robot.PhoenixMotorControllerEncoder;
 import frc.robot.Constants.EndgameConstants;
 
@@ -30,8 +30,8 @@ public class EndgameSubsystem extends SubsystemBase {
 
     // Initialize Ignoring Encoders
     private boolean m_ignoreEncoders;
-    private LimitSwitch m_limitSwitchA;
-    private LimitSwitch m_limitSwitchB;
+    private InvertableLimitSwitch m_limitSwitchA;
+    private InvertableLimitSwitch m_limitSwitchB;
     private boolean m_Adone;
     private boolean m_Bdone;
 
@@ -47,11 +47,14 @@ public class EndgameSubsystem extends SubsystemBase {
         m_encoderA = new PhoenixMotorControllerEncoder(m_motorA, FeedbackDevice.CTRE_MagEncoder_Relative);
         m_encoderB = new PhoenixMotorControllerEncoder(m_motorB, FeedbackDevice.CTRE_MagEncoder_Relative);
 
-        m_limitSwitchA = new LimitSwitch(EndgameConstants.kLimitSwitchAPort);
-        m_limitSwitchB = new LimitSwitch(EndgameConstants.kLimitSwitchBPort);
-
         m_encoderA.reset();
         m_encoderB.reset();
+
+        m_limitSwitchA = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchAPort);
+        m_limitSwitchB = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchBPort);
+
+		m_limitSwitchA.setInverted(true);
+		m_limitSwitchB.setInverted(true);
 
         // Ensure that Solenoid is Unpowered
         m_unlockArms.set(false);
@@ -78,34 +81,16 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double sa, double sb) {
-        // double velocity_EncoderA = Math.abs(m_encoderA.getVelocity());
-        // double velocity_EncoderB = Math.abs(m_encoderB.getVelocity());
-        // if ((velocity_EncoderA > velocity_EncoderB) && !oneMotorDone()) {
-        //     if (!AMotorDone(s)) {
-        //         // Lowering Motor A speed
-        //         m_motorA.set((m_encoderB.getVelocity() / m_encoderA.getVelocity())*s);
-        //     }else {m_motorA.stopMotor();}
-        //     if (!BMotorDone(s)) {
-        //         m_motorB.set(s);
-        //     }else {m_motorB.stopMotor();}
-        // } else if (velocity_EncoderA < velocity_EncoderB && !oneMotorDone()) {
-        //     if (!AMotorDone(s)) {
-        //         m_motorA.set(s);
-        //     }else {m_motorA.stopMotor();}
-        //     if (!BMotorDone(s)) {
-        //         m_motorB.set((m_encoderA.getVelocity() / m_encoderB.getVelocity())*s);
-        //     } else {m_motorB.stopMotor();}
-        // } else {
-            if (!AMotorDone(sa)) {
-                m_motorA.set(sa);}
-            else {
-                m_motorA.stopMotor();
-            }
-            if (!BMotorDone(sb)) {
-                m_motorB.set(sb);}
-            else {
-                m_motorB.stopMotor();
-            // }
+        if (!AMotorDone(sa)) {
+            m_motorA.set(sa);
+        } else {
+            m_motorA.stopMotor();
+        }
+
+        if (!BMotorDone(sb)) {
+            m_motorB.set(sb);
+        } else {
+            m_motorB.stopMotor();
         }
     }
 
@@ -149,8 +134,8 @@ public class EndgameSubsystem extends SubsystemBase {
                 return false;
             } return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistanceA);
         } else if (speed < 0) {
-            if (!m_Adone && !m_limitSwitchA.isTriggered()) {m_encoderA.reset();}
-            if (!m_limitSwitchA.isTriggered()) {m_Adone = true;}
+            if (!m_Adone && m_limitSwitchA.isTriggered()) {m_encoderA.reset();}
+            if (m_limitSwitchA.isTriggered()) {m_Adone = true;}
             return (m_Adone);
         } else return false;
     }
@@ -163,9 +148,9 @@ public class EndgameSubsystem extends SubsystemBase {
                 return false;
             } return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistanceB);
         } else if (speed < 0) {
-            if (!m_Bdone && !m_limitSwitchB.isTriggered()) {
+            if (!m_Bdone && m_limitSwitchB.isTriggered()) {
                 m_encoderB.reset();
-            if (!m_limitSwitchB.isTriggered()) {
+            if (m_limitSwitchB.isTriggered()) {
                 m_Bdone = true;} 
             }
             return (m_Bdone);
