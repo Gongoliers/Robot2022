@@ -15,25 +15,28 @@ import frc.robot.PhoenixMotorControllerEncoder;
 import frc.robot.Constants.EndgameConstants;
 
 public class EndgameSubsystem extends SubsystemBase {
+
+    enum EndgameArmState {
+        STOPPED,
+        ASCENDING,
+        DESCENDING
+    }
+
     // Left Motor (when standing behind battery)
     private final WPI_TalonSRX m_motorA = new WPI_TalonSRX(EndgameConstants.kMotorACAN);
+    private EncoderSensor m_encoderA = new PhoenixMotorControllerEncoder(m_motorA, FeedbackDevice.CTRE_MagEncoder_Relative);
+    private InvertableLimitSwitch m_limitSwitchA = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchAPort);
+    private EndgameArmState m_motorAState;
 
     // Right Motor (when standing behind battery)
     private final WPI_TalonSRX m_motorB = new WPI_TalonSRX(EndgameConstants.kMotorBCAN);
+    private EncoderSensor m_encoderB = new PhoenixMotorControllerEncoder(m_motorB, FeedbackDevice.CTRE_MagEncoder_Relative);
+    private InvertableLimitSwitch m_limitSwitchB = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchBPort);
+    private EndgameArmState m_motorBState;
 
     // Initializing Pneumatics
     private final Solenoid m_unlockArms = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidCAN);
 
-    // Initializing EncoderSensor
-    private EncoderSensor m_encoderA;
-    private EncoderSensor m_encoderB;
-
-    // Initialize Ignoring Encoders
-    private boolean m_ignoreEncoders;
-    private InvertableLimitSwitch m_limitSwitchA;
-    private InvertableLimitSwitch m_limitSwitchB;
-    private boolean m_Adone;
-    private boolean m_Bdone;
 
     public EndgameSubsystem() {
         /** Configuring Encoder Values
@@ -44,17 +47,13 @@ public class EndgameSubsystem extends SubsystemBase {
          * See __ for documentation regarding FeedbackDevice Constants:
          * https://store.ctr-electronics.com/content/api/cpp/html/namespacectre_1_1phoenix_1_1motorcontrol.html#a76df6b51b79bdd3710ddcd6ef43050e7
          */
-        m_encoderA = new PhoenixMotorControllerEncoder(m_motorA, FeedbackDevice.CTRE_MagEncoder_Relative);
-        m_encoderB = new PhoenixMotorControllerEncoder(m_motorB, FeedbackDevice.CTRE_MagEncoder_Relative);
 
         m_encoderA.reset();
         m_encoderB.reset();
 
-        m_limitSwitchA = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchAPort);
-        m_limitSwitchB = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchBPort);
 
-		m_limitSwitchA.setInverted(true);
-		m_limitSwitchB.setInverted(true);
+        m_limitSwitchA.setInverted(true);
+        m_limitSwitchB.setInverted(true);
 
         // Ensure that Solenoid is Unpowered
         m_unlockArms.set(false);
@@ -64,33 +63,9 @@ public class EndgameSubsystem extends SubsystemBase {
 
     }
 
-    public void manualControl(Double speed) {
-        m_unlockArms.set(true);
-        m_motorA.set(speed);
-        m_motorB.set(speed);
-    }
-
     public void powerPneumatics(Boolean power) {
         if (EndgameTimer.getMatchTime() < 30) {
             m_unlockArms.set(power);
-        }
-    }
-
-    public boolean oneMotorDone() {
-        return AMotorDone() || BMotorDone();
-    }
-
-    public void setSpeed(double sa, double sb) {
-        if (!AMotorDone(sa)) {
-            m_motorA.set(sa);
-        } else {
-            m_motorA.stopMotor();
-        }
-
-        if (!BMotorDone(sb)) {
-            m_motorB.set(sb);
-        } else {
-            m_motorB.stopMotor();
         }
     }
 
@@ -98,64 +73,42 @@ public class EndgameSubsystem extends SubsystemBase {
         return new AverageEncoderSensor(m_encoderA, m_encoderB);
     }
 
-
-    public void resetEncoders() {
-        m_encoderA.reset();
-        m_encoderB.reset();
+    public void updateEndgameA() {
+        switch (m_motorAState) {
+            case ASCENDING:
+                if (m_encoderA.getDistance() >= EndgameConstants.kCappedDistanceA) {
+                    m_motorAState = EndgameArmState.STOPPED;
+                }
+                break;
+            case DESCENDING:
+                if (m_limitSwitchA.isTriggered()) {
+                    m_motorAState = EndgameArmState.STOPPED;
+                    m_encoderA.reset();
+                }
+                break;
+            case STOPPED:
+                break;
+        }
     }
 
-    public void stop() {
-        m_motorA.stopMotor();
-        m_motorB.stopMotor();
-        m_unlockArms.set(false);
+    public void updateEndgameB() {
+        switch (m_motorAState) {
+            case ASCENDING:
+                if (m_encoderB.getDistance() >= EndgameConstants.kCappedDistanceB) {
+                    m_motorBState = EndgameArmState.STOPPED;
+                }
+                break;
+            case DESCENDING:
+                if (m_limitSwitchB.isTriggered()) {
+                    m_motorBState = EndgameArmState.STOPPED;
+                    m_encoderB.reset();
+                }
+                break;
+            case STOPPED:
+                break;
+        }
     }
 
-    public void stopMotors() {
-        m_motorA.stopMotor();
-        m_motorB.stopMotor();
-    }
-
-    public void ignoreEncoders(boolean val) {
-        m_ignoreEncoders = val;
-    }
-
-    public boolean AMotorDone() {
-        return AMotorDone(m_motorA.get());
-    }
-    public boolean BMotorDone() {
-        return BMotorDone(m_motorB.get());
-    }
-
-    public boolean AMotorDone(double speed) {
-        if (m_Adone && speed > 0) {
-            m_Adone = false;}
-        if (speed > 0) {
-            if (m_ignoreEncoders) {
-                return false;
-            } return (m_encoderA.getDistance() >= EndgameConstants.kCappedDistanceA);
-        } else if (speed < 0) {
-            if (!m_Adone && m_limitSwitchA.isTriggered()) {m_encoderA.reset();}
-            if (m_limitSwitchA.isTriggered()) {m_Adone = true;}
-            return (m_Adone);
-        } else return false;
-    }
-
-    public boolean BMotorDone(double speed) {
-        if (m_Bdone && speed > 0) {
-            m_Bdone = false;}
-        if (speed > 0) {
-            if (m_ignoreEncoders) {
-                return false;
-            } return (m_encoderB.getDistance() >= EndgameConstants.kCappedDistanceB);
-        } else if (speed < 0) {
-            if (!m_Bdone && m_limitSwitchB.isTriggered()) {
-                m_encoderB.reset();
-            if (m_limitSwitchB.isTriggered()) {
-                m_Bdone = true;} 
-            }
-            return (m_Bdone);
-        } else return false;
-    }
 
     @Override
     public void periodic() {
