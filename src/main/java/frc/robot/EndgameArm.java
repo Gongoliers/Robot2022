@@ -91,6 +91,7 @@ public class EndgameArm {
 			case STOPPED:
 			case CAPPED:
 			case FLOORED:
+				m_motor.stopMotor();
 				break;
 		}
 	}
