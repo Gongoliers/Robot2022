@@ -26,13 +26,13 @@ public class EndgameSubsystem extends SubsystemBase {
     private final WPI_TalonSRX m_motorA = new WPI_TalonSRX(EndgameConstants.kMotorACAN);
     private EncoderSensor m_encoderA = new PhoenixMotorControllerEncoder(m_motorA, FeedbackDevice.CTRE_MagEncoder_Relative);
     private InvertableLimitSwitch m_limitSwitchA = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchAPort);
-    private EndgameArmState m_motorAState;
+    private EndgameArmState m_motorAState = EndgameArmState.STOPPED;
 
     // Right Motor (when standing behind battery)
     private final WPI_TalonSRX m_motorB = new WPI_TalonSRX(EndgameConstants.kMotorBCAN);
     private EncoderSensor m_encoderB = new PhoenixMotorControllerEncoder(m_motorB, FeedbackDevice.CTRE_MagEncoder_Relative);
     private InvertableLimitSwitch m_limitSwitchB = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchBPort);
-    private EndgameArmState m_motorBState;
+    private EndgameArmState m_motorBState = EndgameArmState.STOPPED;
 
     // Initializing Pneumatics
     private final Solenoid m_unlockArms = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidCAN);
@@ -50,7 +50,6 @@ public class EndgameSubsystem extends SubsystemBase {
 
         m_encoderA.reset();
         m_encoderB.reset();
-
 
         m_limitSwitchA.setInverted(true);
         m_limitSwitchB.setInverted(true);
@@ -92,7 +91,7 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public void updateEndgameB() {
-        switch (m_motorAState) {
+        switch (m_motorBState) {
             case ASCENDING:
                 if (m_encoderB.getDistance() >= EndgameConstants.kCappedDistanceB) {
                     m_motorBState = EndgameArmState.STOPPED;
