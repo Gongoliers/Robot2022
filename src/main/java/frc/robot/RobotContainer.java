@@ -37,8 +37,8 @@ import frc.robot.commands.drivetrain.SimpleDriveDistance;
 import frc.robot.commands.drivetrain.StopDrivetrain;
 import frc.robot.commands.endgame.DisengageSafetyLock;
 import frc.robot.commands.endgame.EngageSafetyLock;
-import frc.robot.commands.endgame.LowerMotor;
-import frc.robot.commands.endgame.RaiseMotorWithDelayAndSafety;
+import frc.robot.commands.endgame.Descend;
+import frc.robot.commands.endgame.AscendWithDelay;
 import frc.robot.commands.endgame.ResetEndgame;
 import frc.robot.commands.endgame.StopEndgameWithDelay;
 import frc.robot.commands.intake.DeployIntake;
@@ -142,7 +142,7 @@ public class RobotContainer {
      * This function adds custom options to smartdashboard
      */
     private void configureSmartDashboard() {
-        SmartDashboard.putData("Reset Endgame", new LowerMotor(m_endgame));
+        SmartDashboard.putData("Reset Endgame", new Descend(m_endgame));
     }
 
     /** These Functions Allow the DriverOperatedCommand to get speed and rotation */
@@ -320,7 +320,7 @@ public class RobotContainer {
          *  -- Up DPAD Button
          */
         DPadButton raiseEndgame = new DPadButton(m_manipulatorController, Direction.UP);
-        raiseEndgame.whenPressed(new RaiseMotorWithDelayAndSafety(m_endgame));
+        raiseEndgame.whenPressed(new AscendWithDelay(m_endgame));
         raiseEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
 
 
@@ -339,7 +339,7 @@ public class RobotContainer {
          *  -- Down DPAD Button
          */
         DPadButton lowerEndgame = new DPadButton(m_manipulatorController, Direction.DOWN);
-        lowerEndgame.whenPressed(new LowerMotor(m_endgame));
+        lowerEndgame.whenPressed(new Descend(m_endgame));
         lowerEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
 
         /**

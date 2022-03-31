@@ -64,18 +64,18 @@ public class EndgameSubsystem extends SubsystemBase {
 		m_unlockArms.set(false);
 	}
 
-	public void ascend() {
-		m_endgameA.ascend();
-		m_endgameB.ascend();
+	public void startAscend() {
+		m_endgameA.startAscend();
+		m_endgameB.startAscend();
 	}
 
 	public boolean doneAscending() {
 		return m_endgameA.doneAscending() && m_endgameA.doneAscending();
 	}
 
-	public void descend() {
-		m_endgameA.descend();
-		m_endgameB.descend();
+	public void startDescend() {
+		m_endgameA.startDescend();
+		m_endgameB.startDescend();
 	}
 
 	public boolean doneDescending() {

@@ -3,10 +3,11 @@ package frc.robot.commands.endgame;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.EndgameSubsystem;
 
-public class RaiseMotor extends CommandBase {
+public class Descend extends CommandBase{
     
     private EndgameSubsystem m_endgame;
-    public RaiseMotor(EndgameSubsystem endgame) {
+
+    public Descend(EndgameSubsystem endgame) {
         addRequirements(endgame);
         m_endgame = endgame;
     }
@@ -19,12 +20,13 @@ public class RaiseMotor extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        m_endgame.ascend();
+        m_endgame.startDescend();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return m_endgame.doneAscending();
+        return m_endgame.doneDescending();
     }
+
 }
