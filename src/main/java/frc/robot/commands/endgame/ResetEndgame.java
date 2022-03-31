@@ -7,12 +7,10 @@ import frc.robot.subsystems.EndgameSubsystem;
 
 public class ResetEndgame extends SequentialCommandGroup {
     public ResetEndgame(EndgameSubsystem endgame) {
-        double speedA = EndgameConstants.kLowerMotorSpeedA;
-        double speedB = EndgameConstants.kLowerMotorSpeedB;
         addRequirements(endgame);
         addCommands(new DisengageSafetyLock(endgame),
                     new WaitCommand(EndgameConstants.kDelayToUnlockPneumatics),
-                    new LowerMotor(endgame, speedA, speedB)                    
+                    new LowerMotor(endgame)                    
                     );
     }
 }
