@@ -50,9 +50,4 @@ public class LowerMotor extends CommandBase{
         return m_endgame.doneDescending();
     }
 
-    // Called once after isFinished returns true
-    @Override
-    public void end(boolean interrupted) {
-        m_endgame.stop();
-    }
 }
