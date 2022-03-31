@@ -65,7 +65,7 @@ public class EndgameArm {
 	}
 
 	public boolean doneAscending() {
-		return m_state != EndgameArmState.ASCENDING;
+		return m_encoder.getDistance() >= m_cappedDistance;
 	}
 
 	public void setDirectionDescend() {
@@ -75,7 +75,7 @@ public class EndgameArm {
 	}
 
 	public boolean doneDescending() {
-		return m_state != EndgameArmState.DESCENDING;
+		return m_limitSwitch.isTriggered();
 	}
 
 	public void stop() {
@@ -85,12 +85,12 @@ public class EndgameArm {
 	public void update() {
 		switch (m_state) {
 			case ASCENDING:
-				if (m_encoder.getDistance() >= m_cappedDistance) {
+				if (doneAscending()) {
 					m_state = EndgameArmState.CAPPED;
 				}
 				break;
 			case DESCENDING:
-				if (m_limitSwitch.isTriggered()) {
+				if (doneDescending()) {
 					m_state = EndgameArmState.FLOORED;
 					m_encoder.reset();
 				}
