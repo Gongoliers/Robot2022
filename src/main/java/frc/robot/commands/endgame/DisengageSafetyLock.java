@@ -15,7 +15,7 @@ public class DisengageSafetyLock extends InstantCommand{
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
-        m_endgame.powerPneumatics(true);
+        m_endgame.enableAscension();
     }
 
 }

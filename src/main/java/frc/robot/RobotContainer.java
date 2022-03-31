@@ -173,18 +173,6 @@ public class RobotContainer {
         }, 500);
     }
 
-    public void resetEndgameEncoders() {
-        m_endgame.resetEncoders();
-    }
-
-    public void retractEndgame() {
-        // GO FROM 29.5 => 5 in
-        Command retract_endgame = new ResetEndgame(m_endgame);
-        retract_endgame.schedule();
-
-        
-    }
-
     /**
      * 
      * END OF FRC CODE

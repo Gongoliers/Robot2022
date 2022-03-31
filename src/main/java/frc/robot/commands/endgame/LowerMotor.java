@@ -41,18 +41,18 @@ public class LowerMotor extends CommandBase{
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        m_endgame.setSpeed(m_speedA, m_speedB);
+        m_endgame.descend();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return (m_endgame.AMotorDone() && m_endgame.BMotorDone());
+        return m_endgame.doneDescending();
     }
 
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
-        m_endgame.stopMotors();
+        m_endgame.stop();
     }
 }

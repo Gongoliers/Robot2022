@@ -64,10 +64,18 @@ public class EndgameArm {
 		}
 	}
 
+	public boolean doneAscending() {
+		return m_state != EndgameArmState.ASCENDING;
+	}
+
 	public void descend() {
 		if (m_state != EndgameArmState.FLOORED) {
 			m_state = EndgameArmState.DESCENDING;
 		}
+	}
+
+	public boolean doneDescending() {
+		return m_state != EndgameArmState.DESCENDING;
 	}
 
 	public void stop() {

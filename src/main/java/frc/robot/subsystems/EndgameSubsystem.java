@@ -50,13 +50,13 @@ public class EndgameSubsystem extends SubsystemBase {
 	public void enableAscension() {
 		m_endgameA.disengageSafety();
 		m_endgameB.disengageSafety();
-        m_unlockArms.set(true);
+		m_unlockArms.set(true);
 	}
 
 	public void disableAscension() {
 		m_endgameA.engageSafety();
 		m_endgameB.engageSafety();
-        m_unlockArms.set(false);
+		m_unlockArms.set(false);
 	}
 
 	public void ascend() {
@@ -64,9 +64,17 @@ public class EndgameSubsystem extends SubsystemBase {
 		m_endgameB.ascend();
 	}
 
+	public boolean doneAscending() {
+		return m_endgameA.doneAscending() && m_endgameA.doneAscending();
+	}
+
 	public void descend() {
 		m_endgameA.descend();
 		m_endgameB.descend();
+	}
+
+	public boolean doneDescending() {
+		return m_endgameA.doneDescending() && m_endgameB.doneDescending();
 	}
 
 	public void stop() {
