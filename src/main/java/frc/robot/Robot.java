@@ -25,7 +25,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     m_battery = new Battery(11.5, 13.1, 18);
-    EndgameTimer.resetOverride();
   }
 
   /**

@@ -37,7 +37,6 @@ import frc.robot.commands.drivetrain.SimpleDriveDistance;
 import frc.robot.commands.drivetrain.StopDrivetrain;
 import frc.robot.commands.endgame.DisengageSafetyLock;
 import frc.robot.commands.endgame.EngageSafetyLock;
-import frc.robot.commands.endgame.OverrideEndgame;
 import frc.robot.commands.endgame.LowerMotor;
 import frc.robot.commands.endgame.RaiseMotorWithDelayAndSafety;
 import frc.robot.commands.endgame.ResetEndgame;
