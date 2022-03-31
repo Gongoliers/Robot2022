@@ -70,6 +70,10 @@ public class EndgameArm {
 		}
 	}
 
+	public void stop() {
+		m_state = EndgameArmState.STOPPED;
+	}
+
 	public void update() {
 		switch (m_state) {
 			case ASCENDING:

@@ -42,15 +42,9 @@ public class EndgameSubsystem extends SubsystemBase {
 		m_endgameB.getLimitSwitch().setInverted(true);
 		m_endgameB.getEncoder().reset();
 
-        // Ensure that Solenoid is Unpowered
-        m_unlockArms.set(false);
+		// Ensure that Solenoid is Unpowered
+		m_unlockArms.set(false);
 
-    }
-
-    public void powerPneumatics(Boolean power) {
-        if (EndgameTimer.getMatchTime() < 30) {
-            m_unlockArms.set(power);
-        }
     }
 
 	public void enableAscension() {
@@ -73,6 +67,11 @@ public class EndgameSubsystem extends SubsystemBase {
 	public void descend() {
 		m_endgameA.descend();
 		m_endgameB.descend();
+	}
+
+	public void stop() {
+		m_endgameA.stop();
+		m_endgameB.stop();
 	}
 
     @Override
