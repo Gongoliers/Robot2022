@@ -321,13 +321,8 @@ public class RobotContainer {
          */
         DPadButton raiseEndgame = new DPadButton(m_manipulatorController, Direction.UP);
         raiseEndgame.whenPressed(new AscendWithDelay(m_endgame));
+        // TODO: Evaluate if this line is necessary
         raiseEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
-
-
-        DPadButton toggleEndgame = new DPadButton(m_manipulatorController, Direction.LEFT);
-        toggleEndgame.whenPressed(new DisengageSafetyLock(m_endgame));
-        toggleEndgame.whenReleased(new EngageSafetyLock(m_endgame));
-
 
         // NOTE ABOUT ENDGAME: STOPENDGAME AUTOMATICALLY LOCKS THE PNEUMATICS
 
@@ -340,6 +335,7 @@ public class RobotContainer {
          */
         DPadButton lowerEndgame = new DPadButton(m_manipulatorController, Direction.DOWN);
         lowerEndgame.whenPressed(new Descend(m_endgame));
+        // TODO: Evaluate if this line is necessary
         lowerEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
 
         /**
