@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.EndgameTimer;
 import frc.robot.InvertableLimitSwitch;
 import frc.robot.EndgameArm;
 import frc.robot.PhoenixMotorControllerEncoder;
@@ -37,10 +36,16 @@ public class EndgameSubsystem extends SubsystemBase {
 		m_endgameA.getMotor().setInverted(true);
 		m_endgameA.getLimitSwitch().setInverted(true);
 		m_endgameA.getEncoder().reset();
+		m_endgameA.setCappedDistance(EndgameConstants.kCappedDistanceA);
+		m_endgameA.setAscentSpeed(EndgameConstants.kAscendMotorSpeedA);
+		m_endgameA.setDescentSpeed(EndgameConstants.kDescendMotorSpeedA);
 
 		m_endgameB.getMotor().setInverted(true);
 		m_endgameB.getLimitSwitch().setInverted(true);
 		m_endgameB.getEncoder().reset();
+		m_endgameB.setCappedDistance(EndgameConstants.kCappedDistanceA);
+		m_endgameB.setAscentSpeed(EndgameConstants.kAscendMotorSpeedA);
+		m_endgameB.setDescentSpeed(EndgameConstants.kDescendMotorSpeedA);
 
 		// Ensure that Solenoid is Unpowered
 		m_unlockArms.set(false);
