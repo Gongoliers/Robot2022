@@ -10,6 +10,6 @@ public class StopEndgameWithDelay extends SequentialCommandGroup {
         addRequirements(endgame);
         addCommands(new EngageSafetyLock(endgame),
                     new WaitCommand(EndgameConstants.kDelayToUnlockPneumatics),
-                    new StopEndgameMotor(endgame));
+                    new StopEndgame(endgame));
     }
 }

@@ -35,11 +35,9 @@ import frc.robot.commands.drivetrain.InvertDirections;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
 import frc.robot.commands.drivetrain.SimpleDriveDistance;
 import frc.robot.commands.drivetrain.StopDrivetrain;
-import frc.robot.commands.endgame.DisableEncoderChecks;
 import frc.robot.commands.endgame.DisengageSafetyLock;
 import frc.robot.commands.endgame.EngageSafetyLock;
 import frc.robot.commands.endgame.OverrideEndgame;
-import frc.robot.commands.endgame.ResetEndgameOverride;
 import frc.robot.commands.endgame.LowerMotor;
 import frc.robot.commands.endgame.RaiseMotorWithDelayAndSafety;
 import frc.robot.commands.endgame.ResetEndgame;
@@ -257,13 +255,13 @@ public class RobotContainer {
         /**
          * Override Match Timer
          *  -- Overrides Match Timer Lock for Endgaem
-         *  -- Requested by Brad
+         *  -- Reevaluate if this is necessary
          * 
          * Binding: 
          *  -- Button 11
          */
-        JoystickButton overrideTimer = new JoystickButton(m_driverJoystick, 11);
-        overrideTimer.whenPressed(new ResetEndgameOverride());
+        //JoystickButton overrideTimer = new JoystickButton(m_driverJoystick, 11);
+        //overrideTimer.whenPressed(new ResetEndgameOverride());
 
         /**
          * Backup and Shoot
@@ -348,17 +346,18 @@ public class RobotContainer {
         /**
          * Break Safety
          *  -- Disables timer safety
+         *  -- Re-add if necessary
          * 
          * Binding: 
          *  -- Right DPAD Button
          */
-        Trigger endgameEnabled = new Trigger(EndgameTimer::isTimerBroken).negate();
-        Trigger overrideEndgame = new DPadButton(m_manipulatorController, Direction.RIGHT).and(endgameEnabled);
-        overrideEndgame.whenActive(new OverrideEndgame());
+        //Trigger endgameEnabled = new Trigger(EndgameTimer::isTimerBroken).negate();
+        //Trigger overrideEndgame = new DPadButton(m_manipulatorController, Direction.RIGHT).and(endgameEnabled);
+        //overrideEndgame.whenActive(new OverrideEndgame());
 
-        Trigger endgameDisabled = new Trigger(EndgameTimer::isTimerBroken);
-        Trigger overrideEncoders = new DPadButton(m_manipulatorController, Direction.RIGHT).and(endgameDisabled);
-        overrideEncoders.whenActive(new DisableEncoderChecks(m_endgame));
+        //Trigger endgameDisabled = new Trigger(EndgameTimer::isTimerBroken);
+        //Trigger overrideEncoders = new DPadButton(m_manipulatorController, Direction.RIGHT).and(endgameDisabled);
+        //overrideEncoders.whenActive(new DisableEncoderChecks(m_endgame));
 
 // Shooter Subsystem
 
