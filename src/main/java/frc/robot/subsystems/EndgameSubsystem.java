@@ -60,9 +60,19 @@ public class EndgameSubsystem extends SubsystemBase {
 	}
 
 	public void disableAscension() {
-		m_endgameA.disengageSafety();
-		m_endgameB.disengageSafety();
+		m_endgameA.engageSafety();
+		m_endgameB.engageSafety();
         m_unlockArms.set(false);
+	}
+
+	public void ascend() {
+		m_endgameA.ascend();
+		m_endgameB.ascend();
+	}
+
+	public void descend() {
+		m_endgameA.descend();
+		m_endgameB.descend();
 	}
 
     @Override
