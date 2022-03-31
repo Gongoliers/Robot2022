@@ -58,7 +58,7 @@ public class EndgameArm {
 		m_isSafeToAscend = true;
 	}
 
-	public void startAscend() {
+	public void setDirectionAscend() {
 		if (m_state != EndgameArmState.CAPPED) {
 			m_state = EndgameArmState.ASCENDING;
 		}
@@ -68,7 +68,7 @@ public class EndgameArm {
 		return m_state != EndgameArmState.ASCENDING;
 	}
 
-	public void startDescend() {
+	public void setDirectionDescend() {
 		if (m_state != EndgameArmState.FLOORED) {
 			m_state = EndgameArmState.DESCENDING;
 		}
