@@ -64,22 +64,29 @@ public class EndgameSubsystem extends SubsystemBase {
 		m_unlockArms.set(false);
 	}
 
-	public void startAscend() {
-		m_endgameA.startAscend();
-		m_endgameB.startAscend();
+	public void setDirectionAscend() {
+		m_endgameA.setDirectionAscend();
+		m_endgameB.setDirectionAscend();
 	}
 
 	public boolean doneAscending() {
 		return m_endgameA.doneAscending() && m_endgameA.doneAscending();
 	}
 
-	public void startDescend() {
-		m_endgameA.startDescend();
-		m_endgameB.startDescend();
+	public void setDirectionDescend() {
+		m_endgameA.setDirectionDescend();
+		m_endgameB.setDirectionDescend();
 	}
 
 	public boolean doneDescending() {
 		return m_endgameA.doneDescending() && m_endgameB.doneDescending();
+	}
+
+	public void drive() {
+		m_endgameA.update();
+		m_endgameA.driveArm();
+		m_endgameB.update();
+		m_endgameB.driveArm();
 	}
 
 	public void stop() {

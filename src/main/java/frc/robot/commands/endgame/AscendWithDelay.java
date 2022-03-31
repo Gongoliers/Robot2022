@@ -10,6 +10,6 @@ public class AscendWithDelay extends SequentialCommandGroup {
         addRequirements(endgame);
         addCommands(new DisengageSafetyLock(endgame),
                     new WaitCommand(EndgameConstants.kDelayToUnlockPneumatics),
-                    new Ascend(endgame));
+					new Ascend(endgame));
     }
 }
