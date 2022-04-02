@@ -1,7 +1,9 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.thegongoliers.input.odometry.EncoderSensor;
+import com.thegongoliers.output.actuators.GSpeedController;
+
+import frc.robot.Constants.EndgameConstants;
 
 public class EndgameArm {
 
@@ -13,13 +15,12 @@ public class EndgameArm {
 		FLOORED,
 	}
 
-	private final WPI_TalonSRX m_motor;
+	private final GSpeedController m_motor;
 	private final EncoderSensor m_encoder;
 	private final InvertableLimitSwitch m_limitSwitch;
 	private EndgameArmState m_state = EndgameArmState.STOPPED;
-	private boolean m_isSafeToAscend = false;
-	private double m_cappedDistance, m_ascentSpeed, m_descentSpeed;
-	private boolean m_interface = false;
+	private boolean m_isSafeToAscend;
+	private double m_cappedDistance;
 
 	/**
 	 * This is the basic endgame arm used in the 2022 game
@@ -27,18 +28,10 @@ public class EndgameArm {
 	 * @param encoder
 	 * @param limitSwitch
 	 */
-	public EndgameArm(WPI_TalonSRX motor, EncoderSensor encoder, InvertableLimitSwitch limitSwitch) {
+	public EndgameArm(GSpeedController motor, EncoderSensor encoder, InvertableLimitSwitch limitSwitch) {
 		m_motor = motor;
 		m_encoder = encoder;
 		m_limitSwitch = limitSwitch;
-	}
-
-	/**
-	 * Gets the speed of the motor
-	 * @return
-	 */
-	public double get() {
-		return m_motor.get();
 	}
 
 	/**
@@ -51,17 +44,10 @@ public class EndgameArm {
 	}
 
 	/**
-	 * Helper for EndgameController.java
-	 */
-	public void toggleInterface() {
-		m_interface = !m_interface;
-	}
-
-	/**
 	 * Gets the motor from EndgameArm
 	 * @return
 	 */
-	public WPI_TalonSRX getMotor() {
+	public GSpeedController getMotor() {
 		return m_motor;
 	}
 
@@ -79,41 +65,6 @@ public class EndgameArm {
 	 */
 	public InvertableLimitSwitch getLimitSwitch() {
 		return m_limitSwitch;
-	}
-
-	/**
-	 * Important function that will need to be called
-	 * to configure this object.
-	 * @param distance
-	 */
-	public void setCappedDistance(double distance) {
-		m_cappedDistance = distance;
-	}
-
-	/**
-	 * Helper function for EndgameController
-	 * @return cappedDistance for EndgameArm
-	 */
-	public double getCappedDistance() {
-		return m_cappedDistance;
-	}
-
-	/**
-	 * Sets the ascentSpeed for EndgameArm when
-	 * being controlled individually
-	 * @param speed
-	 */
-	public void setAscentSpeed(double speed) {
-		m_ascentSpeed = speed;
-	}
-
-	/**
-	 * Sets the ddescentSpeed for EndgameArm when
-	 * being controlled individually
-	 * @param speed
-	 */
-	public void setDescentSpeed(double speed) {
-		m_descentSpeed = speed;
 	}
 
 	/**
@@ -199,15 +150,14 @@ public class EndgameArm {
 	 * Helper Function to drive arm
 	 */
 	public void driveArm() {
-		if (m_interface) {return;};
 		switch (m_state) {
 			case ASCENDING:
 				if (m_isSafeToAscend) {
-					m_motor.set(m_ascentSpeed);
+					m_motor.setDistance(EndgameConstants.kTopDistance);
 				}
 				break;
 			case DESCENDING:
-				m_motor.set(m_descentSpeed);
+				m_motor.setDistance(0.0);
 				break;
 			case STOPPED:
 			case CAPPED:
