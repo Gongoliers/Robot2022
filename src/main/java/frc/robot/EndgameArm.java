@@ -48,31 +48,6 @@ public class EndgameArm {
 	}
 
 	/**
-	 * Gets the motor from EndgameArm
-	 * @return
-	 */
-	public GSpeedController getMotor() {
-		return m_motor;
-	}
-
-	/**
-	 * Gets the encoder from EndgameArm
-	 * @return
-	 */
-	public EncoderSensor getEncoder() {
-		return m_encoder;
-	}
-
-	/**
-	 * Gets the EndgameArm's limit switch
-	 * @return
-	 */
-	public InvertableLimitSwitch getLimitSwitch() {
-		return m_limitSwitch;
-	}
-
-
-	/**
 	 * Set's the Ascent direction
 	 */
 	public void setDirectionAscend() {

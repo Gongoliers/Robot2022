@@ -39,17 +39,18 @@ public class EndgameSubsystem extends SubsystemBase {
     private final EndgameArm m_endgameB = new EndgameArm(m_controllerB, m_encoderB, m_limitSwitchB, m_armUnlockControllerB);
 
     public EndgameSubsystem() {
-		m_endgameA.getEncoder().reset();
-		m_endgameB.getEncoder().reset();
+		m_encoderA.reset();
+		m_encoderB.reset();
 
-		m_endgameA.getMotor().setInverted(true);
-		m_endgameB.getMotor().setInverted(true);
+		m_motorA.setInverted(true);
+		m_motorB.setInverted(true);
 		
-		m_endgameA.getLimitSwitch().setInverted(true);
-		m_endgameB.getLimitSwitch().setInverted(true); // TODO: Check if limit switches are replaced
+		m_limitSwitchA.setInverted(true);
+		m_limitSwitchB.setInverted(true); // TODO: Check if limit switches are replaced
 
 		// Ensure that Solenoid is Unpowered
-		m_armLockController.set(false);
+		m_armUnlockControllerA.set(false);
+		m_armUnlockControllerB.set(false);
 
     }
 
@@ -72,7 +73,13 @@ public class EndgameSubsystem extends SubsystemBase {
 	}
 
 	public void EngageSafetyLock() {
+		m_armUnlockControllerA.set(false);
+		m_armUnlockControllerB.set(false);
+	}
 
+	public void DisengageSafetyLock() {
+		m_armUnlockControllerA.set(true);
+		m_armUnlockControllerB.set(true);
 	}
 
 	public void drive() {

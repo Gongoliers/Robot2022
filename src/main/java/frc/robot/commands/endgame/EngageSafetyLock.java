@@ -15,6 +15,6 @@ public class EngageSafetyLock extends InstantCommand {
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
-        m_endgame.EngageLock();
+        m_endgame.EngageSafetyLock();
     }
 }
