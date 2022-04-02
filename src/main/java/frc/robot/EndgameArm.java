@@ -10,6 +10,7 @@ public class EndgameArm {
 	private static enum EndgameArmState {
 		ASCENDING,
 		DESCENDING,
+		HOMING,
 		STOPPED,
 		CAPPED,
 		FLOORED,
@@ -108,6 +109,12 @@ public class EndgameArm {
 		}
 	}
 
+	public void home() {
+		if (m_state != EndgameArmState.FLOORED) {
+			m_state = EndgameArmState.HOMING;
+		}
+	}
+
 	/**
 	 * Returns whether or not the EndgameArm is done descending
 	 * @return bool
@@ -134,6 +141,7 @@ public class EndgameArm {
 					m_state = EndgameArmState.CAPPED;
 				}
 				break;
+			case HOMING:
 			case DESCENDING:
 				if (doneDescending()) {
 					m_state = EndgameArmState.FLOORED;
@@ -159,6 +167,9 @@ public class EndgameArm {
 				break;
 			case DESCENDING:
 				m_motor.setDistance(0.0);
+				break;
+			case HOMING:
+				m_motor.set(-0.5);
 				break;
 			case STOPPED:
 			case CAPPED:
