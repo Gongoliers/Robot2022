@@ -3,6 +3,7 @@ package frc.robot;
 import com.thegongoliers.input.odometry.EncoderSensor;
 import com.thegongoliers.output.actuators.GSpeedController;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.Constants.EndgameConstants;
 
 public class EndgameArm {
@@ -19,8 +20,8 @@ public class EndgameArm {
 	private final GSpeedController m_motor;
 	private final EncoderSensor m_encoder;
 	private final InvertableLimitSwitch m_limitSwitch;
+	private final Solenoid m_armLockController; 
 	private EndgameArmState m_state = EndgameArmState.STOPPED;
-	private boolean m_isSafeToAscend;
 	private double m_cappedDistance;
 
 	/**
@@ -29,11 +30,12 @@ public class EndgameArm {
 	 * @param encoder
 	 * @param limitSwitch
 	 */
-	public EndgameArm(GSpeedController motor, EncoderSensor encoder, InvertableLimitSwitch limitSwitch) {
+	public EndgameArm(GSpeedController motor, EncoderSensor encoder, InvertableLimitSwitch limitSwitch, Solenoid locker) {
 		motor.useVoltageControl(12.0);
 		m_motor = motor;
 		m_encoder = encoder;
 		m_limitSwitch = limitSwitch;
+		m_armLockController = locker;
 	}
 
 	/**
@@ -69,19 +71,6 @@ public class EndgameArm {
 		return m_limitSwitch;
 	}
 
-	/**
-	 * Engages the Safety
-	 */
-	public void engageSafety() {
-		m_isSafeToAscend = false;
-	}
-
-	/**
-	 * Disengages the safety
-	 */
-	public void disengageSafety() {
-		m_isSafeToAscend = true;
-	}
 
 	/**
 	 * Set's the Ascent direction
@@ -161,7 +150,7 @@ public class EndgameArm {
 	public void driveArm() {
 		switch (m_state) {
 			case ASCENDING:
-				if (m_isSafeToAscend) {
+				if (m_armLockController.get()) {
 					m_motor.setDistance(EndgameConstants.kTopDistance);
 				}
 				break;

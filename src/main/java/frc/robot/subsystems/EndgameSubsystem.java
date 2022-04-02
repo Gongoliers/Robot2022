@@ -18,13 +18,17 @@ import frc.robot.Constants.EndgameConstants;
 
 public class EndgameSubsystem extends SubsystemBase {
 
+	// Initializing Pneumatics
+	private final Solenoid m_armUnlockControllerA = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidACAN);
+	private final Solenoid m_armUnlockControllerB = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidBCAN);
+
     // Left Motor (when standing behind battery)
     private final WPI_TalonSRX m_motorA = new WPI_TalonSRX(EndgameConstants.kMotorACAN);
     private EncoderSensor m_encoderA = new PhoenixMotorControllerEncoder(m_motorA, FeedbackDevice.CTRE_MagEncoder_Relative)
 		.scaledBy(EndgameConstants.kCappedDistanceA);
     private InvertableLimitSwitch m_limitSwitchA = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchAPort);
 	private GSpeedController m_controllerA = new GSpeedController(m_motorA, m_encoderA, new PID(0.0, 0.0, 0.0), new PID(0.0, 0.0, 0.0));
-    private final EndgameArm m_endgameA = new EndgameArm(m_controllerA, m_encoderA, m_limitSwitchA);
+    private final EndgameArm m_endgameA = new EndgameArm(m_controllerA, m_encoderA, m_limitSwitchA, m_armUnlockControllerA);
 
     // Right Motor (when standing behind battery)
     private final WPI_TalonSRX m_motorB = new WPI_TalonSRX(EndgameConstants.kMotorBCAN);
@@ -32,10 +36,7 @@ public class EndgameSubsystem extends SubsystemBase {
 		.scaledBy(EndgameConstants.kCappedDistanceB);
     private InvertableLimitSwitch m_limitSwitchB = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchBPort);
 	private GSpeedController m_controllerB = new GSpeedController(m_motorB, m_encoderB, new PID(0.0, 0.0, 0.0), new PID(0.0, 0.0, 0.0));
-    private final EndgameArm m_endgameB = new EndgameArm(m_controllerB, m_encoderB, m_limitSwitchB);
-
-    // Initializing Pneumatics
-    private final Solenoid m_unlockArms = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidCAN);
+    private final EndgameArm m_endgameB = new EndgameArm(m_controllerB, m_encoderB, m_limitSwitchB, m_armUnlockControllerB);
 
     public EndgameSubsystem() {
 		m_endgameA.getEncoder().reset();
@@ -48,21 +49,9 @@ public class EndgameSubsystem extends SubsystemBase {
 		m_endgameB.getLimitSwitch().setInverted(true); // TODO: Check if limit switches are replaced
 
 		// Ensure that Solenoid is Unpowered
-		m_unlockArms.set(false);
+		m_armLockController.set(false);
 
     }
-
-	public void enableAscension() {
-		m_endgameA.disengageSafety();
-		m_endgameB.disengageSafety();
-		m_unlockArms.set(true);
-	}
-
-	public void disableAscension() {
-		m_endgameA.engageSafety();
-		m_endgameB.engageSafety();
-		m_unlockArms.set(false);
-	}
 
 	public void setDirectionAscend() {
 		m_endgameA.setDirectionAscend();
@@ -80,6 +69,10 @@ public class EndgameSubsystem extends SubsystemBase {
 
 	public boolean doneDescending() {
 		return m_endgameA.doneDescending() && m_endgameB.doneDescending();
+	}
+
+	public void EngageSafetyLock() {
+
 	}
 
 	public void drive() {

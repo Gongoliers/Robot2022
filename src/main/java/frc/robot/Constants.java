@@ -89,7 +89,8 @@ public final class Constants {
     public static final double kDelayToUnlockPneumatics = 1.0; // THIS IS THE DELAY BETWEEN THE MOTORS SPINNGING AND THE PNEUMATICS BEING TOLD TO DISENGAGE
     public static final int kMotorACAN = 20; // LEFT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kMotorBCAN = 21; // RIGHT OF BATTERY (WHEN STANDING BEHIND BATTERY)
-    public static final int kSolenoidCAN = 7; // CAN PORT OF SOLENOID
+    public static final int kSolenoidACAN = 7; // CAN PORT OF SOLENOID
+    public static final int kSolenoidBCAN = 7; // CAN PORT OF SOLENOID
     public static final double kTopDistance = 3 / 2.0;// TODO: TESTING ONLY;
     public static final double kCappedDistanceA = 3 / 925208.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
     public static final double kCappedDistanceB = 3 / 1128735.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
