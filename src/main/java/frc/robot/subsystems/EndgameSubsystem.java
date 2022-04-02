@@ -27,7 +27,22 @@ public class EndgameSubsystem extends SubsystemBase {
     private EncoderSensor m_encoderA = new PhoenixMotorControllerEncoder(m_motorA, FeedbackDevice.CTRE_MagEncoder_Relative)
 		.scaledBy(EndgameConstants.kCappedDistanceA);
     private InvertableLimitSwitch m_limitSwitchA = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchAPort);
-	private GSpeedController m_controllerA = new GSpeedController(m_motorA, m_encoderA, new PID(0.0, 0.0, 0.0), new PID(0.0, 0.0, 0.0));
+	/**
+	 * Drive Arms Up x desired feet (important record distance on both smartdashboard and mark arm w sharpie TICKS * FEET/TICK)(use other program)
+	 * Set caluclated value to top distance (half to not overdrive)
+	 * 
+	 * Oscilating = on one test
+	 * 
+	 * 1. Change EndgameConstants.kTopFeet to tuned ^^
+	 * 2. Change P Value to reach mark marked on endgame arm consistantly
+	 * 		2a. It's better for the endgame arm to hit the mark and continue around it than to not reach mark
+	 * 3. Change D value (start at 0.02) until the EndgameArm stops moving around that point. This does not matter
+	 * 			if it stops directly on that point (just need arm to stop moving around)
+	 * 4. If D does not make arm stop at line, use I term (middle) (start at 0.01) (always positive tune until arm
+	 *		 reaches point)
+	 * 
+	 */
+	private GSpeedController m_controllerA = new GSpeedController(m_motorA, m_encoderA, new PID(0.5, 0.0, 0.0), new PID(0.0, 0.0, 0.0));
     private final EndgameArm m_endgameA = new EndgameArm(m_controllerA, m_encoderA, m_limitSwitchA, m_armUnlockControllerA);
 
     // Right Motor (when standing behind battery)
@@ -35,7 +50,7 @@ public class EndgameSubsystem extends SubsystemBase {
     private EncoderSensor m_encoderB = new PhoenixMotorControllerEncoder(m_motorB, FeedbackDevice.CTRE_MagEncoder_Relative)
 		.scaledBy(EndgameConstants.kCappedDistanceB);
     private InvertableLimitSwitch m_limitSwitchB = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchBPort);
-	private GSpeedController m_controllerB = new GSpeedController(m_motorB, m_encoderB, new PID(0.0, 0.0, 0.0), new PID(0.0, 0.0, 0.0));
+	private GSpeedController m_controllerB = new GSpeedController(m_motorB, m_encoderB, new PID(0.5, 0.0, 0.0), new PID(0.0, 0.0, 0.0));
     private final EndgameArm m_endgameB = new EndgameArm(m_controllerB, m_encoderB, m_limitSwitchB, m_armUnlockControllerB);
 
     public EndgameSubsystem() {
