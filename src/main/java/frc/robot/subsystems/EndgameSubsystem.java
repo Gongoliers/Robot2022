@@ -98,8 +98,7 @@ public class EndgameSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Endgame A", m_encoderA.getDistance());
         SmartDashboard.putNumber("Endgame B", m_encoderB.getDistance());
-        // System.out.println("ENC A:"+m_encoderA.getDistance()+"ENC B"+m_encoderB.getDistance()+"A"+AMotorDone()+"B"+BMotorDone());
-        // System.out.println("LA"+!m_limitSwitchA.isTriggered() + "LB"+!m_limitSwitchB.isTriggered());
+
     }
 
 }

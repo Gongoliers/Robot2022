@@ -29,6 +29,7 @@ public class EndgameArm {
 	 * @param limitSwitch
 	 */
 	public EndgameArm(GSpeedController motor, EncoderSensor encoder, InvertableLimitSwitch limitSwitch) {
+		motor.useVoltageControl(12.0);
 		m_motor = motor;
 		m_encoder = encoder;
 		m_limitSwitch = limitSwitch;
