@@ -92,7 +92,7 @@ public class EndgameArm {
 	 */
 	public void stop() {
 		m_state = EndgameArmState.STOPPED;
-		m_motor.stopMotor(); // safety
+		m_motor.set(0); // safety
 	}
 
 	/**
