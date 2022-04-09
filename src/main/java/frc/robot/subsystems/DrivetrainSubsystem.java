@@ -16,7 +16,6 @@ import com.thegongoliers.output.drivetrain.VoltageControlModule;
 import com.thegongoliers.math.GMath;
 import com.thegongoliers.input.odometry.AverageEncoderSensor;
 import com.thegongoliers.input.odometry.EncoderSensor;
-import com.thegongoliers.input.time.RobotClock;
 
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -55,10 +54,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private VoltageControlModule m_voltageControlModule;
     private PowerEfficiencyModule m_powerEfficiencyModule;
 
-    // Initializing Turbo Ramp
-    private double m_turboFullSpeedTime;
-    private double m_lastTurboSpeed;
-    private RobotClock m_Clock; 
     
     // Initiating NAVX
     public AHRS m_navx = new AHRS(SerialPort.Port.kMXP);
@@ -119,18 +114,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
              new PID(0.12, 0.05, 0.005), new PID(0, 0, 0), false);
 
         m_modularDrivetrain.setModules(pathFollowerModule, targetAlignmentModule, traction, m_voltageControlModule, m_powerEfficiencyModule);
-
     }
 
     public void arcadeDrive(double forwardSpeed, double turnSpeed) {
-        if (m_turboFullSpeedTime > 0) {
-            double maxRate = (m_turboFullSpeedTime - m_Clock.getTime()) / DriveConstants.kSecondsToReachTurboSpeed;
-            forwardSpeed = GMath.rateLimit(maxRate, forwardSpeed, m_lastTurboSpeed);
-            m_lastTurboSpeed = forwardSpeed;
-            if (Math.abs(forwardSpeed) == 1) {
-                m_turboFullSpeedTime = 0;
-            }
-        }
         // TODO: Extract turn deadband constant
         var turn = GMath.deadband(turnSpeed, 0.2) * 0.75;
         m_modularDrivetrain.arcade(-forwardSpeed, turn);
@@ -156,7 +142,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
      */
     public void setTurboEnabled(boolean turboEnabled) {
         if (turboEnabled) {
-            m_turboFullSpeedTime = m_Clock.getTime() + DriveConstants.kSecondsToReachTurboSpeed;
             m_voltageControlModule.setMaxVoltage(DriveConstants.kFastVoltage);
         } else {
             m_voltageControlModule.setMaxVoltage(DriveConstants.kNormalVoltage);
