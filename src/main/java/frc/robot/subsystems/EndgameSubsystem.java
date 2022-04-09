@@ -20,7 +20,7 @@ public class EndgameSubsystem extends SubsystemBase {
 
 	// Initializing Pneumatics
 	private final Solenoid m_armUnlockControllerA = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidACAN);
-	private final Solenoid m_armUnlockControllerB = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidBCAN);
+	private final Solenoid m_armUnlockControllerB = m_armUnlockControllerA;
 
     // Left Motor (when standing behind battery)
     private final WPI_TalonFX m_motorA = new WPI_TalonFX(EndgameConstants.kMotorACAN);
