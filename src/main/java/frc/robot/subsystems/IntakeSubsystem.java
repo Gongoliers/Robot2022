@@ -21,6 +21,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public IntakeSubsystem() {
     
         m_intakeMotor = new WPI_TalonSRX(IntakeConstants.kIntakeCanId);
+        m_intakeMotor.setInverted(true);
 
         m_intakeSolenoid1 = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN1);
         m_intakePiston1 = new GPiston(m_intakeSolenoid1);
