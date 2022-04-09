@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kylecorry.pid.PID;
 import com.thegongoliers.input.odometry.AverageEncoderSensor;
 import com.thegongoliers.input.odometry.EncoderSensor;
@@ -23,8 +23,8 @@ public class EndgameSubsystem extends SubsystemBase {
 	private final Solenoid m_armUnlockControllerB = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidBCAN);
 
     // Left Motor (when standing behind battery)
-    private final WPI_TalonSRX m_motorA = new WPI_TalonSRX(EndgameConstants.kMotorACAN);
-    private EncoderSensor m_encoderA = new PhoenixMotorControllerEncoder(m_motorA, FeedbackDevice.CTRE_MagEncoder_Relative)
+    private final WPI_TalonFX m_motorA = new WPI_TalonFX(EndgameConstants.kMotorACAN);
+    private EncoderSensor m_encoderA = new PhoenixMotorControllerEncoder(m_motorA, FeedbackDevice.IntegratedSensor)
 		.scaledBy(EndgameConstants.kCappedDistanceA);
     private InvertableLimitSwitch m_limitSwitchA = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchAPort);
 	/**
@@ -46,8 +46,8 @@ public class EndgameSubsystem extends SubsystemBase {
     private final EndgameArm m_endgameA = new EndgameArm(m_controllerA, m_encoderA, m_limitSwitchA, m_armUnlockControllerA);
 
     // Right Motor (when standing behind battery)
-    private final WPI_TalonSRX m_motorB = new WPI_TalonSRX(EndgameConstants.kMotorBCAN);
-    private EncoderSensor m_encoderB = new PhoenixMotorControllerEncoder(m_motorB, FeedbackDevice.CTRE_MagEncoder_Relative)
+    private final WPI_TalonFX m_motorB = new WPI_TalonFX(EndgameConstants.kMotorBCAN);
+    private EncoderSensor m_encoderB = new PhoenixMotorControllerEncoder(m_motorB, FeedbackDevice.IntegratedSensor)
 		.scaledBy(EndgameConstants.kCappedDistanceB);
     private InvertableLimitSwitch m_limitSwitchB = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchBPort);
 	private GSpeedController m_controllerB = new GSpeedController(m_motorB, m_encoderB, new PID(0.5, 0.0, 0.0), new PID(0.0, 0.0, 0.0));
