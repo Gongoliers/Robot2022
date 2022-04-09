@@ -50,8 +50,8 @@ public class ShooterSubsystem extends SubsystemBase {
 		 * If we were counting by spins, the formula that we would use is
 		 * m_spinCountThreshold = (int) ShooterConstants.kRampUpSeconds * (1000 / 20)
 		 */
-		m_feederSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
-		m_outtakeSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
+		// m_feederSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
+		// m_outtakeSpeedController.setSecondsToFullSpeed(ShooterConstants.kRampUpSeconds);
 
 		m_clock = new RobotClock();
 		feederTime = -1.0;

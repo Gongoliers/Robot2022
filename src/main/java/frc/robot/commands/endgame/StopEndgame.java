@@ -21,7 +21,7 @@ public class StopEndgame extends CommandBase {
     @Override
     public void execute() {
         m_endgame.stop();
-        m_endgame.disableAscension();
+        m_endgame.EngageSafetyLock();
     }
 
     // Make this return true when this Command no longer needs to run execute()
