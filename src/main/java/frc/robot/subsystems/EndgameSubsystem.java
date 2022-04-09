@@ -67,6 +67,9 @@ public class EndgameSubsystem extends SubsystemBase {
 		m_armUnlockControllerA.set(false);
 		m_armUnlockControllerB.set(false);
 
+		m_endgameA.stop();
+		m_endgameB.stop();
+
     }
 
 	public void setDirectionAscend() {
