@@ -56,11 +56,12 @@ public class EndgameSubsystem extends SubsystemBase {
         m_encoderA.reset();
         m_encoderB.reset();
 
+        // TODO: These might not be inverted now - more testing needed
         m_motorA.setInverted(true);
         m_motorB.setInverted(true);
 
         m_limitSwitchA.setInverted(true);
-        m_limitSwitchB.setInverted(true); // TODO: Check if limit switches are replaced
+        m_limitSwitchB.setInverted(true);
     }
 
     public void run(EndgameAction action) {

@@ -29,11 +29,13 @@ public class UnlockedEndgameControl implements EndgameControl {
 
     private void ascend() {
         if (m_arm.isLocked()) {
+            m_arm.stop();
             // This will ensure that the lock has time to trigger
             return;
         }
 
         if (m_arm.isCapped()){
+            m_arm.stop();
             return;
         }
 
@@ -43,11 +45,13 @@ public class UnlockedEndgameControl implements EndgameControl {
     private void descend() {
 
         if (m_arm.isLocked()){
+            m_arm.stop();
             // This will ensure that the lock has time to trigger
             return;
         }
 
         if (m_arm.isFloored()) {
+            m_arm.stop();
             m_arm.calibrate();
             return;
         }
