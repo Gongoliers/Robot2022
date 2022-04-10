@@ -1,37 +1,15 @@
 package frc.robot.commands.endgame;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.EndgameSubsystem;
+import frc.robot.subsystems.endgame.EndgameAction;
 
-public class StopEndgame extends CommandBase {
-    
-    private EndgameSubsystem m_endgame;
+public class StopEndgame extends SequentialCommandGroup {
 
-    public StopEndgame(EndgameSubsystem endgame) {
-        addRequirements(endgame);
-        m_endgame = endgame;
+    public StopEndgame(EndgameSubsystem subsystem) {
+        addCommands(
+                new EndgameCommand(subsystem, EndgameAction.Stop).withTimeout(0.2)
+        );
     }
 
-    // Called just before this Command runs the first time
-    @Override
-    public void initialize() {
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    public void execute() {
-        m_endgame.stop();
-        m_endgame.EngageSafetyLock();
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    public boolean isFinished() {
-        return true;
-    }
-
-    // Called once after isFinished returns true
-    @Override
-    public void end(boolean interrupted) {
-    }
 }

@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.commands.endgame.StopEndgame;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.EndgameSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.drivetrain.StopDrivetrain;
-import frc.robot.commands.endgame.StopEndgame;
 import frc.robot.commands.intake.StopIntakeSystem;
 import frc.robot.commands.shooter.StopShooter;
 

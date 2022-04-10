@@ -12,35 +12,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.DPadButton.Direction;
 import frc.robot.commands.StopAll;
 import frc.robot.commands.autonomous.BackupAndShoot;
 import frc.robot.commands.autonomous.BackupAndShootWithDelayAndThenLeaveTarmac;
-import frc.robot.commands.autonomous.EnableTargetingAlignToTarget;
 import frc.robot.commands.autonomous.FullSystemCheck;
 import frc.robot.commands.autonomous.LeaveTarmac;
-import frc.robot.commands.autonomous.LeaveTarmacAndShoot;
 import frc.robot.commands.compressor.StartCompressor;
-import frc.robot.commands.compressor.StartLimitedCompressor;
 import frc.robot.commands.compressor.StopCompressor;
-import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
 import frc.robot.commands.drivetrain.InvertDirections;
 import frc.robot.commands.drivetrain.SetTurboDrivetrain;
 import frc.robot.commands.drivetrain.SimpleDriveDistance;
 import frc.robot.commands.drivetrain.StopDrivetrain;
-import frc.robot.commands.endgame.DisengageSafetyLock;
-import frc.robot.commands.endgame.EngageSafetyLock;
-import frc.robot.commands.endgame.Descend;
-import frc.robot.commands.endgame.AscendWithDelay;
-import frc.robot.commands.endgame.ResetEndgame;
-import frc.robot.commands.endgame.StopEndgameWithDelay;
+import frc.robot.commands.endgame.AscendEndgame;
+import frc.robot.commands.endgame.DescendEndgame;
+import frc.robot.commands.endgame.StopEndgame;
 import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.Intake;
 import frc.robot.commands.intake.Outtake;
@@ -142,7 +133,7 @@ public class RobotContainer {
      * This function adds custom options to smartdashboard
      */
     private void configureSmartDashboard() {
-        SmartDashboard.putData("Reset Endgame", new Descend(m_endgame));
+        SmartDashboard.putData("Reset Endgame", new DescendEndgame(m_endgame));
     }
 
     /** These Functions Allow the DriverOperatedCommand to get speed and rotation */
@@ -316,6 +307,10 @@ public class RobotContainer {
         stopCompressor.whenPressed(new StopCompressor(m_compressor));
 
 // ENDGAME SUBSYSTEM
+
+        // TODO: See if this is needed
+        m_endgame.setDefaultCommand(new StopEndgame(m_endgame));
+
         /** 
          * Raise Endgame
          *  -- Raises Endgame
@@ -324,9 +319,8 @@ public class RobotContainer {
          *  -- Up DPAD Button
          */
         DPadButton raiseEndgame = new DPadButton(m_manipulatorController, Direction.UP);
-        raiseEndgame.whenPressed(new AscendWithDelay(m_endgame));
-        // TODO: Evaluate if this line is necessary
-        raiseEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
+        raiseEndgame.whenPressed(new AscendEndgame(m_endgame));
+        raiseEndgame.whenReleased(new StopEndgame(m_endgame));
 
         // NOTE ABOUT ENDGAME: STOPENDGAME AUTOMATICALLY LOCKS THE PNEUMATICS
 
@@ -338,9 +332,9 @@ public class RobotContainer {
          *  -- Down DPAD Button
          */
         DPadButton lowerEndgame = new DPadButton(m_manipulatorController, Direction.DOWN);
-        lowerEndgame.whenPressed(new Descend(m_endgame));
+        lowerEndgame.whenPressed(new DescendEndgame(m_endgame));
         // TODO: Evaluate if this line is necessary
-        lowerEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
+        lowerEndgame.whenReleased(new StopEndgame(m_endgame));
 
         /**
          * Break Safety

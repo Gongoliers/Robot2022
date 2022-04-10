@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kylecorry.pid.PID;
-import com.thegongoliers.input.odometry.AverageEncoderSensor;
 import com.thegongoliers.input.odometry.EncoderSensor;
 import com.thegongoliers.output.actuators.GSpeedController;
 
@@ -12,7 +11,8 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.InvertableLimitSwitch;
-import frc.robot.EndgameArm;
+import frc.robot.subsystems.endgame.EndgameAction;
+import frc.robot.subsystems.endgame.EndgameArm;
 import frc.robot.PhoenixMotorControllerEncoder;
 import frc.robot.Constants.EndgameConstants;
 
@@ -62,61 +62,17 @@ public class EndgameSubsystem extends SubsystemBase {
 		
 		m_limitSwitchA.setInverted(true);
 		m_limitSwitchB.setInverted(true); // TODO: Check if limit switches are replaced
-
-		// Ensure that Solenoid is Unpowered
-		m_armUnlockControllerA.set(false);
-		m_armUnlockControllerB.set(false);
-
-		m_endgameA.stop();
-		m_endgameB.stop();
-
     }
 
-	public void setDirectionAscend() {
-		m_endgameA.setDirectionAscend();
-		m_endgameB.setDirectionAscend();
-	}
-
-	public boolean doneAscending() {
-		return m_endgameA.doneAscending() && m_endgameA.doneAscending();
-	}
-
-	public void setDirectionDescend() {
-		m_endgameA.setDirectionDescend();
-		m_endgameB.setDirectionDescend();
-	}
-
-	public boolean doneDescending() {
-		return m_endgameA.doneDescending() && m_endgameB.doneDescending();
-	}
-
-	public void EngageSafetyLock() {
-		m_armUnlockControllerA.set(false);
-		m_armUnlockControllerB.set(false);
-	}
-
-	public void DisengageSafetyLock() {
-		m_armUnlockControllerA.set(true);
-		m_armUnlockControllerB.set(true);
-	}
-
-	public void drive() {
-		m_endgameA.update();
-		m_endgameA.driveArm();
-		m_endgameB.update();
-		m_endgameB.driveArm();
-	}
-
-	public void stop() {
-		m_endgameA.stop();
-		m_endgameB.stop();
+	public void run(EndgameAction action){
+    	m_endgameA.run(action);
+    	m_endgameB.run(action);
 	}
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Endgame A", m_encoderA.getDistance());
         SmartDashboard.putNumber("Endgame B", m_encoderB.getDistance());
-
     }
 
 }
