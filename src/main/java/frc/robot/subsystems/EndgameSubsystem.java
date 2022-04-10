@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kylecorry.pid.PID;
 import com.thegongoliers.input.odometry.EncoderSensor;
@@ -56,6 +57,9 @@ public class EndgameSubsystem extends SubsystemBase {
         m_encoderA.reset();
         m_encoderB.reset();
 
+        m_motorA.setNeutralMode(NeutralMode.Brake);
+        m_motorB.setNeutralMode(NeutralMode.Brake);
+
         // TODO: These might not be inverted now - more testing needed
         // m_motorA.setInverted(true);
         // m_motorB.setInverted(true);
@@ -65,7 +69,7 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public void run(EndgameAction action) {
-        // m_endgameA.run(action);
+        m_endgameA.run(action);
         m_endgameB.run(action);
     }
 

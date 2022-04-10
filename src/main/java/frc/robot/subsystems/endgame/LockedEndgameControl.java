@@ -16,6 +16,26 @@ public class LockedEndgameControl implements EndgameControl {
             m_arm.unlock();
             return new UnlockedEndgameControl(m_arm);
         }
+
+        if (action == EndgameAction.Descend){
+            descend();
+        }
+
+        if (action == EndgameAction.Stop){
+            m_arm.stop();
+            m_arm.lock();
+        }
+        
         return this;
+    }
+
+    private void descend() {
+        if (m_arm.isFloored()) {
+            m_arm.stop();
+            m_arm.calibrate();
+            return;
+        }
+
+        m_arm.descend();
     }
 }

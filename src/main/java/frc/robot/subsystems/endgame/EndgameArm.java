@@ -66,11 +66,11 @@ public class EndgameArm {
     }
 
     void ascend() {
-        m_motor.set(0.1);
+        m_motor.set(0.75);
     }
 
     void descend() {
-        m_motor.set(-0.1);
+        m_motor.set(-0.3);
     }
 
 }
