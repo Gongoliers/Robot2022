@@ -31,7 +31,7 @@ public final class Constants {
         public static final double kFastVoltage = 10;
 
         // Power Control
-        public static final double kSecondsToReachFullSpeed = 0.3; 
+        public static final double kSecondsToReachFullSpeed = 0.6; 
         public static final double kTurnThreshold = 0.2;
         
         // Encoders
