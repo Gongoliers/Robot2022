@@ -91,16 +91,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // TODO: This didn't seem to work
         // m_modularDrivetrain.setInactiveResetSeconds(DriveConstants.kInactivityThresholdSeconds);
         
-        // These modules are calibrated if needed - in testing, they weren't needed (traction control seemed more useful than stability with the drivetrain)
-        var stability = new StabilityModule(m_gyro, 0.02, 0.35);
         var traction = new TractionControlModule2(m_leftEncoderSensor, m_rightEncoderSensor, 0.2, 0.2, 0.2);
 
-        // Voltage Control Module 
-        m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
-
+        
         // Power Effeciency Module
         m_powerEfficiencyModule = new PowerEfficiencyModule(DriveConstants.kSecondsToReachFullSpeed, DriveConstants.kTurnThreshold);
-
+        
+        // Voltage Control Module 
+        m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
+        
         // Path follower module
         // TODO: Calibrate this
         var pathFollowerModule = new PathFollowerModule(m_gyro,
