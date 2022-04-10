@@ -10,8 +10,7 @@ public class ResetEndgame extends SequentialCommandGroup {
         addRequirements(endgame);
         addCommands(new DisengageSafetyLock(endgame),
                     new WaitCommand(EndgameConstants.kDelayToUnlockPneumatics),
-                    new SetDirectionDescend(endgame),
-					new DriveEndgame(endgame)
+                    new Descend(endgame)
                     );
     }
 }

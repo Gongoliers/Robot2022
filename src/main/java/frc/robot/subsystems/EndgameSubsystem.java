@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.InvertableLimitSwitch;
 import frc.robot.EndgameArm;
+import frc.robot.EndgameArm2;
 import frc.robot.PhoenixMotorControllerEncoder;
 import frc.robot.Constants.EndgameConstants;
 
@@ -43,7 +44,7 @@ public class EndgameSubsystem extends SubsystemBase {
 	 * 
 	 */
 	private GSpeedController m_controllerA = new GSpeedController(m_motorA, m_encoderA, new PID(0.5, 0.0, 0.0), new PID(0.0, 0.0, 0.0));
-    private final EndgameArm m_endgameA = new EndgameArm(m_controllerA, m_encoderA, m_limitSwitchA, m_armUnlockControllerA);
+    private final EndgameArm2 m_endgameA = new EndgameArm2(m_controllerA, m_encoderA, m_limitSwitchA, m_armUnlockControllerA);
 
     // Right Motor (when standing behind battery)
     private final WPI_TalonFX m_motorB = new WPI_TalonFX(EndgameConstants.kMotorBCAN);
@@ -51,7 +52,7 @@ public class EndgameSubsystem extends SubsystemBase {
 		.scaledBy(EndgameConstants.kCappedDistanceB);
     private InvertableLimitSwitch m_limitSwitchB = new InvertableLimitSwitch(EndgameConstants.kLimitSwitchBPort);
 	private GSpeedController m_controllerB = new GSpeedController(m_motorB, m_encoderB, new PID(0.5, 0.0, 0.0), new PID(0.0, 0.0, 0.0));
-    private final EndgameArm m_endgameB = new EndgameArm(m_controllerB, m_encoderB, m_limitSwitchB, m_armUnlockControllerB);
+    private final EndgameArm2 m_endgameB = new EndgameArm2(m_controllerB, m_encoderB, m_limitSwitchB, m_armUnlockControllerB);
 
     public EndgameSubsystem() {
 		m_encoderA.reset();
@@ -72,23 +73,6 @@ public class EndgameSubsystem extends SubsystemBase {
 
     }
 
-	public void setDirectionAscend() {
-		m_endgameA.setDirectionAscend();
-		m_endgameB.setDirectionAscend();
-	}
-
-	public boolean doneAscending() {
-		return m_endgameA.doneAscending() && m_endgameA.doneAscending();
-	}
-
-	public void setDirectionDescend() {
-		m_endgameA.setDirectionDescend();
-		m_endgameB.setDirectionDescend();
-	}
-
-	public boolean doneDescending() {
-		return m_endgameA.doneDescending() && m_endgameB.doneDescending();
-	}
 
 	public void EngageSafetyLock() {
 		m_armUnlockControllerA.set(false);
@@ -100,16 +84,23 @@ public class EndgameSubsystem extends SubsystemBase {
 		m_armUnlockControllerB.set(true);
 	}
 
-	public void drive() {
-		m_endgameA.update();
-		m_endgameA.driveArm();
-		m_endgameB.update();
-		m_endgameB.driveArm();
-	}
-
 	public void stop() {
 		m_endgameA.stop();
 		m_endgameB.stop();
+	}
+
+	public void ascend() {
+		m_endgameA.ascend();
+		m_endgameB.ascend();
+	}
+
+	public void descend() {
+		m_endgameA.descend();
+		m_endgameB.descend();
+	}
+
+	public boolean done() {
+		return m_endgameA.done() && m_endgameB.done();
 	}
 
     @Override
