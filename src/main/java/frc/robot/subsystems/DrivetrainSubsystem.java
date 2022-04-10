@@ -53,7 +53,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private ModularDrivetrain m_modularDrivetrain;
     private VoltageControlModule m_voltageControlModule;
     private PowerEfficiencyModule m_powerEfficiencyModule;
-
     
     // Initiating NAVX
     public AHRS m_navx = new AHRS(SerialPort.Port.kMXP);

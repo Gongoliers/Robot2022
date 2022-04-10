@@ -57,8 +57,9 @@ public class EndgameSubsystem extends SubsystemBase {
 		m_encoderA.reset();
 		m_encoderB.reset();
 
-		m_motorA.setInverted(true);
-		m_motorB.setInverted(true);
+		// both bad? direction
+		//m_motorA.setInverted(true);
+		//m_motorB.setInverted(true);
 		
 		m_limitSwitchA.setInverted(true);
 		m_limitSwitchB.setInverted(true); // TODO: Check if limit switches are replaced
@@ -67,8 +68,8 @@ public class EndgameSubsystem extends SubsystemBase {
 		m_armUnlockControllerA.set(false);
 		m_armUnlockControllerB.set(false);
 
-		m_endgameA.stop();
-		m_endgameB.stop();
+		//m_endgameA.stop();
+		//m_endgameB.stop();
 
     }
 
@@ -116,7 +117,6 @@ public class EndgameSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Endgame A", m_encoderA.getDistance());
         SmartDashboard.putNumber("Endgame B", m_encoderB.getDistance());
-
     }
 
 }

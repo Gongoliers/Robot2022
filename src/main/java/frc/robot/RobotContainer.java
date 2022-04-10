@@ -41,6 +41,7 @@ import frc.robot.commands.endgame.Descend;
 import frc.robot.commands.endgame.AscendWithDelay;
 import frc.robot.commands.endgame.ResetEndgame;
 import frc.robot.commands.endgame.StopEndgameWithDelay;
+import frc.robot.commands.endgame.DriveEndgame;
 import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.Intake;
 import frc.robot.commands.intake.Outtake;
@@ -325,6 +326,7 @@ public class RobotContainer {
          */
         DPadButton raiseEndgame = new DPadButton(m_manipulatorController, Direction.UP);
         raiseEndgame.whenPressed(new AscendWithDelay(m_endgame));
+        raiseEndgame.whileHeld(new DriveEndgame(m_endgame));
         // TODO: Evaluate if this line is necessary
         raiseEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
 
@@ -339,6 +341,7 @@ public class RobotContainer {
          */
         DPadButton lowerEndgame = new DPadButton(m_manipulatorController, Direction.DOWN);
         lowerEndgame.whenPressed(new Descend(m_endgame));
+        lowerEndgame.whileHeld(new DriveEndgame(m_endgame));
         // TODO: Evaluate if this line is necessary
         lowerEndgame.whenReleased(new StopEndgameWithDelay(m_endgame));
 

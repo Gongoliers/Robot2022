@@ -42,7 +42,7 @@ public final class Constants {
 
   public static final class IntakeConstants {
     public static final int kIntakeCanId = 32;
-    public static final double kIntakeSpeed = 0.27;
+    public static final double kIntakeSpeed = -0.27; // FIXME: Negative
 
     public static final int kSolenoidCAN1 = 5;
     public static final int kSolenoidCAN2 = 6;
@@ -96,7 +96,7 @@ public final class Constants {
     public static final double kCappedDistanceB = 3 / 1128735.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
     public static final double kAscendMotorSpeedA = 0.11*3;//*5; // AKA ARM RAISE SPEED
     public static final double kAscendMotorSpeedB = 0.11*4;//*5;
-    public static final double kDescendMotorSpeedA = -0.15*3; // AKA CLIMB SPEED
+    public static final double kDescendMotorSpeedA = 0.15*3; // AKA CLIMB SPEED
     public static final double kDescendMotorSpeedB = -0.15*4;
     public static final int kLimitSwitchAPort = 1;
     public static final int kLimitSwitchBPort = 0;

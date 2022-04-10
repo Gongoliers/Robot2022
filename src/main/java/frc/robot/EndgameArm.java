@@ -36,6 +36,7 @@ public class EndgameArm {
 		m_encoder = encoder;
 		m_limitSwitch = limitSwitch;
 		m_armLockController = locker;
+		m_state = EndgameArmState.DESCENDING;
 	}
 
 	/**
@@ -130,7 +131,7 @@ public class EndgameArm {
 				}
 				break;
 			case DESCENDING:
-				m_motor.setDistance(0.0);
+				m_motor.set(-0.5);
 				break;
 			case HOMING:
 				m_motor.set(-0.5);
