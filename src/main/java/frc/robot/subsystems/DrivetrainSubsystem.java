@@ -24,11 +24,9 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.LimitedPEM;
 import frc.robot.NavxGyro;
 import frc.robot.PhoenixMotorControllerEncoder;
 import frc.robot.TractionControlModule2;
-import frc.robot.VoltageControlModule2;
 import frc.robot.Constants.DriveConstants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -53,8 +51,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     // Initializing the Modular Drivetrain
     private ModularDrivetrain m_modularDrivetrain;
-    private VoltageControlModule2 m_voltageControlModule;
-    private LimitedPEM m_powerEfficiencyModule;
+    private VoltageControlModule m_voltageControlModule;
+    private PowerEfficiencyModule m_powerEfficiencyModule;
 
     
     // Initiating NAVX
@@ -98,10 +96,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
         var traction = new TractionControlModule2(m_leftEncoderSensor, m_rightEncoderSensor, 0.2, 0.2, 0.2);
 
         // Voltage Control Module 
-        m_voltageControlModule = new VoltageControlModule2(DriveConstants.kNormalVoltage);
+        m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
 
         // Power Effeciency Module
-        m_powerEfficiencyModule = new LimitedPEM(DriveConstants.kSecondsToReachFullSpeed, DriveConstants.kTurnThreshold, m_voltageControlModule);
+        m_powerEfficiencyModule = new PowerEfficiencyModule(DriveConstants.kSecondsToReachFullSpeed, DriveConstants.kTurnThreshold);
 
         // Path follower module
         // TODO: Calibrate this
