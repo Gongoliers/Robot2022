@@ -90,11 +90,13 @@ public class EndgameSubsystem extends SubsystemBase {
 	}
 
 	public void ascend() {
+		DisengageSafetyLock(); //TODO: REMOVEME
 		m_endgameA.ascend();
 		m_endgameB.ascend();
 	}
 
 	public void descend() {
+		DisengageSafetyLock(); //TODO: REMOVEME
 		m_endgameA.descend();
 		m_endgameB.descend();
 	}
