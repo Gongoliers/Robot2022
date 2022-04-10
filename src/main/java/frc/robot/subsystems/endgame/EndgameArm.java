@@ -38,11 +38,11 @@ public class EndgameArm {
     }
 
     void unlock() {
-        m_armLockController.set(false);
+        m_armLockController.set(true);
     }
 
     boolean isLocked() {
-        return m_armLockController.get();
+        return !m_armLockController.get();
     }
 
     boolean isCapped() {
@@ -58,7 +58,7 @@ public class EndgameArm {
     }
 
     void lock() {
-        m_armLockController.set(true);
+        m_armLockController.set(false);
     }
 
     void stop() {
@@ -66,11 +66,11 @@ public class EndgameArm {
     }
 
     void ascend() {
-        m_motor.set(0.5);
+        m_motor.set(0.1);
     }
 
     void descend() {
-        m_motor.set(-0.5);
+        m_motor.set(-0.1);
     }
 
 }

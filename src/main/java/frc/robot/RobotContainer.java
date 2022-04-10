@@ -309,7 +309,7 @@ public class RobotContainer {
 // ENDGAME SUBSYSTEM
 
         // TODO: See if this is needed
-        m_endgame.setDefaultCommand(new StopEndgame(m_endgame));
+        // m_endgame.setDefaultCommand(new StopEndgame(m_endgame));
 
         /** 
          * Raise Endgame

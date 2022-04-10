@@ -8,7 +8,7 @@ public class StopEndgame extends SequentialCommandGroup {
 
     public StopEndgame(EndgameSubsystem subsystem) {
         addCommands(
-                new EndgameCommand(subsystem, EndgameAction.Stop).withTimeout(0.2)
+                new EndgameCommand(subsystem, EndgameAction.Stop).withTimeout(0.4)
         );
     }
 

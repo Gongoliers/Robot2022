@@ -12,6 +12,7 @@ public class UnlockedEndgameControl implements EndgameControl {
     @Override
     public EndgameControl run(EndgameAction action) {
         if (action == EndgameAction.Stop) {
+            m_arm.lock();
             return new LockedEndgameControl(m_arm);
         }
 

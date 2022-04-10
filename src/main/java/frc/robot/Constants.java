@@ -91,9 +91,9 @@ public final class Constants {
     public static final int kMotorBCAN = 21; // RIGHT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kSolenoidACAN = 7; // CAN PORT OF SOLENOID
     public static final int kSolenoidBCAN = 7; // CAN PORT OF SOLENOID
-    public static final double kTopDistance = 3 / 2.0;// TODO: TESTING ONLY;
-    public static final double kCappedDistanceA = 3 / 925208.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
-    public static final double kCappedDistanceB = 3 / 1128735.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
+    public static final double kTopDistance = Double.POSITIVE_INFINITY;//3 / 2.0;// TODO: TESTING ONLY;
+    public static final double kCappedDistanceA = 1 / 264596.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
+    public static final double kCappedDistanceB = 1.0;//3 / 1128735.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
     public static final double kAscendMotorSpeedA = 0.11*3;//*5; // AKA ARM RAISE SPEED
     public static final double kAscendMotorSpeedB = 0.11*4;//*5;
     public static final double kDescendMotorSpeedA = -0.15*3; // AKA CLIMB SPEED

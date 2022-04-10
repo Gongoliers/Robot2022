@@ -20,7 +20,7 @@ public class EndgameSubsystem extends SubsystemBase {
 
     // Initializing Pneumatics
     private final Solenoid m_armUnlockControllerA = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidACAN);
-    private final Solenoid m_armUnlockControllerB = new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidBCAN);
+    private final Solenoid m_armUnlockControllerB = m_armUnlockControllerA;//new Solenoid(PneumaticsModuleType.CTREPCM, EndgameConstants.kSolenoidBCAN);
 
     // Left Motor (when standing behind battery)
     private final WPI_TalonFX m_motorA = new WPI_TalonFX(EndgameConstants.kMotorACAN);
@@ -57,15 +57,15 @@ public class EndgameSubsystem extends SubsystemBase {
         m_encoderB.reset();
 
         // TODO: These might not be inverted now - more testing needed
-        m_motorA.setInverted(true);
-        m_motorB.setInverted(true);
+        // m_motorA.setInverted(true);
+        // m_motorB.setInverted(true);
 
         m_limitSwitchA.setInverted(true);
         m_limitSwitchB.setInverted(true);
     }
 
     public void run(EndgameAction action) {
-        m_endgameA.run(action);
+        // m_endgameA.run(action);
         m_endgameB.run(action);
     }
 
@@ -73,6 +73,8 @@ public class EndgameSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Endgame A", m_encoderA.getDistance());
         SmartDashboard.putNumber("Endgame B", m_encoderB.getDistance());
+        SmartDashboard.putBoolean("Endgame A Btm", m_limitSwitchA.isTriggered());
+        SmartDashboard.putBoolean("Endgame B Btm", m_limitSwitchB.isTriggered());
     }
 
 }

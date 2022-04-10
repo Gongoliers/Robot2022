@@ -8,7 +8,7 @@ public class AscendEndgame extends SequentialCommandGroup {
 
     public AscendEndgame(EndgameSubsystem subsystem) {
         addCommands(
-                new EndgameCommand(subsystem, EndgameAction.Unlock).withTimeout(0.2),
+                new EndgameCommand(subsystem, EndgameAction.Unlock).withTimeout(0.4),
                 new EndgameCommand(subsystem, EndgameAction.Ascend)
         );
     }
