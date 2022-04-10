@@ -22,6 +22,7 @@ import frc.robot.commands.autonomous.BackupAndShoot;
 import frc.robot.commands.autonomous.BackupAndShootWithDelayAndThenLeaveTarmac;
 import frc.robot.commands.autonomous.FullSystemCheck;
 import frc.robot.commands.autonomous.LeaveTarmac;
+import frc.robot.commands.autonomous.LeaveTarmacAndShoot;
 import frc.robot.commands.compressor.StartCompressor;
 import frc.robot.commands.compressor.StopCompressor;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
@@ -122,9 +123,9 @@ public class RobotContainer {
         autoChooser.addOption("Do Nothing", new StopAll(m_drivetrain, m_endgame, m_shooter, m_intake));
         autoChooser.addOption("System Check", new FullSystemCheck(m_drivetrain));
         autoChooser.addOption("Leave Tarmac", new LeaveTarmac(m_drivetrain));
-        autoChooser.addOption("Shoot then Leave Tarmac", new BackupAndShootWithDelayAndThenLeaveTarmac(m_drivetrain, m_shooter));
-        autoChooser.setDefaultOption("Shoot then Leave Tarmac", new BackupAndShootWithDelayAndThenLeaveTarmac(m_drivetrain, m_shooter));
-        // autoChooser.setDefaultOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
+        // autoChooser.addOption("Shoot then Leave Tarmac", new BackupAndShootWithDelayAndThenLeaveTarmac(m_drivetrain, m_shooter));
+        // autoChooser.setDefaultOption("Shoot then Leave Tarmac", new BackupAndShootWithDelayAndThenLeaveTarmac(m_drivetrain, m_shooter));
+        autoChooser.setDefaultOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
     
         SmartDashboard.putData("Auto mode", autoChooser);
     }
