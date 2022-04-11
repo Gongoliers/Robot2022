@@ -94,10 +94,10 @@ public final class Constants {
     public static final double kTopDistance = 0.99;//3 / 2.0;// TODO: TESTING ONLY;
     public static final double kCappedDistanceA = 1 / 264700.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
     public static final double kCappedDistanceB = 1 / 263599.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
-    public static final double kAscendMotorSpeedA = 0.11*3;//*5; // AKA ARM RAISE SPEED
-    public static final double kAscendMotorSpeedB = 0.11*4;//*5;
-    public static final double kDescendMotorSpeedA = -0.15*3; // AKA CLIMB SPEED
-    public static final double kDescendMotorSpeedB = -0.15*4;
+    public static final double kAscendMotorSpeedA = 0.70;
+    public static final double kAscendMotorSpeedB = kAscendMotorSpeedA;
+    public static final double kDescendMotorSpeedA = -0.45;
+    public static final double kDescendMotorSpeedB = kDescendMotorSpeedA;
     public static final int kLimitSwitchAPort = 1;
     public static final int kLimitSwitchBPort = 0;
   }
