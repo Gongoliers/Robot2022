@@ -10,8 +10,8 @@ import frc.robot.commands.shooter.ShootHigh;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class BackupAndShootWithDelayAndThenLeaveTarmac extends SequentialCommandGroup {
-    public BackupAndShootWithDelayAndThenLeaveTarmac(DrivetrainSubsystem drivetrain, ShooterSubsystem shooter){
+public class BackupAndShootHighThenLeaveTarmac extends SequentialCommandGroup {
+    public BackupAndShootHighThenLeaveTarmac(DrivetrainSubsystem drivetrain, ShooterSubsystem shooter){
         addCommands(
                 new WaitCommand(2.0),
                 new SimpleDriveDistance(drivetrain, AutoConstants.kDistanceToDriveForHigh, 0.05, 0.3).withTimeout(3.0),
