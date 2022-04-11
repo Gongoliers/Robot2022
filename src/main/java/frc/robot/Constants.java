@@ -90,13 +90,13 @@ public final class Constants {
     public static final int kMotorACAN = 20; // LEFT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kMotorBCAN = 21; // RIGHT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kSolenoidACAN = 7; // CAN PORT OF SOLENOID
-    public static final int kSolenoidBCAN = 7; // CAN PORT OF SOLENOID
+    public static final int kSolenoidBCAN = kSolenoidACAN;
     public static final double kTopDistance = 0.99;//3 / 2.0;// TODO: TESTING ONLY;
     public static final double kCappedDistanceA = 1 / 264700.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
     public static final double kCappedDistanceB = 1 / 263599.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
-    public static final double kAscendMotorSpeedA = 0.70;
+    public static final double kAscendMotorSpeedA = 0.90;
     public static final double kAscendMotorSpeedB = kAscendMotorSpeedA;
-    public static final double kDescendMotorSpeedA = -0.45;
+    public static final double kDescendMotorSpeedA = -0.80;
     public static final double kDescendMotorSpeedB = kDescendMotorSpeedA;
     public static final int kLimitSwitchAPort = 1;
     public static final int kLimitSwitchBPort = 0;
