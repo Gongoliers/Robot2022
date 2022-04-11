@@ -60,12 +60,13 @@ public class EndgameSubsystem extends SubsystemBase {
         m_motorA.setNeutralMode(NeutralMode.Brake);
         m_motorB.setNeutralMode(NeutralMode.Brake);
 
-        // TODO: These might not be inverted now - more testing needed
-        // m_motorA.setInverted(true);
-        // m_motorB.setInverted(true);
-
         m_limitSwitchA.setInverted(true);
         m_limitSwitchB.setInverted(true);
+
+        m_endgameA.setAscendSpeed(EndgameConstants.kAscendMotorSpeedA);
+        m_endgameA.setDescendSpeed(EndgameConstants.kDescendMotorSpeedA);
+        m_endgameB.setAscendSpeed(EndgameConstants.kAscendMotorSpeedB);
+        m_endgameB.setDescendSpeed(EndgameConstants.kDescendMotorSpeedB);
     }
 
     public void run(EndgameAction action) {

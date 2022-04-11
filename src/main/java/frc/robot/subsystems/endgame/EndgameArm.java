@@ -16,6 +16,8 @@ public class EndgameArm {
     private final Solenoid m_armLockController;
     private EndgameControl m_control;
 
+    private double m_descendSpeed, m_ascendSpeed;
+
     /**
      * This is the basic endgame arm used in the 2022 game
      *
@@ -31,10 +33,20 @@ public class EndgameArm {
         m_limitSwitch = limitSwitch;
         m_armLockController = locker;
         m_control = new LockedEndgameControl(this);
+        m_descendSpeed = 0.0;
+        m_ascendSpeed = 0.0;
     }
 
     public void run(EndgameAction action) {
         m_control = m_control.run(action);
+    }
+
+    public void setAscendSpeed(double speed) {
+        m_ascendSpeed = Math.abs(speed);
+    }
+
+    public void setDescendSpeed(double speed) {
+        m_descendSpeed = -Math.abs(speed);
     }
 
     void unlock() {
@@ -66,11 +78,11 @@ public class EndgameArm {
     }
 
     void ascend() {
-        m_motor.set(0.75);
+        m_motor.set(m_ascendSpeed);
     }
 
     void descend() {
-        m_motor.set(-0.3);
+        m_motor.set(m_descendSpeed);
     }
 
 }
