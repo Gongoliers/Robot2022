@@ -8,10 +8,11 @@ import frc.robot.commands.shooter.ShootLow;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class BackupAndShootLowThenLeaveTarmac extends SequentialCommandGroup {
+public class ShootLowThenLeaveTarmac extends SequentialCommandGroup {
     public ShootLowThenLeaveTarmac(DrivetrainSubsystem drivetrain, ShooterSubsystem shooter){
         addCommands(
                 new WaitCommand(2.0),
+                new Drive(drivetrain, AutoConstants.kAutoDriveToFenderSpeed).withTimeout(1.0),
                 new ShootLow(shooter).withTimeout(8.0),
                 new WaitCommand(1.5),
                 new Drive(drivetrain, -AutoConstants.kAutoDriveToFenderSpeed).withTimeout(AutoConstants.kAutoDriveToFenderSeconds)
