@@ -24,6 +24,7 @@ import frc.robot.commands.autonomous.BackupAndShootHighThenLeaveTarmac;
 import frc.robot.commands.autonomous.FullSystemCheck;
 import frc.robot.commands.autonomous.LeaveTarmac;
 import frc.robot.commands.autonomous.LeaveTarmacAndShoot;
+import frc.robot.commands.autonomous.LeaveTarmacAndShootLow;
 import frc.robot.commands.compressor.StartCompressor;
 import frc.robot.commands.compressor.StopCompressor;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
@@ -127,6 +128,7 @@ public class RobotContainer {
         autoChooser.addOption("Shoot Low then Leave Tarmac", new BackupAndShootLowThenLeaveTarmac(m_drivetrain, m_shooter));
         autoChooser.addOption("Shoot High then Leave Tarmac", new BackupAndShootHighThenLeaveTarmac(m_drivetrain, m_shooter));
         autoChooser.addOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
+        autoChooser.addOption("Leave Tarmac Shoot Low", new LeaveTarmacAndShootLow(m_drivetrain, m_shooter, m_intake));
         autoChooser.setDefaultOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
     
         SmartDashboard.putData("Auto mode", autoChooser);
