@@ -63,6 +63,10 @@ public class EndgameSubsystem extends SubsystemBase {
         m_limitSwitchA.setInverted(true);
         m_limitSwitchB.setInverted(true);
 
+        initSpeeds();
+    }
+
+    void initSpeeds() {
         m_endgameA.setAscendSpeed(EndgameConstants.kAscendMotorSpeedA);
         m_endgameA.setDescendSpeed(EndgameConstants.kDescendMotorSpeedA);
         m_endgameB.setAscendSpeed(EndgameConstants.kAscendMotorSpeedB);
@@ -70,8 +74,16 @@ public class EndgameSubsystem extends SubsystemBase {
     }
 
     public void run(EndgameAction action) {
+        initSpeeds();
         m_endgameA.run(action);
         m_endgameB.run(action);
+    }
+
+    public void HomeEndgame() {
+        m_endgameA.setDescendSpeed(EndgameConstants.kHomingSpeed);
+        m_endgameB.setDescendSpeed(EndgameConstants.kHomingSpeed);
+        m_endgameA.run(EndgameAction.Descend);
+        m_endgameB.run(EndgameAction.Descend);
     }
 
     @Override

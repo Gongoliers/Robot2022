@@ -98,6 +98,7 @@ public final class Constants {
     public static final double kAscendMotorSpeedB = kAscendMotorSpeedA;
     public static final double kDescendMotorSpeedA = -0.80;
     public static final double kDescendMotorSpeedB = kDescendMotorSpeedA;
+    public static final double kHomingSpeed = 0.12;
     public static final int kLimitSwitchAPort = 1;
     public static final int kLimitSwitchBPort = 0;
   }

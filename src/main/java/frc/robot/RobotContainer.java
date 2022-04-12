@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -34,6 +35,7 @@ import frc.robot.commands.drivetrain.SimpleDriveDistance;
 import frc.robot.commands.drivetrain.StopDrivetrain;
 import frc.robot.commands.endgame.AscendEndgame;
 import frc.robot.commands.endgame.DescendEndgame;
+import frc.robot.commands.endgame.HomeEndgame;
 import frc.robot.commands.endgame.StopEndgame;
 import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.Intake;
@@ -127,9 +129,9 @@ public class RobotContainer {
         autoChooser.addOption("Leave Tarmac", new LeaveTarmac(m_drivetrain));
         autoChooser.addOption("Shoot Low then Leave Tarmac", new ShootLowThenLeaveTarmac(m_drivetrain, m_shooter));
         autoChooser.addOption("Shoot High then Leave Tarmac", new BackupAndShootHighThenLeaveTarmac(m_drivetrain, m_shooter));
-        autoChooser.addOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
+        autoChooser.addOption("Leave Tarmac Shoot High", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
         autoChooser.addOption("Leave Tarmac Shoot Low", new LeaveTarmacAndShootLow(m_drivetrain, m_shooter, m_intake));
-        autoChooser.setDefaultOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
+        autoChooser.setDefaultOption("Leave Tarmac Shoot High", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
 
         SmartDashboard.putData("Auto mode", autoChooser);
     }
@@ -340,6 +342,10 @@ public class RobotContainer {
         lowerEndgame.whenPressed(new DescendEndgame(m_endgame));
         // TODO: Evaluate if this line is necessary
         lowerEndgame.whenReleased(new StopEndgame(m_endgame));
+
+        DPadButton homeEndgame = new DPadButton(m_manipulatorController, Direction.LEFT);
+        homeEndgame.whenPressed(new HomeEndgame(m_endgame));
+        homeEndgame.whenReleased(new StopEndgame(m_endgame));
 
         /**
          * Break Safety
