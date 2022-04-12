@@ -24,6 +24,7 @@ import frc.robot.commands.autonomous.BackupAndShootHighThenLeaveTarmac;
 import frc.robot.commands.autonomous.FullSystemCheck;
 import frc.robot.commands.autonomous.LeaveTarmac;
 import frc.robot.commands.autonomous.LeaveTarmacAndShoot;
+import frc.robot.commands.autonomous.LeaveTarmacAndShootLow;
 import frc.robot.commands.compressor.StartCompressor;
 import frc.robot.commands.compressor.StopCompressor;
 import frc.robot.commands.drivetrain.DrivetrainOperatorControl;
@@ -83,7 +84,7 @@ public class RobotContainer {
      * Initiating SendableChooser
      */
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
-    
+
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
@@ -103,7 +104,7 @@ public class RobotContainer {
     private int lrAdjust = 1;
 
     /**
-     * The container for the robot. 
+     * The container for the robot.
      * Contains subsystems, OI devices, and commands
      */
     public RobotContainer() {
@@ -126,9 +127,10 @@ public class RobotContainer {
         autoChooser.addOption("Leave Tarmac", new LeaveTarmac(m_drivetrain));
         autoChooser.addOption("Shoot Low then Leave Tarmac", new ShootLowThenLeaveTarmac(m_drivetrain, m_shooter));
         autoChooser.addOption("Shoot High then Leave Tarmac", new BackupAndShootHighThenLeaveTarmac(m_drivetrain, m_shooter));
-        autoChooser.addOption("Intake then Shoot High", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
-        autoChooser.setDefaultOption("Intake then Shoot High", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
-    
+        autoChooser.addOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
+        autoChooser.addOption("Leave Tarmac Shoot Low", new LeaveTarmacAndShootLow(m_drivetrain, m_shooter, m_intake));
+        autoChooser.setDefaultOption("Leave Tarmac Shoot", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
+
         SmartDashboard.putData("Auto mode", autoChooser);
     }
 
@@ -143,7 +145,7 @@ public class RobotContainer {
     public double getDriverSpeed() {
         return lrAdjust*m_driverJoystick.getY();
      }
-   
+
      public double getDriverRotation() {
         return m_driverJoystick.getZ();
      }
@@ -155,10 +157,10 @@ public class RobotContainer {
      public void stopAll() {
          new StopAll(m_drivetrain, m_endgame, m_shooter, m_intake).schedule();;
      }
-    
+
      public void quickRumble(boolean left) {
         m_manipulatorController.setRumble(left ? RumbleType.kLeftRumble : RumbleType.kRightRumble, 1.0);
-        
+
         Timer timer = new Timer();
         timer.schedule(new TimerTask(){
             @Override
@@ -169,16 +171,16 @@ public class RobotContainer {
     }
 
     /**
-     * 
+     *
      * END OF FRC CODE
      * THE FOLLOWING CODE IS SOLELY DEDICATED TO MAPPING BINDINGS
-     * 
+     *
      */
 
     /**
      * SECTION 1:
      *  -- Configuring The Driver's Bindings
-     * 
+     *
      */
     private void configureDriverBindings() {
         // Driver Joystick Buttons
@@ -187,7 +189,7 @@ public class RobotContainer {
         /**
          * Turbo Button Binding
          *  -- Enables / Disables Turbo Functionality
-         * 
+         *
          * Binding:
          *  -- Joystick Trigger
          */
@@ -198,7 +200,7 @@ public class RobotContainer {
         /**
          * Driver's Joystick Axis
          *  -- Allows the driver to control the robot
-         * 
+         *
          * Binding:
          *  -- Y (Axis 2) Controls speed +/-
          *  -- Z (Axis 3) Controls rotation
@@ -208,8 +210,8 @@ public class RobotContainer {
         /**
          * Driver's Stop All Command
          *  -- Stops all Active Subsystems on the Robot
-         * 
-         * Binding: 
+         *
+         * Binding:
          *  -- Button 4 (bottom left button @ top of joystick)
          */
         JoystickButton stopAll = new JoystickButton(m_driverJoystick, 4);
@@ -218,7 +220,7 @@ public class RobotContainer {
         /**
          * Align to Target Command
          *  -- Aligns Robot to Target
-         * 
+         *
          * Binding:
          *  -- Button 5 (upper right button @ top of joystick)
          */
@@ -230,7 +232,7 @@ public class RobotContainer {
          * Switch Left & Right Directions
          *  -- Switches Left & Right Directions
          *  -- Requested by Driveteam
-         * 
+         *
          * Binding:
          *  -- Button 2 (button on side of axis)
          */
@@ -240,8 +242,8 @@ public class RobotContainer {
         /**
          * Backup for High Goal
          *  -- Backs Up from Fender to Shoot for high goal
-         * 
-         * Binding: 
+         *
+         * Binding:
          *  -- Button 10
          */
         // TODO: Use this
@@ -253,8 +255,8 @@ public class RobotContainer {
          * Override Match Timer
          *  -- Overrides Match Timer Lock for Endgaem
          *  -- Reevaluate if this is necessary
-         * 
-         * Binding: 
+         *
+         * Binding:
          *  -- Button 11
          */
         //JoystickButton overrideTimer = new JoystickButton(m_driverJoystick, 11);
@@ -263,7 +265,7 @@ public class RobotContainer {
         /**
          * Backup and Shoot
          *  -- Backups and Shoot
-         * 
+         *
          * Binding:
          *  -- Button ??
          */
@@ -274,7 +276,7 @@ public class RobotContainer {
         /**
          * Shoot High
          *  -- Shoots High
-         * 
+         *
          * Binding:
          *  -- Button ???
          */
@@ -290,7 +292,7 @@ public class RobotContainer {
         /**
          * Start Compressor Command
          *  -- Starts the Compressor (for Pneumatics)
-         * 
+         *
          * Binding:
          *  -- X button
          */
@@ -302,7 +304,7 @@ public class RobotContainer {
         /**
          * Stop Compressor Command
          *  -- Stops the Compressor (for Pneumatics)
-         * 
+         *
          * Binding:
          *  -- B button
          */
@@ -314,10 +316,10 @@ public class RobotContainer {
         // TODO: See if this is needed
         // m_endgame.setDefaultCommand(new StopEndgame(m_endgame));
 
-        /** 
+        /**
          * Raise Endgame
          *  -- Raises Endgame
-         * 
+         *
          * Binding:
          *  -- Up DPAD Button
          */
@@ -330,7 +332,7 @@ public class RobotContainer {
         /**
          * Lower Endgame
          *  -- Lowers Endgame
-         * 
+         *
          * Binding:
          *  -- Down DPAD Button
          */
@@ -343,8 +345,8 @@ public class RobotContainer {
          * Break Safety
          *  -- Disables timer safety
          *  -- Re-add if necessary
-         * 
-         * Binding: 
+         *
+         * Binding:
          *  -- Right DPAD Button
          */
         //Trigger endgameEnabled = new Trigger(EndgameTimer::isTimerBroken).negate();
@@ -360,7 +362,7 @@ public class RobotContainer {
         /**
          * Shoot Balls
          *  -- Shoots Balls
-         * 
+         *
          * Binding:
          *  -- Right Trigger
          */
@@ -376,8 +378,8 @@ public class RobotContainer {
         /**
          * Shoot Balls Low
          *  -- Shoots Balls
-         * 
-         * Binding: 
+         *
+         * Binding:
          *  -- Right Bumper
          */
         JoystickButton shootBallsLow = new JoystickButton(m_manipulatorController, XboxController.Button.kRightBumper.value);
@@ -388,7 +390,7 @@ public class RobotContainer {
         /**
          * Deploy Intake
          *  -- Deploys the Intake
-         * 
+         *
          * Binding:
          *  -- Y
          */
@@ -398,8 +400,8 @@ public class RobotContainer {
         /**
          * Retract Intake
          *  -- Retracts the Intake
-         * 
-         * Binding: 
+         *
+         * Binding:
          *  -- A
          */
         JoystickButton retractIntake = new JoystickButton(m_manipulatorController, XboxController.Button.kA.value);
@@ -408,8 +410,8 @@ public class RobotContainer {
         /**
          * Activate Intake
          *  -- Activates the Intake
-         * 
-         * Binding: 
+         *
+         * Binding:
          *  -- Left Trigger
          */
         Button intakeBalls = Hardware.makeButton(new BooleanSupplier() {
@@ -423,7 +425,7 @@ public class RobotContainer {
         /**
          * Outtake
          *  -- Outtakes Any Balls
-         * 
+         *
          * Binding:
          *  -- Left Bumper
          */
