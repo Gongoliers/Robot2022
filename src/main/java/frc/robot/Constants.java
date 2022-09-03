@@ -51,23 +51,25 @@ public final class Constants {
   }
 
   public static final class ShooterConstants {
-    public static final int kFeederMotorCANId = 10;
-    public static final int kOuttakeMotorCANId = 11;
-    public static final int kInterfaceMotorCANId = 12;
+    // FIXME: Order of CAN IDs changed to match the order the ball travels
+    public static final int kInjectorMotorCANId = 10;
+    public static final int kFeederMotorCANId = 11;
+    public static final int kOuttakeMotorCANId = 12;
   
-    public static final double kRampUpSeconds = 1.2;
+    // The amount of time the injector motor should run to ensure a single ball goes through
+    public static final double kInjectorMotorRunTime = 0.8;
 
-    public static final double kFeederMotorTargetSpeedHigh = 0.67*1.03;
-    public static final double kOuttakeMotorTargetSpeedHigh = 0.57*1.03;
-    public static final double kInterfaceMotorSpeedHigh = 0.35*1.03;
+    // The amount of time the feeder and outtake flywheels have to spin up before a ball is injected
+    public static final double kSpinUpTimeHigh = 1.2;
+    public static final double kSpinUpTimeLow = 1.0;
+
+    public static final double kFeederMotorTargetSpeedHigh = 0.7;
+    public static final double kOuttakeMotorTargetSpeedHigh = 0.6;
+    public static final double kInjectorMotorSpeedHigh = 0.35;
 
     public static final double kFeederMotorTargetSpeedLow = 0.4;
     public static final double kOuttakeMotorTargetSpeedLow = 0.35;
-    public static final double kInterfaceMotorSpeedLow = 0.35;
-
-    public static final double kInterfaceMotorRunTime = 0.8;
-    public static final double kInterfaceMotorWaitTimeHigh = 1.2;
-    // public static final double kInterfaceMotorWaitTimeLow = 1.0;
+    public static final double kInjectorMotorSpeedLow = 0.35;
   }
 
   public static final class AutoConstants {
@@ -78,7 +80,11 @@ public final class Constants {
     public static final double kAutoDriveAwayFromFenderSeconds = 2.5;
 
     public static final double kDistanceToDriveForHigh = 27/12.0; // IMPORTANT DIVIDE BY DOUBLE
-    // public static final double kDistanceToDriveForHigh = 25/12.0; // IMPORTANT DIVIDE BY DOUBLE
+
+    // The amount of time the robot will spend shooting
+    // IMPORTANT: This must be greater than the amount of time the command needs to run
+    public static final double kShootHighTime = 8.0;
+    public static final double kShootLowTime = 8.0;
   }
 
   public static final class OIConstants {
