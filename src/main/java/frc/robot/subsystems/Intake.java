@@ -6,10 +6,11 @@ import com.thegongoliers.output.actuators.GPiston;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class Intake extends SubsystemBase {
 
     private MotorController m_intakeMotor;
     private final Solenoid m_intakeSolenoid1;
@@ -18,7 +19,7 @@ public class IntakeSubsystem extends SubsystemBase {
     private final Solenoid m_intakeSolenoid2;
     private final GPiston m_intakePiston2;
 
-    public IntakeSubsystem() {
+    public Intake() {
     
         m_intakeMotor = new WPI_TalonSRX(IntakeConstants.kIntakeCanId);
 
@@ -32,7 +33,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // TODO: smartdashboard
+        SmartDashboard.putBoolean("Intake deployed?", isDeployed());
     }
 
     public void stopIntake() {
