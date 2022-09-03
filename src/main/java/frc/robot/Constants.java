@@ -110,8 +110,4 @@ public final class Constants {
     public static final int kLimitSwitchAPort = 1;
     public static final int kLimitSwitchBPort = 0;
   }
-
-  public static final class CompressorConstants {
-    public static final double kLimitedCompressorMaxDriveSpeed = 0.3;
-  }
 }
