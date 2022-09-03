@@ -36,7 +36,7 @@ import frc.robot.commands.endgame.DescendEndgame;
 import frc.robot.commands.endgame.HomeEndgame;
 import frc.robot.commands.endgame.StopEndgame;
 import frc.robot.commands.intake.DeployIntake;
-import frc.robot.commands.intake.Intake;
+import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.intake.Outtake;
 import frc.robot.commands.intake.RetractIntake;
 import frc.robot.commands.shooter.ShootHigh;
@@ -45,7 +45,7 @@ import frc.robot.commands.shooter.StopShooter;
 import frc.robot.subsystems.Compressor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.EndgameSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.VisionSubsystem;
 
@@ -73,7 +73,7 @@ public class RobotContainer {
     /**
      * Initiating IntakeSubsystem
      */
-    private final IntakeSubsystem m_intake = new IntakeSubsystem();
+    private final Intake m_intake = new Intake();
 
     /**
      * Initiating CompressorSubsystem
@@ -410,7 +410,7 @@ public class RobotContainer {
                 return m_manipulatorController.getLeftTriggerAxis() > 0.8;
             }
         });
-        intakeBalls.whileHeld(new Intake(m_intake));
+        intakeBalls.whileHeld(new RunIntake(m_intake));
 
         /**
          * Outtake
