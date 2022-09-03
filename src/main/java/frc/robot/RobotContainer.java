@@ -42,7 +42,7 @@ import frc.robot.commands.intake.RetractIntake;
 import frc.robot.commands.shooter.ShootHigh;
 import frc.robot.commands.shooter.ShootLow;
 import frc.robot.commands.shooter.StopShooter;
-import frc.robot.subsystems.CompressorSubsystem;
+import frc.robot.subsystems.Compressor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.EndgameSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -78,7 +78,7 @@ public class RobotContainer {
     /**
      * Initiating CompressorSubsystem
      */
-    private final CompressorSubsystem m_compressor = new CompressorSubsystem();
+    private final Compressor mCompressor = new Compressor();
 
     /**
      * Initiating SendableChooser
@@ -285,9 +285,8 @@ public class RobotContainer {
          *  -- X button
          */
         JoystickButton startCompressor = new JoystickButton(m_manipulatorController, XboxController.Button.kX.value);
-        startCompressor.whenPressed(new StartCompressor(m_compressor));
-        startCompressor.whenReleased(new StopCompressor(m_compressor));
-        //startCompressor.whenReleased(new SequentialCommandGroup(new StopCompressor(m_compressor), new StartLimitedCompressor(m_compressor, this)));
+        startCompressor.whenPressed(new StartCompressor(mCompressor));
+        startCompressor.whenReleased(new StopCompressor(mCompressor));
 
         /**
          * Stop Compressor Command
@@ -297,7 +296,7 @@ public class RobotContainer {
          *  -- B button
          */
         JoystickButton stopCompressor = new JoystickButton(m_manipulatorController, XboxController.Button.kB.value);
-        stopCompressor.whenPressed(new StopCompressor(m_compressor));
+        stopCompressor.whenPressed(new StopCompressor(mCompressor));
 
 // ENDGAME SUBSYSTEM
 
@@ -428,10 +427,10 @@ public class RobotContainer {
     }
 
     public void startCompressor(){
-        m_compressor.start();
+        mCompressor.start();
     }
 
     public void stopCompressor(){
-        m_compressor.stop();
+        mCompressor.stop();
     }
 }
