@@ -9,9 +9,7 @@ import com.kylecorry.pid.PID;
 import com.thegongoliers.output.drivetrain.ModularDrivetrain;
 import com.thegongoliers.output.drivetrain.PathFollowerModule;
 import com.thegongoliers.output.drivetrain.PowerEfficiencyModule;
-import com.thegongoliers.output.drivetrain.StabilityModule;
 import com.thegongoliers.output.drivetrain.TargetAlignmentModule;
-import com.thegongoliers.output.drivetrain.TractionControlModule;
 import com.thegongoliers.output.drivetrain.VoltageControlModule;
 import com.thegongoliers.math.GMath;
 import com.thegongoliers.input.odometry.AverageEncoderSensor;
@@ -26,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.NavxGyro;
 import frc.robot.PhoenixMotorControllerEncoder;
-import frc.robot.TractionControlModule2;
 import frc.robot.Constants.DriveConstants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -91,10 +88,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // TODO: This didn't seem to work
         // m_modularDrivetrain.setInactiveResetSeconds(DriveConstants.kInactivityThresholdSeconds);
         
-        // These modules are calibrated if needed - in testing, they weren't needed (traction control seemed more useful than stability with the drivetrain)
-        var stability = new StabilityModule(m_gyro, 0.02, 0.35);
-        // var traction = new TractionControlModule2(m_leftEncoderSensor, m_rightEncoderSensor, 0.2, 0.2, 0.2);
-
         // Voltage Control Module 
         m_voltageControlModule = new VoltageControlModule(DriveConstants.kNormalVoltage);
 

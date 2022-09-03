@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -218,17 +217,6 @@ public class RobotContainer {
          */
         JoystickButton stopAll = new JoystickButton(m_driverJoystick, 4);
         stopAll.whenPressed(new StopAll(m_drivetrain, m_endgame, m_shooter, m_intake));
-
-        /**
-         * Align to Target Command
-         *  -- Aligns Robot to Target
-         *
-         * Binding:
-         *  -- Button 5 (upper right button @ top of joystick)
-         */
-        JoystickButton alignToTarget = new JoystickButton(m_driverJoystick, 5);
-        // TODO: Disabled for now until Limelight is installed
-        // alignToTarget.whenPressed(new EnableTargetingAlignToTarget(m_drivetrain, vision));
 
         /**
          * Switch Left & Right Directions

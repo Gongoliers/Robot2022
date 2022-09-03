@@ -1,10 +1,6 @@
 package frc.robot.commands.shooter;
 
-import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
-
-import com.thegongoliers.input.time.Clock;
-import com.thegongoliers.input.time.RobotClock;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 

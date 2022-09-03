@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.thegongoliers.input.time.Clock;
 import com.thegongoliers.input.time.RobotClock;
 import com.thegongoliers.output.actuators.GSpeedController;
-import com.thegongoliers.output.interfaces.Shooter;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
