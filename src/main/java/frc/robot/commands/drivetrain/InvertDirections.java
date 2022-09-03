@@ -8,18 +8,16 @@ import frc.robot.RobotContainer;
  */
 public class InvertDirections extends InstantCommand {
 
-    private RobotContainer m_robot;
+    private RobotContainer mRobot;
 
     public InvertDirections(RobotContainer robot) {
-
-        m_robot = robot;
-
+        mRobot = robot;
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
-        m_robot.invertLR();
+        mRobot.invertLR();
     }
 
 }

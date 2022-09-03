@@ -1,7 +1,7 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Drivetrain;
 
 import frc.robot.RobotContainer;
 
@@ -10,15 +10,14 @@ import frc.robot.RobotContainer;
  */
 public class DrivetrainOperatorControl extends CommandBase {
 
-    private RobotContainer m_robot;
-    private DrivetrainSubsystem m_drivetrain;
+    private RobotContainer mRobot;
+    private Drivetrain mDrivetrain;
 
-    public DrivetrainOperatorControl(RobotContainer robot, DrivetrainSubsystem drivetrain) {
-
-        m_robot = robot;
+    public DrivetrainOperatorControl(RobotContainer robot, Drivetrain drivetrain) {
         addRequirements(drivetrain);
-        m_drivetrain = drivetrain;
+        mDrivetrain = drivetrain;
 
+        mRobot = robot;
     }
 
     // Called just before this Command runs the first time
@@ -29,10 +28,10 @@ public class DrivetrainOperatorControl extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        double speed = m_robot.getDriverSpeed();
-        double rotation = m_robot.getDriverRotation();
+        double driveSpeed = mRobot.getDriverSpeed();
+        double driveRotation = mRobot.getDriverRotation();
 
-        m_drivetrain.arcadeDrive(speed, rotation);
+        mDrivetrain.arcadeDrive(driveSpeed, driveRotation);
     }
 
     // Make this return true when this Command no longer needs to run execute
@@ -44,7 +43,7 @@ public class DrivetrainOperatorControl extends CommandBase {
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
-        m_drivetrain.stop();
+        mDrivetrain.stop();
     }
 
 }

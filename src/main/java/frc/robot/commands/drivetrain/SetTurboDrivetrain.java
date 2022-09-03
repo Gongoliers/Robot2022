@@ -1,27 +1,31 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * Sets the drivetrain to either turbo or precision mode.
  */
 public class SetTurboDrivetrain extends InstantCommand {
 
-    private DrivetrainSubsystem m_drivetrain;
-    private boolean m_enabled;
+    private Drivetrain mDrivetrain;
+    private boolean mEnabled;
 
-    public SetTurboDrivetrain(DrivetrainSubsystem drivetrain, boolean enabled) {
+    public SetTurboDrivetrain(Drivetrain drivetrain, boolean enabled) {
+        addRequirements(drivetrain);
+        mDrivetrain = drivetrain;
 
-        m_drivetrain = drivetrain;
-        m_enabled = enabled;
-
+        mEnabled = enabled;
     }
 
     // Called once when this InstantCommand executes
     @Override
     public void initialize() {
-        m_drivetrain.setTurboEnabled(m_enabled);
+        if (mEnabled) {
+            mDrivetrain.enableTurbo();
+        } else {
+            mDrivetrain.disableTurbo();
+        }
     }
 
 }

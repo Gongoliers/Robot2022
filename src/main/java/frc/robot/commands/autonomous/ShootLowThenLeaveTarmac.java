@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.drivetrain.Drive;
 import frc.robot.commands.shooter.ShootLow;
-import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShootLowThenLeaveTarmac extends SequentialCommandGroup {
-    public ShootLowThenLeaveTarmac(DrivetrainSubsystem drivetrain, ShooterSubsystem shooter){
+    public ShootLowThenLeaveTarmac(Drivetrain drivetrain, ShooterSubsystem shooter){
         addCommands(
                 new WaitCommand(2.0),
                 new Drive(drivetrain, AutoConstants.kAutoDriveToFenderSpeed).withTimeout(1.0),

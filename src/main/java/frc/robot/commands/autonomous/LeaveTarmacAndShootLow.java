@@ -6,12 +6,12 @@ import frc.robot.commands.drivetrain.Drive;
 import frc.robot.commands.intake.DeployIntake;
 import frc.robot.commands.intake.Intake;
 import frc.robot.commands.shooter.ShootLow;
-import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class LeaveTarmacAndShootLow extends SequentialCommandGroup {
-    public LeaveTarmacAndShootLow(DrivetrainSubsystem drivetrain, ShooterSubsystem shooter, IntakeSubsystem intake){
+    public LeaveTarmacAndShootLow(Drivetrain drivetrain, ShooterSubsystem shooter, IntakeSubsystem intake){
         addCommands(
             new DeployIntake(intake),
             parallel(

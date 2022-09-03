@@ -21,7 +21,6 @@ import frc.robot.commands.StopAll;
 import frc.robot.commands.autonomous.BackupAndShoot;
 import frc.robot.commands.autonomous.ShootLowThenLeaveTarmac;
 import frc.robot.commands.autonomous.BackupAndShootHighThenLeaveTarmac;
-import frc.robot.commands.autonomous.FullSystemCheck;
 import frc.robot.commands.autonomous.LeaveTarmac;
 import frc.robot.commands.autonomous.LeaveTarmacAndShoot;
 import frc.robot.commands.autonomous.LeaveTarmacAndShootLow;
@@ -44,7 +43,7 @@ import frc.robot.commands.shooter.ShootHigh;
 import frc.robot.commands.shooter.ShootLow;
 import frc.robot.commands.shooter.StopShooter;
 import frc.robot.subsystems.CompressorSubsystem;
-import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.EndgameSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -59,7 +58,7 @@ public class RobotContainer {
     /**
      * Initiating DrivetrainSubsystem
      */
-    private final DrivetrainSubsystem m_drivetrain = new DrivetrainSubsystem(vision);
+    private final Drivetrain mDrivetrain = new Drivetrain(vision);
 
     /**
      * Initiating EndgameSubsystem
@@ -123,14 +122,13 @@ public class RobotContainer {
      * This function adds all Autonomous Options to the SmartDashboard
      */
     private void configureAutonomous() {
-        autoChooser.addOption("Do Nothing", new StopAll(m_drivetrain, m_endgame, m_shooter, m_intake));
-        autoChooser.addOption("System Check", new FullSystemCheck(m_drivetrain));
-        autoChooser.addOption("Leave Tarmac", new LeaveTarmac(m_drivetrain));
-        autoChooser.addOption("Shoot Low then Leave Tarmac", new ShootLowThenLeaveTarmac(m_drivetrain, m_shooter));
-        autoChooser.addOption("Shoot High then Leave Tarmac", new BackupAndShootHighThenLeaveTarmac(m_drivetrain, m_shooter));
-        autoChooser.addOption("Leave Tarmac Shoot High", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
-        autoChooser.addOption("Leave Tarmac Shoot Low", new LeaveTarmacAndShootLow(m_drivetrain, m_shooter, m_intake));
-        autoChooser.setDefaultOption("Leave Tarmac Shoot High", new LeaveTarmacAndShoot(m_drivetrain, m_shooter, m_intake));
+        autoChooser.addOption("Do Nothing", new StopAll(mDrivetrain, m_endgame, m_shooter, m_intake));
+        autoChooser.addOption("Leave Tarmac", new LeaveTarmac(mDrivetrain));
+        autoChooser.addOption("Shoot Low then Leave Tarmac", new ShootLowThenLeaveTarmac(mDrivetrain, m_shooter));
+        autoChooser.addOption("Shoot High then Leave Tarmac", new BackupAndShootHighThenLeaveTarmac(mDrivetrain, m_shooter));
+        autoChooser.addOption("Leave Tarmac Shoot High", new LeaveTarmacAndShoot(mDrivetrain, m_shooter, m_intake));
+        autoChooser.addOption("Leave Tarmac Shoot Low", new LeaveTarmacAndShootLow(mDrivetrain, m_shooter, m_intake));
+        autoChooser.setDefaultOption("Leave Tarmac Shoot High", new LeaveTarmacAndShoot(mDrivetrain, m_shooter, m_intake));
 
         SmartDashboard.putData("Auto mode", autoChooser);
     }
@@ -156,7 +154,7 @@ public class RobotContainer {
      }
 
      public void stopAll() {
-         new StopAll(m_drivetrain, m_endgame, m_shooter, m_intake).schedule();;
+         new StopAll(mDrivetrain, m_endgame, m_shooter, m_intake).schedule();;
      }
 
      public void quickRumble(boolean left) {
@@ -195,8 +193,8 @@ public class RobotContainer {
          *  -- Joystick Trigger
          */
         JoystickButton turbo = new JoystickButton(m_driverJoystick, 1);
-        turbo.whenPressed(new SetTurboDrivetrain(m_drivetrain, true));
-        turbo.whenReleased(new SetTurboDrivetrain(m_drivetrain, false));
+        turbo.whenPressed(new SetTurboDrivetrain(mDrivetrain, true));
+        turbo.whenReleased(new SetTurboDrivetrain(mDrivetrain, false));
 
         /**
          * Driver's Joystick Axis
@@ -206,7 +204,7 @@ public class RobotContainer {
          *  -- Y (Axis 2) Controls speed +/-
          *  -- Z (Axis 3) Controls rotation
          */
-        m_drivetrain.setDefaultCommand(new DrivetrainOperatorControl(this, m_drivetrain));
+        mDrivetrain.setDefaultCommand(new DrivetrainOperatorControl(this, mDrivetrain));
 
         /**
          * Driver's Stop All Command
@@ -216,7 +214,7 @@ public class RobotContainer {
          *  -- Button 4 (bottom left button @ top of joystick)
          */
         JoystickButton stopAll = new JoystickButton(m_driverJoystick, 4);
-        stopAll.whenPressed(new StopAll(m_drivetrain, m_endgame, m_shooter, m_intake));
+        stopAll.whenPressed(new StopAll(mDrivetrain, m_endgame, m_shooter, m_intake));
 
         /**
          * Switch Left & Right Directions
@@ -237,7 +235,7 @@ public class RobotContainer {
          *  -- Button 10
          */
         // TODO: Use this
-        var backup = new SimpleDriveDistance(m_drivetrain, AutoConstants.kDistanceToDriveForHigh, 0.05, 0.3).withTimeout(3.0);
+        var backup = new SimpleDriveDistance(mDrivetrain, AutoConstants.kDistanceToDriveForHigh, 0.05, 0.3).withTimeout(3.0);
         JoystickButton positionForHigh = new JoystickButton(m_driverJoystick, 10);
         positionForHigh.whenPressed(backup);
 
@@ -260,8 +258,8 @@ public class RobotContainer {
          *  -- Button ??
          */
         JoystickButton manipulatorBackupFootandShoot = new JoystickButton(m_driverJoystick, 5);
-        manipulatorBackupFootandShoot.whenPressed(new BackupAndShoot(m_drivetrain, m_shooter));
-        manipulatorBackupFootandShoot.whenReleased(new ParallelCommandGroup(new StopDrivetrain(m_drivetrain), new StopShooter(m_shooter)));
+        manipulatorBackupFootandShoot.whenPressed(new BackupAndShoot(mDrivetrain, m_shooter));
+        manipulatorBackupFootandShoot.whenReleased(new ParallelCommandGroup(new StopDrivetrain(mDrivetrain), new StopShooter(m_shooter)));
 
         /**
          * Shoot High
