@@ -1,13 +1,13 @@
 package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.Vision;
 
 public class EnableTargetingMode extends InstantCommand {
 
-    private final VisionSubsystem m_vision;
+    private final Vision m_vision;
 
-    public EnableTargetingMode(VisionSubsystem vision){
+    public EnableTargetingMode(Vision vision){
         m_vision = vision;
         addRequirements(vision);
     }

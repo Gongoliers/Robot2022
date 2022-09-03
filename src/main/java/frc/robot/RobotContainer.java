@@ -47,13 +47,13 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.EndgameSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.Vision;
 
 public class RobotContainer {
     /**
      * Initializing VisionSystem
      */
-    private final VisionSubsystem vision = new VisionSubsystem();
+    private final Vision vision = new Vision();
 
     /**
      * Initiating DrivetrainSubsystem

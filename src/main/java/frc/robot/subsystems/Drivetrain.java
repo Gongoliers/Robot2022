@@ -40,7 +40,7 @@ public class Drivetrain extends SubsystemBase {
     private final PowerEfficiencyModule mPowerEfficiencyModule;
     private final TargetAlignmentModule mTargetAlignmentModule;
     
-    public Drivetrain(VisionSubsystem vision) {
+    public Drivetrain(Vision vision) {
 
         mLeftMotors.setInverted(false);
         // Right-side must be inverted otherwise the right-side drivetrain will

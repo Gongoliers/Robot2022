@@ -7,10 +7,10 @@ import com.thegongoliers.input.vision.LimelightCamera.LEDMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class VisionSubsystem extends SubsystemBase {
+public class Vision extends SubsystemBase {
     private LimelightCamera targetingCamera;
 
-    public VisionSubsystem(){
+    public Vision(){
         targetingCamera = new LimelightCamera();
         setDriverMode(true);
     }
