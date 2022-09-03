@@ -35,9 +35,11 @@ public final class Constants {
         public static final double kTurnThreshold = 0.2;
         
         // Encoders
-        public static final double kWheelDiameterFeet = 4 / 12.0;
+        // The radius of the wheels in inches
+        public static final double kWheelRadius = 2.0;
         // This was calculated by recording the ticks for one rotation
-        public static final double kEncoderDistancePerPulse = 14 / 12.0 / 19004.0;//(kWheelDiameterFeet * Math.PI) / 17923.0;
+        public static final double kEncoderTicksPerRotation = 19004.0;
+        public static final double kGearRatio = 11.25;
     }   
 
   public static final class IntakeConstants {
