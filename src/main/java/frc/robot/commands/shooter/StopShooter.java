@@ -1,12 +1,12 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.Shooter;
 
 public class StopShooter extends CommandBase {
-    private ShooterSubsystem m_shooter;
+    private Shooter m_shooter;
 
-    public StopShooter(ShooterSubsystem shooter) {
+    public StopShooter(Shooter shooter) {
         addRequirements(shooter);
         m_shooter = shooter; 
 
@@ -31,6 +31,5 @@ public class StopShooter extends CommandBase {
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
-
     }
 }

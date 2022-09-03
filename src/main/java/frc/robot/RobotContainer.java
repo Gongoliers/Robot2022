@@ -46,7 +46,7 @@ import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.EndgameSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
@@ -68,7 +68,7 @@ public class RobotContainer {
     /**
      * Initiating ShooterSubsystem
      */
-    private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+    private final Shooter mShooter = new Shooter();
 
     /**
      * Initiating IntakeSubsystem
@@ -122,13 +122,13 @@ public class RobotContainer {
      * This function adds all Autonomous Options to the SmartDashboard
      */
     private void configureAutonomous() {
-        autoChooser.addOption("Do Nothing", new StopAll(mDrivetrain, m_endgame, m_shooter, m_intake));
+        autoChooser.addOption("Do Nothing", new StopAll(mDrivetrain, m_endgame, mShooter, m_intake));
         autoChooser.addOption("Leave Tarmac", new LeaveTarmac(mDrivetrain));
-        autoChooser.addOption("Shoot Low then Leave Tarmac", new ShootLowThenLeaveTarmac(mDrivetrain, m_shooter));
-        autoChooser.addOption("Shoot High then Leave Tarmac", new BackupAndShootHighThenLeaveTarmac(mDrivetrain, m_shooter));
-        autoChooser.addOption("Leave Tarmac Shoot High", new LeaveTarmacAndShoot(mDrivetrain, m_shooter, m_intake));
-        autoChooser.addOption("Leave Tarmac Shoot Low", new LeaveTarmacAndShootLow(mDrivetrain, m_shooter, m_intake));
-        autoChooser.setDefaultOption("Leave Tarmac Shoot High", new LeaveTarmacAndShoot(mDrivetrain, m_shooter, m_intake));
+        autoChooser.addOption("Shoot Low then Leave Tarmac", new ShootLowThenLeaveTarmac(mDrivetrain, mShooter));
+        autoChooser.addOption("Shoot High then Leave Tarmac", new BackupAndShootHighThenLeaveTarmac(mDrivetrain, mShooter));
+        autoChooser.addOption("Leave Tarmac Shoot High", new LeaveTarmacAndShoot(mDrivetrain, mShooter, m_intake));
+        autoChooser.addOption("Leave Tarmac Shoot Low", new LeaveTarmacAndShootLow(mDrivetrain, mShooter, m_intake));
+        autoChooser.setDefaultOption("Leave Tarmac Shoot High", new LeaveTarmacAndShoot(mDrivetrain, mShooter, m_intake));
 
         SmartDashboard.putData("Auto mode", autoChooser);
     }
@@ -154,7 +154,7 @@ public class RobotContainer {
      }
 
      public void stopAll() {
-         new StopAll(mDrivetrain, m_endgame, m_shooter, m_intake).schedule();;
+         new StopAll(mDrivetrain, m_endgame, mShooter, m_intake).schedule();
      }
 
      public void quickRumble(boolean left) {
@@ -214,7 +214,7 @@ public class RobotContainer {
          *  -- Button 4 (bottom left button @ top of joystick)
          */
         JoystickButton stopAll = new JoystickButton(m_driverJoystick, 4);
-        stopAll.whenPressed(new StopAll(mDrivetrain, m_endgame, m_shooter, m_intake));
+        stopAll.whenPressed(new StopAll(mDrivetrain, m_endgame, mShooter, m_intake));
 
         /**
          * Switch Left & Right Directions
@@ -258,8 +258,8 @@ public class RobotContainer {
          *  -- Button ??
          */
         JoystickButton manipulatorBackupFootandShoot = new JoystickButton(m_driverJoystick, 5);
-        manipulatorBackupFootandShoot.whenPressed(new BackupAndShoot(mDrivetrain, m_shooter));
-        manipulatorBackupFootandShoot.whenReleased(new ParallelCommandGroup(new StopDrivetrain(mDrivetrain), new StopShooter(m_shooter)));
+        manipulatorBackupFootandShoot.whenPressed(new BackupAndShoot(mDrivetrain, mShooter));
+        manipulatorBackupFootandShoot.whenReleased(new ParallelCommandGroup(new StopDrivetrain(mDrivetrain), new StopShooter(mShooter)));
 
         /**
          * Shoot High
@@ -269,7 +269,7 @@ public class RobotContainer {
          *  -- Button ???
          */
         JoystickButton manipulatorShoot = new JoystickButton(m_driverJoystick, 3);
-        manipulatorShoot.whileHeld(new ShootHigh(m_shooter));
+        manipulatorShoot.whileHeld(new ShootHigh(mShooter));
     }
     private void configureManipulatorBindings() {
         // Manipulator Xbox Controller
@@ -364,8 +364,7 @@ public class RobotContainer {
                 return m_manipulatorController.getRightTriggerAxis() > 0.8;
             }
         });
-        shootBalls.whileHeld(new ShootHigh(m_shooter));
-        //TODO: interrupted
+        shootBalls.whileHeld(new ShootHigh(mShooter));
 
         /**
          * Shoot Balls Low
@@ -375,7 +374,7 @@ public class RobotContainer {
          *  -- Right Bumper
          */
         JoystickButton shootBallsLow = new JoystickButton(m_manipulatorController, XboxController.Button.kRightBumper.value);
-        shootBallsLow.whileHeld(new ShootLow(m_shooter));
+        shootBallsLow.whileHeld(new ShootLow(mShooter));
 
 // Intake Subsystem
 
