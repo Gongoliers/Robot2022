@@ -4,10 +4,10 @@ import com.thegongoliers.commands.AlignTargetCommand;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.VisionSubsystem;
 
 public class EnableTargetingAlignToTarget extends SequentialCommandGroup {
-    public EnableTargetingAlignToTarget(Drivetrain drivetrain, Vision vision) {
+    public EnableTargetingAlignToTarget(Drivetrain drivetrain, VisionSubsystem vision) {
         addCommands(
             new EnableTargetingMode(vision),
             new AlignTargetCommand(drivetrain, drivetrain.getModularDrivetrain(), 0, 0)
