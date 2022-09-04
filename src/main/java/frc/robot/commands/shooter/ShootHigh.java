@@ -16,7 +16,7 @@ public class ShootHigh extends ParallelCommandGroup {
                 // Wait some time for the motors to be fully spun up ...
                 new WaitCommand(ShooterConstants.kSpinUpTimeHigh),
                 // And then inject the ball into the spun up flywheels
-                new InjectBall(shooter, ShooterConstants.kInjectorMotorSpeedHigh).withTimeout(ShooterConstants.kInjectorMotorRunTime)
+                new InjectBall(shooter).withTimeout(ShooterConstants.kInjectorMotorRunTime)
             )
         );
    }

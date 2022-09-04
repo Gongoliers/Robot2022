@@ -1,6 +1,5 @@
 package frc.robot.commands.shooter;
 
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -19,8 +18,7 @@ public class SpinForLow extends CommandBase {
 
 	@Override
 	public void execute() {
-		mShooter.setFeederMotor(ShooterConstants.kFeederMotorTargetSpeedLow);
-		mShooter.setOuttakeMotor(ShooterConstants.kOuttakeMotorTargetSpeedLow);
+		mShooter.spinForLow();
 	}
 
 	@Override

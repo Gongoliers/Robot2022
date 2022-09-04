@@ -58,18 +58,17 @@ public final class Constants {
   
     // The amount of time the injector motor should run to ensure a single ball goes through
     public static final double kInjectorMotorRunTime = 0.8;
+    public static final double kInjectorMotorSpeed = 0.35;
 
     // The amount of time the feeder and outtake flywheels have to spin up before a ball is injected
     public static final double kSpinUpTimeHigh = 1.2;
     public static final double kSpinUpTimeLow = 1.0;
 
-    public static final double kFeederMotorTargetSpeedHigh = 0.7;
-    public static final double kOuttakeMotorTargetSpeedHigh = 0.6;
-    public static final double kInjectorMotorSpeedHigh = 0.35;
+    public static final double kFeederMotorSpeedHigh = 0.7;
+    public static final double kOuttakeMotorSpeedHigh = 0.6;
 
-    public static final double kFeederMotorTargetSpeedLow = 0.4;
-    public static final double kOuttakeMotorTargetSpeedLow = 0.35;
-    public static final double kInjectorMotorSpeedLow = 0.35;
+    public static final double kFeederMotorSpeedLow = 0.4;
+    public static final double kOuttakeMotorSpeedLow = 0.35;
   }
 
   public static final class AutoConstants {
@@ -79,7 +78,7 @@ public final class Constants {
     public static final double kAutoDriveAwayFromFenderSpeed = -0.55;
     public static final double kAutoDriveAwayFromFenderSeconds = 2.5;
 
-    public static final double kDistanceToDriveForHigh = 27/12.0; // IMPORTANT DIVIDE BY DOUBLE
+    public static final double kDistanceToDriveForHigh = 27 / 12.0;
 
     // The amount of time the robot will spend shooting
     // IMPORTANT: This must be greater than the amount of time the command needs to run

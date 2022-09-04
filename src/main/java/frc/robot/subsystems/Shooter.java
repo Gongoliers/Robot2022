@@ -29,16 +29,18 @@ public class Shooter extends SubsystemBase {
 		SmartDashboard.putNumber("Outtake speed (%)", mInjectorMotor.get());
 	}
 
-	public void setInjectorMotor(double speed) {
-		mInjectorMotor.set(speed);
+	public void injectBall() {
+		mInjectorMotor.set(ShooterConstants.kInjectorMotorSpeed);
 	}
 
-	public void setFeederMotor(double speed) {
-		mFeederMotor.set(speed);
+	public void spinForLow() {
+		mFeederMotor.set(ShooterConstants.kFeederMotorSpeedLow);
+		mOuttakeMotor.set(ShooterConstants.kOuttakeMotorSpeedLow);
 	}
 
-	public void setOuttakeMotor(double speed) {
-		mOuttakeMotor.set(speed);
+	public void spinForHigh() {
+		mFeederMotor.set(ShooterConstants.kFeederMotorSpeedHigh);
+		mOuttakeMotor.set(ShooterConstants.kOuttakeMotorSpeedHigh);
 	}
 
 	public void stopInjectorMotor() {

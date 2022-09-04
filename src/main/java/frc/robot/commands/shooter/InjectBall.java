@@ -7,11 +7,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class InjectBall extends CommandBase {
 
 	private Shooter mShooter;
-	private double mSpeed;
 
-	public InjectBall(Shooter shooter, double speed) {
+	public InjectBall(Shooter shooter) {
 		mShooter = shooter;
-		mSpeed = speed;
 	}
 
 	@Override
@@ -20,7 +18,7 @@ public class InjectBall extends CommandBase {
 
 	@Override
 	public void execute() {
-		mShooter.setInjectorMotor(mSpeed);
+		mShooter.injectBall();
 	}
 
 	@Override
