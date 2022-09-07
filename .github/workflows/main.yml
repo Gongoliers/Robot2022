@@ -1,0 +1,23 @@
+name: CI
+
+# Only run on code_cleanup for now, since it is the most experimental branch
+on:
+  push:
+    branches: [ code_cleanup ]
+  pull_request:
+    branches: [ code_cleanup ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container: wpilib/roborio-cross-ubuntu:2022-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Compile and run tests on robot code
+      run: ./gradlew build
