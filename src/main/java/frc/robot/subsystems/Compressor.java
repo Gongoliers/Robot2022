@@ -23,7 +23,7 @@ public class Compressor extends SubsystemBase {
   }
 
   public void stop() {
-    mCompressor.disable();
+    mCompressor.disabled();
   }
 
   public boolean isEnabled() {
