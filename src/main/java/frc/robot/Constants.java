@@ -39,11 +39,17 @@ public final class Constants {
         public static final double kWheelRadius = 2.0;
         // This was calculated by recording the ticks for one rotation
         public static final double kEncoderTicksPerRotation = 19004.0;
+        // The gear reduction of the gearbox (i.e. how many motor rotations per wheel rotation)
         public static final double kGearRatio = 11.25;
+        // The circumference of the wheel
+        // If the wheel makes one rotation and perfectly translates, the wheel will have moved this
+        // number of **inches**
+        public static final double kDistanceTravelledPerWheelRotation = Math.PI * 2 * kWheelRadius;
+        public static final double kInchesPerEncoderPulse = kDistanceTravelledPerWheelRotation / kEncoderTicksPerRotation;
     }   
 
   public static final class IntakeConstants {
-    public static final int kIntakeCanId = 32;
+    public static final int kIntakeCanId = 33;
     public static final double kIntakeSpeed = 0.27;
 
     public static final int kSolenoidCAN1 = 5;

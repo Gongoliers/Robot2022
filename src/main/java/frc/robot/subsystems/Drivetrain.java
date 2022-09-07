@@ -56,17 +56,22 @@ public class Drivetrain extends SubsystemBase {
         differentialDrivetrain.setDeadband(0.05);
         
         // Initialize encoders on both sides
-        mLeftEncoderSensor = new AverageEncoderSensor(
+        var leftAverageEncoder = new AverageEncoderSensor(
             new PhoenixMotorControllerEncoder(mLeftMotor_1, FeedbackDevice.IntegratedSensor),
             new PhoenixMotorControllerEncoder(mLeftMotor_2, FeedbackDevice.IntegratedSensor),
             new PhoenixMotorControllerEncoder(mLeftMotor_3, FeedbackDevice.IntegratedSensor)
         );
 
-        mRightEncoderSensor = new AverageEncoderSensor(
+        mLeftEncoderSensor = leftAverageEncoder.scaledBy(DriveConstants.kInchesPerEncoderPulse);
+
+        var rightAverageEncoder = new AverageEncoderSensor(
             new PhoenixMotorControllerEncoder(mRightMotor_1, FeedbackDevice.IntegratedSensor),
             new PhoenixMotorControllerEncoder(mRightMotor_2, FeedbackDevice.IntegratedSensor),
             new PhoenixMotorControllerEncoder(mRightMotor_3, FeedbackDevice.IntegratedSensor)
-        ).inverted(); // The right-side must also be inverted here
+        );
+
+        // The right-side must also be inverted here
+        mRightEncoderSensor = rightAverageEncoder.scaledBy(DriveConstants.kInchesPerEncoderPulse).inverted();
 
         // Initialize a modular drivetrain on top of the differentialDrivetrain
         mModularDrivetrain = ModularDrivetrain.from(differentialDrivetrain);
