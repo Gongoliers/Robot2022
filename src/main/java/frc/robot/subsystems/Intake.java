@@ -38,7 +38,6 @@ public class Intake extends SubsystemBase {
 
     public void stopIntake() {
         m_intakeMotor.stopMotor();
-        retract();
     }
 
     public void stopAll() {

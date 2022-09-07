@@ -9,28 +9,15 @@ public class StopIntakeSystem extends CommandBase {
     public StopIntakeSystem(Intake intake) {
         addRequirements(intake);
         m_intake = intake; 
-
     }
 
-    // Called just before this Command runs the first time
     @Override
     public void initialize() {
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    public void execute() {
         m_intake.stopAll();
     }
 
     @Override
     public boolean isFinished() {
-        return false;
-    }
-
-    // Called once after isFinished returns true
-    @Override
-    public void end(boolean interrupted) {
-
+        return true;
     }
 }

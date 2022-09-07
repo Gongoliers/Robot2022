@@ -12,12 +12,6 @@ public class Outtake extends CommandBase {
 
     }
 
-    // Called just before this Command runs the first time
-    @Override
-    public void initialize() {
-    }
-
-    // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
         m_intake.outtake();
@@ -28,9 +22,8 @@ public class Outtake extends CommandBase {
         return false;
     }
 
-    // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
-
+        m_intake.stopIntake();
     }
 }
