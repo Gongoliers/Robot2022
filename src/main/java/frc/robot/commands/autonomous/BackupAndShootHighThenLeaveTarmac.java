@@ -11,13 +11,14 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shooter;
 
 public class BackupAndShootHighThenLeaveTarmac extends SequentialCommandGroup {
-    public BackupAndShootHighThenLeaveTarmac(Drivetrain drivetrain, Shooter shooter){
-        addCommands(
-                new WaitCommand(2.0),
-                new SimpleDriveDistance(drivetrain, AutoConstants.kDistanceToDriveForHigh, 0.05, 0.3).withTimeout(3.0),
-                new ShootHigh(shooter).withTimeout(AutoConstants.kShootHighTime),
-                new WaitCommand(1.5),
-                new Drive(drivetrain, -Constants.AutoConstants.kAutoDriveToFenderSpeed).withTimeout(Constants.AutoConstants.kAutoDriveToFenderSeconds)
-        );
-    }
+  public BackupAndShootHighThenLeaveTarmac(Drivetrain drivetrain, Shooter shooter) {
+    addCommands(
+        new WaitCommand(2.0),
+        new SimpleDriveDistance(drivetrain, AutoConstants.kDistanceToDriveForHigh, 0.05, 0.3)
+            .withTimeout(3.0),
+        new ShootHigh(shooter).withTimeout(AutoConstants.kShootHighTime),
+        new WaitCommand(1.5),
+        new Drive(drivetrain, -Constants.AutoConstants.kAutoDriveToFenderSpeed)
+            .withTimeout(Constants.AutoConstants.kAutoDriveToFenderSeconds));
+  }
 }

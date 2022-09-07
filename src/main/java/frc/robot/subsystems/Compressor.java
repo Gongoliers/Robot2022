@@ -6,27 +6,27 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Compressor extends SubsystemBase {
 
-    private final edu.wpi.first.wpilibj.Compressor mCompressor;
+  private final edu.wpi.first.wpilibj.Compressor mCompressor;
 
-    public Compressor() {
-        mCompressor = new edu.wpi.first.wpilibj.Compressor(PneumaticsModuleType.CTREPCM);
-        stop();
-    }
-    
-    @Override
-    public void periodic() {
-        SmartDashboard.putBoolean("Compressor active?", isEnabled());
-    }
+  public Compressor() {
+    mCompressor = new edu.wpi.first.wpilibj.Compressor(PneumaticsModuleType.CTREPCM);
+    stop();
+  }
 
-    public void start() {
-        mCompressor.enableDigital();
-    }
+  @Override
+  public void periodic() {
+    SmartDashboard.putBoolean("Compressor active?", isEnabled());
+  }
 
-    public void stop() {
-        mCompressor.disable();
-    }
+  public void start() {
+    mCompressor.enableDigital();
+  }
 
-    public boolean isEnabled() {
-        return mCompressor.enabled();
-    }
+  public void stop() {
+    mCompressor.disable();
+  }
+
+  public boolean isEnabled() {
+    return mCompressor.enabled();
+  }
 }

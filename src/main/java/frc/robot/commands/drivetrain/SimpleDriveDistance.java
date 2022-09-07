@@ -8,48 +8,49 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class SimpleDriveDistance extends CommandBase {
 
-    private final Drivetrain mDrivetrain;
-    private final double mDistance;
-    private final double mThreshold;
-    private final double mSpeed;
-    private double mPreviousDistance;
+  private final Drivetrain mDrivetrain;
+  private final double mDistance;
+  private final double mThreshold;
+  private final double mSpeed;
+  private double mPreviousDistance;
 
-    public SimpleDriveDistance(Drivetrain drivetrain, double distance, double threshold, double speed) {
-        addRequirements(drivetrain);
-        mDrivetrain = drivetrain;
+  public SimpleDriveDistance(
+      Drivetrain drivetrain, double distance, double threshold, double speed) {
+    addRequirements(drivetrain);
+    mDrivetrain = drivetrain;
 
-        mDistance = distance;
-        mThreshold = threshold;
-        mSpeed = speed;
+    mDistance = distance;
+    mThreshold = threshold;
+    mSpeed = speed;
+  }
+
+  @Override
+  public void initialize() {
+    mPreviousDistance = mDrivetrain.getDistance();
+  }
+
+  @Override
+  public void execute() {
+    if (isFinished()) {
+      mDrivetrain.stop();
+    } else if (getError() > 0) {
+      mDrivetrain.arcadeDrive(mSpeed, 0.0);
+    } else {
+      mDrivetrain.arcadeDrive(-mSpeed, 0.0);
     }
+  }
 
-    @Override
-    public void initialize() {
-        mPreviousDistance = mDrivetrain.getDistance();
-    }
+  @Override
+  public boolean isFinished() {
+    return Math.abs(getError()) <= mThreshold;
+  }
 
-    @Override
-    public void execute() {
-        if (isFinished()){
-            mDrivetrain.stop();
-        } else if (getError() > 0) {
-            mDrivetrain.arcadeDrive(mSpeed, 0.0);
-        } else {
-            mDrivetrain.arcadeDrive(-mSpeed, 0.0);
-        }
-    }
+  @Override
+  public void end(boolean interrupted) {
+    mDrivetrain.stop();
+  }
 
-    @Override
-    public boolean isFinished() {
-        return Math.abs(getError()) <= mThreshold;
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        mDrivetrain.stop();
-    }
-
-    private double getError() {
-        return mDrivetrain.getDistance() - mPreviousDistance - mDistance;
-    }
+  private double getError() {
+    return mDrivetrain.getDistance() - mPreviousDistance - mDistance;
+  }
 }

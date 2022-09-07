@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.thegongoliers.output.actuators.GPiston;
-
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
@@ -12,59 +11,57 @@ import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
 
-    private MotorController m_intakeMotor;
-    private final Solenoid m_intakeSolenoid1;
-    private final GPiston m_intakePiston1;
+  private MotorController m_intakeMotor;
+  private final Solenoid m_intakeSolenoid1;
+  private final GPiston m_intakePiston1;
 
-    private final Solenoid m_intakeSolenoid2;
-    private final GPiston m_intakePiston2;
+  private final Solenoid m_intakeSolenoid2;
+  private final GPiston m_intakePiston2;
 
-    public Intake() {
-    
-        m_intakeMotor = new WPI_TalonSRX(IntakeConstants.kIntakeCanId);
+  public Intake() {
 
-        m_intakeSolenoid1 = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN1);
-        m_intakePiston1 = new GPiston(m_intakeSolenoid1);
+    m_intakeMotor = new WPI_TalonSRX(IntakeConstants.kIntakeCanId);
 
-        m_intakeSolenoid2 = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN2);
-        m_intakePiston2 = new GPiston(m_intakeSolenoid2);
+    m_intakeSolenoid1 = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN1);
+    m_intakePiston1 = new GPiston(m_intakeSolenoid1);
 
-    }
+    m_intakeSolenoid2 = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.kSolenoidCAN2);
+    m_intakePiston2 = new GPiston(m_intakeSolenoid2);
+  }
 
-    @Override
-    public void periodic() {
-        SmartDashboard.putBoolean("Intake deployed?", isDeployed());
-    }
+  @Override
+  public void periodic() {
+    SmartDashboard.putBoolean("Intake deployed?", isDeployed());
+  }
 
-    public void stopIntake() {
-        m_intakeMotor.stopMotor();
-    }
+  public void stopIntake() {
+    m_intakeMotor.stopMotor();
+  }
 
-    public void stopAll() {
-        stopIntake();
-        retract();
-    }
+  public void stopAll() {
+    stopIntake();
+    retract();
+  }
 
-    public void intake() {
-        m_intakeMotor.set(IntakeConstants.kIntakeSpeed);
-    }
+  public void intake() {
+    m_intakeMotor.set(IntakeConstants.kIntakeSpeed);
+  }
 
-    public void outtake() {
-        m_intakeMotor.set(-IntakeConstants.kIntakeSpeed);       
-    }
+  public void outtake() {
+    m_intakeMotor.set(-IntakeConstants.kIntakeSpeed);
+  }
 
-    public void deploy() {
-        m_intakePiston1.extend();
-        m_intakePiston2.extend();
-    }
+  public void deploy() {
+    m_intakePiston1.extend();
+    m_intakePiston2.extend();
+  }
 
-    public void retract() {
-        m_intakePiston1.retract();
-        m_intakePiston2.retract();
-    }
+  public void retract() {
+    m_intakePiston1.retract();
+    m_intakePiston2.retract();
+  }
 
-    public boolean isDeployed() {
-        return (m_intakePiston1.isExtended() && m_intakePiston2.isExtended());
-    }
-
+  public boolean isDeployed() {
+    return (m_intakePiston1.isExtended() && m_intakePiston2.isExtended());
+  }
 }

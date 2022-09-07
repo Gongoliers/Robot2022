@@ -5,15 +5,15 @@ import frc.robot.subsystems.EndgameSubsystem;
 
 public class HomeEndgame extends CommandBase {
 
-    private final EndgameSubsystem m_subsystem;
+  private final EndgameSubsystem m_subsystem;
 
-    public HomeEndgame(EndgameSubsystem subsystem) {
-        addRequirements(subsystem);
-        m_subsystem = subsystem;
-    }
+  public HomeEndgame(EndgameSubsystem subsystem) {
+    addRequirements(subsystem);
+    m_subsystem = subsystem;
+  }
 
-    @Override
-    public void execute() {
-        m_subsystem.HomeEndgame();
-    }
+  @Override
+  public void execute() {
+    m_subsystem.HomeEndgame();
+  }
 }

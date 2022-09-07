@@ -6,17 +6,17 @@ import frc.robot.subsystems.endgame.EndgameAction;
 
 public class EndgameCommand extends CommandBase {
 
-    private final EndgameSubsystem m_subsystem;
-    private final EndgameAction m_action;
+  private final EndgameSubsystem m_subsystem;
+  private final EndgameAction m_action;
 
-    public EndgameCommand(EndgameSubsystem subsystem, EndgameAction action) {
-        addRequirements(subsystem);
-        m_subsystem = subsystem;
-        m_action = action;
-    }
+  public EndgameCommand(EndgameSubsystem subsystem, EndgameAction action) {
+    addRequirements(subsystem);
+    m_subsystem = subsystem;
+    m_action = action;
+  }
 
-    @Override
-    public void execute() {
-        m_subsystem.run(m_action);
-    }
+  @Override
+  public void execute() {
+    m_subsystem.run(m_action);
+  }
 }

@@ -6,10 +6,7 @@ import frc.robot.subsystems.endgame.EndgameAction;
 
 public class StopEndgame extends SequentialCommandGroup {
 
-    public StopEndgame(EndgameSubsystem subsystem) {
-        addCommands(
-                new EndgameCommand(subsystem, EndgameAction.Stop).withTimeout(0.4)
-        );
-    }
-
+  public StopEndgame(EndgameSubsystem subsystem) {
+    addCommands(new EndgameCommand(subsystem, EndgameAction.Stop).withTimeout(0.4));
+  }
 }

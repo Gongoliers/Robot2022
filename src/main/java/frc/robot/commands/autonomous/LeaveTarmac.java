@@ -6,9 +6,9 @@ import frc.robot.commands.drivetrain.Drive;
 import frc.robot.subsystems.Drivetrain;
 
 public class LeaveTarmac extends SequentialCommandGroup {
-    public LeaveTarmac(Drivetrain drivetrain){
-        addCommands(
-            new Drive(drivetrain, Constants.AutoConstants.kAutoDriveAwayFromFenderSpeed).withTimeout(Constants.AutoConstants.kAutoDriveAwayFromFenderSeconds)
-        );
-    }
+  public LeaveTarmac(Drivetrain drivetrain) {
+    addCommands(
+        new Drive(drivetrain, Constants.AutoConstants.kAutoDriveAwayFromFenderSpeed)
+            .withTimeout(Constants.AutoConstants.kAutoDriveAwayFromFenderSeconds));
+  }
 }

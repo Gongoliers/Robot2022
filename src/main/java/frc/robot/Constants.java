@@ -13,40 +13,41 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final class DriveConstants {
-        // --> CAN IDs (motors)
-        public static final int kLeftDriveCAN1 = 1;
-        public static final int kLeftDriveCAN2 = 2;
-        public static final int kLeftDriveCAN3 = 3;
+  public static final class DriveConstants {
+    // --> CAN IDs (motors)
+    public static final int kLeftDriveCAN1 = 1;
+    public static final int kLeftDriveCAN2 = 2;
+    public static final int kLeftDriveCAN3 = 3;
 
-        public static final int kRightDriveCAN1 = 4;
-        public static final int kRightDriveCAN2 = 5;
-        public static final int kRightDriveCAN3 = 6;
+    public static final int kRightDriveCAN1 = 4;
+    public static final int kRightDriveCAN2 = 5;
+    public static final int kRightDriveCAN3 = 6;
 
-        // Inactivity
-        public static final double kInactivityThresholdSeconds = 1.0;
+    // Inactivity
+    public static final double kInactivityThresholdSeconds = 1.0;
 
-        // Voltage Regulation
-        public static final double kNormalVoltage = 7;
-        public static final double kFastVoltage = 10;
+    // Voltage Regulation
+    public static final double kNormalVoltage = 7;
+    public static final double kFastVoltage = 10;
 
-        // Power Control
-        public static final double kSecondsToReachFullSpeed = 0.6; 
-        public static final double kTurnThreshold = 0.2;
-        
-        // Encoders
-        // The radius of the wheels in inches
-        public static final double kWheelRadius = 2.0;
-        // This was calculated by recording the ticks for one rotation
-        public static final double kEncoderTicksPerRotation = 19004.0;
-        // The gear reduction of the gearbox (i.e. how many motor rotations per wheel rotation)
-        public static final double kGearRatio = 11.25;
-        // The circumference of the wheel
-        // If the wheel makes one rotation and perfectly translates, the wheel will have moved this
-        // number of **inches**
-        public static final double kDistanceTravelledPerWheelRotation = Math.PI * 2 * kWheelRadius;
-        public static final double kInchesPerEncoderPulse = kDistanceTravelledPerWheelRotation / kEncoderTicksPerRotation;
-    }   
+    // Power Control
+    public static final double kSecondsToReachFullSpeed = 0.6;
+    public static final double kTurnThreshold = 0.2;
+
+    // Encoders
+    // The radius of the wheels in inches
+    public static final double kWheelRadius = 2.0;
+    // This was calculated by recording the ticks for one rotation
+    public static final double kEncoderTicksPerRotation = 19004.0;
+    // The gear reduction of the gearbox (i.e. how many motor rotations per wheel rotation)
+    public static final double kGearRatio = 11.25;
+    // The circumference of the wheel
+    // If the wheel makes one rotation and perfectly translates, the wheel will have moved this
+    // number of **inches**
+    public static final double kDistanceTravelledPerWheelRotation = Math.PI * 2 * kWheelRadius;
+    public static final double kInchesPerEncoderPulse =
+        kDistanceTravelledPerWheelRotation / kEncoderTicksPerRotation;
+  }
 
   public static final class IntakeConstants {
     public static final int kIntakeCanId = 33;
@@ -61,7 +62,7 @@ public final class Constants {
     public static final int kInjectorMotorCANId = 10;
     public static final int kFeederMotorCANId = 11;
     public static final int kOuttakeMotorCANId = 12;
-  
+
     // The amount of time the injector motor should run to ensure a single ball goes through
     public static final double kInjectorMotorRunTime = 0.8;
     public static final double kInjectorMotorSpeed = 0.35;
@@ -99,14 +100,20 @@ public final class Constants {
   }
 
   public static final class EndgameConstants {
-    public static final double kDelayToUnlockPneumatics = 1.0; // THIS IS THE DELAY BETWEEN THE MOTORS SPINNGING AND THE PNEUMATICS BEING TOLD TO DISENGAGE
+    public static final double kDelayToUnlockPneumatics =
+        1.0; // THIS IS THE DELAY BETWEEN THE MOTORS SPINNGING AND THE PNEUMATICS BEING TOLD TO
+    // DISENGAGE
     public static final int kMotorACAN = 20; // LEFT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kMotorBCAN = 21; // RIGHT OF BATTERY (WHEN STANDING BEHIND BATTERY)
     public static final int kSolenoidACAN = 7; // CAN PORT OF SOLENOID
     public static final int kSolenoidBCAN = kSolenoidACAN;
-    public static final double kTopDistance = 0.99;//3 / 2.0;// TODO: TESTING ONLY;
-    public static final double kCappedDistanceA = 1 / 264700.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
-    public static final double kCappedDistanceB = 1 / 263599.0; //  this controls the amount the distance the motor should travel when raising / lowering the endgame system
+    public static final double kTopDistance = 0.99; // 3 / 2.0;// TODO: TESTING ONLY;
+    public static final double kCappedDistanceA =
+        1 / 264700.0; //  this controls the amount the distance the motor should travel when
+    // raising / lowering the endgame system
+    public static final double kCappedDistanceB =
+        1 / 263599.0; //  this controls the amount the distance the motor should travel when
+    // raising / lowering the endgame system
     public static final double kAscendMotorSpeedA = 0.90;
     public static final double kAscendMotorSpeedB = kAscendMotorSpeedA;
     public static final double kDescendMotorSpeedA = -0.80;

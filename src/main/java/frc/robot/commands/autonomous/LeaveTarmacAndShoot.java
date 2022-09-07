@@ -10,15 +10,13 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 public class LeaveTarmacAndShoot extends SequentialCommandGroup {
-    public LeaveTarmacAndShoot(Drivetrain drivetrain, Shooter shooter, Intake intake){
-        addCommands(
-            new DeployIntake(intake),
-            parallel(
-                new RunIntake(intake),
-                new LeaveTarmac(drivetrain)
-            ).withTimeout(Constants.AutoConstants.kAutoDriveAwayFromFenderSeconds),
-            new Drive(drivetrain, Constants.AutoConstants.kAutoDriveToFenderSpeed).withTimeout(Constants.AutoConstants.kAutoDriveToFenderSeconds),
-            new BackupAndShoot(drivetrain, shooter)
-        );
-    }
+  public LeaveTarmacAndShoot(Drivetrain drivetrain, Shooter shooter, Intake intake) {
+    addCommands(
+        new DeployIntake(intake),
+        parallel(new RunIntake(intake), new LeaveTarmac(drivetrain))
+            .withTimeout(Constants.AutoConstants.kAutoDriveAwayFromFenderSeconds),
+        new Drive(drivetrain, Constants.AutoConstants.kAutoDriveToFenderSpeed)
+            .withTimeout(Constants.AutoConstants.kAutoDriveToFenderSeconds),
+        new BackupAndShoot(drivetrain, shooter));
+  }
 }

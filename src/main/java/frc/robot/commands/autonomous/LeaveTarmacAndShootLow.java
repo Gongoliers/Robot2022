@@ -12,15 +12,13 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 public class LeaveTarmacAndShootLow extends SequentialCommandGroup {
-    public LeaveTarmacAndShootLow(Drivetrain drivetrain, Shooter shooter, Intake intake){
-        addCommands(
-            new DeployIntake(intake),
-            parallel(
-                new RunIntake(intake),
-                new LeaveTarmac(drivetrain)
-            ).withTimeout(Constants.AutoConstants.kAutoDriveAwayFromFenderSeconds),
-            new Drive(drivetrain, Constants.AutoConstants.kAutoDriveToFenderSpeed).withTimeout(Constants.AutoConstants.kAutoDriveToFenderSeconds),
-            new ShootHigh(shooter).withTimeout(AutoConstants.kShootHighTime)
-        );
-    }
+  public LeaveTarmacAndShootLow(Drivetrain drivetrain, Shooter shooter, Intake intake) {
+    addCommands(
+        new DeployIntake(intake),
+        parallel(new RunIntake(intake), new LeaveTarmac(drivetrain))
+            .withTimeout(Constants.AutoConstants.kAutoDriveAwayFromFenderSeconds),
+        new Drive(drivetrain, Constants.AutoConstants.kAutoDriveToFenderSpeed)
+            .withTimeout(Constants.AutoConstants.kAutoDriveToFenderSeconds),
+        new ShootHigh(shooter).withTimeout(AutoConstants.kShootHighTime));
+  }
 }
